@@ -1,7 +1,14 @@
 ## cross-spawn-cb
 
-Run commands in each package folder starting with cwd skipping node_modules folders
+Cross spawn with a completion callback
 
 ```
-$cross-spawn-cb run npm
+var assert = require('assert');
+var spawn = require('cross-spawn-cb');
+
+spawn('node', ['--version'], { stdio: 'inherit' }, function (err, res) {
+  assert.ok(!err);
+  assert.equal(res.exitCode, 0);
+  done();
+});
 ```

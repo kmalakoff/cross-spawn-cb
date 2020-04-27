@@ -1,14 +1,16 @@
 {
   "name": "cross-spawn-cb",
   "version": "0.1.0",
-  "description": "Cross spawn with callbacks",
+  "description": "Cross spawn with a completion callback",
   "repository": {
     "type": "git",
     "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
   },
-  "bin": {
-    "cross-spawn-cb": "./bin/cross-spawn-cb"
-  },
+  "keywords": [
+    "cross-spawn",
+    "callbacks",
+    "callback"
+  ],
   "license": "MIT",
   "scripts": {
     "test": "mocha test/spec/**/*.test.js",
