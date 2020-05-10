@@ -1,6 +1,8 @@
 var spawn = require('cross-spawn');
 var assign = require('object.assign');
-var callOnce = require('call-once-next-tick');
+var callOnce = require('call-once-fn');
+var Queue = require('queue-cb');
+var eos = require('end-of-stream');
 
 module.exports = function crossSpawnCallback(command, args, options, callback) {
   if (typeof options === 'function') {
@@ -8,24 +10,38 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
     options = {};
   }
   options = assign({}, options || {});
-  callback = callOnce(callback);
-
-  var stdout = options.stdout === 'string';
-  var text = '';
-  if (stdout) delete options.stdout;
+  var result = {};
+  var queue = new Queue();
 
   var child = spawn(command, args, options);
-  child.on('error', callback);
-  child.on('close', function (code) {
-    var result = { code: code };
-    if (stdout) result.stdout = text;
-    callback(null, result);
-  });
-
+  var stdout = options.stdout === 'string';
   if (stdout) {
-    child.stdout.on('data', function (chunk) {
-      text += chunk.toString();
+    delete options.stdout;
+    var text = '';
+    queue.defer(function (callback) {
+      child.stdout.on('data', function (chunk) {
+        text += chunk.toString();
+      });
+      eos(child.stdout, function (err) {
+        if (err) return callback(err);
+        result.stdout = text;
+        callback();
+      });
     });
   }
+
+  queue.defer(function (callback) {
+    callback = callOnce(callback);
+    child.on('error', callback);
+    child.on('close', function (code) {
+      result.code = code;
+      callback();
+    });
+  });
+
+  queue.await(function (err) {
+    err ? callback(err) : callback(null, result);
+  });
+
   return child;
 };
