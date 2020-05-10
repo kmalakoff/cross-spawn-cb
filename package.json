@@ -1,6 +1,6 @@
 {
   "name": "cross-spawn-cb",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Cross spawn with a completion callback",
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "call-once-next-tick": "^1.0.3",
-    "cross-spawn": "^5.1.0"
+    "cross-spawn": "^5.1.0",
+    "object.assign": "^4.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
