@@ -1,8 +1,6 @@
 var spawn = require('cross-spawn');
 var assign = require('object.assign');
 var callOnce = require('call-once-fn');
-var Queue = require('queue-cb');
-var eos = require('end-of-stream');
 
 module.exports = function crossSpawnCallback(command, args, options, callback) {
   if (typeof options === 'function') {
@@ -10,38 +8,33 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
     options = {};
   }
   options = assign({}, options || {});
+  callback = callOnce(callback);
+
   var result = {};
-  var queue = new Queue();
-
-  var child = spawn(command, args, options);
-  var stdout = options.stdout === 'string';
-  if (stdout) {
+  if (options.stdout === 'string') {
+    result.stdout = '';
     delete options.stdout;
-    var text = '';
-    queue.defer(function (callback) {
-      child.stdout.on('data', function (chunk) {
-        text += chunk.toString();
-      });
-      eos(child.stdout, function (err) {
-        if (err) return callback(err);
-        result.stdout = text;
-        callback();
-      });
-    });
   }
+  if (options.stderr === 'string') {
+    result.stderr = '';
+    delete options.stderr;
+  }
+  var cp = spawn(command, args, options);
 
-  queue.defer(function (callback) {
-    callback = callOnce(callback);
-    child.on('error', callback);
-    child.on('close', function (code) {
-      result.code = code;
-      callback();
+  if (cp.stdout && typeof result.stdout === 'string')
+    cp.stdout.on('data', function (chunk) {
+      result.stdout += chunk.toString();
     });
-  });
+  if (cp.stderr && typeof result.stderr === 'string')
+    cp.stderr.on('data', function (chunk) {
+      result.stderr += chunk.toString();
+    });
 
-  queue.await(function (err) {
-    err ? callback(err) : callback(null, result);
+  cp.on('error', callback);
+  cp.on('close', function (code) {
+    if (result.stderr) return callback(new Error(result.stderr));
+    result.code = code;
+    callback(null, result);
   });
-
-  return child;
+  return cp;
 };
