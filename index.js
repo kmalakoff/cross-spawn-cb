@@ -34,7 +34,10 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
       result.stderr += chunk.toString();
     });
 
-  cp.on('error', callback);
+  cp.on('error', function (err) {
+    // some versions of node emit both an error and close
+    if (err.code !== 'OK') return callback(err);
+  });
   cp.on('close', function (code) {
     if (result.stderr) return callback(new Error(result.stderr));
     result.code = code;
