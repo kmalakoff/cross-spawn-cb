@@ -1,6 +1,6 @@
 var path = require('path');
 var spawn = require('cross-spawn');
-var assign = require('object.assign');
+var assign = require('object-assign');
 var callOnce = require('call-once-fn');
 
 // patch for legacy versions of node
