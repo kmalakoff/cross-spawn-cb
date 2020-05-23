@@ -1,7 +1,7 @@
 var path = require('path');
 var spawn = require('cross-spawn');
 var assign = require('object-assign');
-var callOnce = require('call-once-fn');
+var once = require('once');
 
 // patch for legacy versions of node
 if (typeof path.delimiter === 'undefined') path.delimiter = process.platform === 'win32' ? ';' : ':';
@@ -12,7 +12,7 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
     options = {};
   }
   options = assign({}, options || {});
-  callback = callOnce(callback);
+  callback = once(callback);
 
   var result = {};
   if (options.stdout === 'string') {
