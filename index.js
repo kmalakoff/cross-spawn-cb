@@ -1,7 +1,7 @@
 var path = require('path');
 var spawn = require('cross-spawn');
 var assign = require('object-assign');
-var once = require('once');
+var eos = require('end-of-stream');
 
 // patch for legacy versions of node
 if (typeof path.delimiter === 'undefined') path.delimiter = process.platform === 'win32' ? ';' : ':';
@@ -12,35 +12,42 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
     options = {};
   }
   options = assign({}, options || {});
-  callback = once(callback);
 
   var result = {};
+  var stdout = null;
+  var stderr = null;
   if (options.stdout === 'string') {
-    result.stdout = '';
+    stdout = [];
     delete options.stdout;
   }
   if (options.stderr === 'string') {
-    result.stderr = '';
+    stderr = [];
     delete options.stderr;
   }
   var cp = spawn(command, args, options);
 
-  if (cp.stdout && typeof result.stdout === 'string')
+  if (cp.stdout && stdout) {
     cp.stdout.on('data', function (chunk) {
-      result.stdout += chunk.toString();
+      stdout.push(chunk);
     });
-  if (cp.stderr && typeof result.stderr === 'string')
+  }
+  if (cp.stderr && stderr) {
     cp.stderr.on('data', function (chunk) {
-      result.stderr += chunk.toString();
+      stderr.push(chunk);
     });
+  }
 
-  cp.on('error', function (err) {
-    // some versions of node emit both an error and close
-    if (err.code !== 'OK') return callback(err);
-  });
-  cp.on('close', function (code) {
-    if (result.stderr) return callback(new Error(result.stderr));
-    result.code = code;
+  eos(cp, function (err) {
+    if (stderr) {
+      stderr = stderr.join('');
+      if (stderr.length) {
+        err = err || new Error('stderr has content');
+        err.stderr = stderr;
+        return callback(err);
+      }
+    }
+    if (err) return callback(err);
+    if (stdout) result.stdout = stdout.join('');
     callback(null, result);
   });
   return cp;
