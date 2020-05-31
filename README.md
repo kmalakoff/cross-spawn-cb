@@ -8,7 +8,6 @@ var spawn = require('cross-spawn-cb');
 
 spawn('node', ['--version'], { stdio: 'inherit' }, function (err, res) {
   assert.ok(!err);
-  assert.equal(res.code, 0);
   done();
 });
 ```
