@@ -2,12 +2,13 @@ var assert = require('assert');
 
 var spawn = require('../..');
 
-describe('cli', function () {
+describe('callback', function () {
   describe('happy path', function () {
     it('stdio inherit', function (done) {
       spawn('ls', [], { stdio: 'inherit' }, function (err, res) {
         assert.ok(!err);
-        assert.equal(typeof res.stdout, 'undefined');
+        assert.equal(res.stdout, null);
+        assert.equal(res.status, 0);
         done();
       });
     });
@@ -16,6 +17,7 @@ describe('cli', function () {
       spawn('ls', [], { stdout: 'string' }, function (err, res) {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'string');
+        assert.equal(res.status, 0);
         done();
       });
     });
