@@ -15,31 +15,25 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
   else options = assign({}, options);
   callback = once(callback);
 
-  var result = {};
-  var stdout = null;
-  var stderr = null;
-  if (options.stdio === 'string') {
-    stdout = [];
+  var result = { stdout: null, stderr: null };
+  if (options.stdio === 'string' || options.stdout === 'string') {
+    result.stdout = [];
     delete options.stdout;
-    stderr = [];
-    delete options.stderr;
-  } else if (options.stdout === 'string') {
-    stdout = [];
-    delete options.stdout;
-  } else if (options.stderr === 'string') {
-    stderr = [];
+  }
+  if (options.stdio === 'string' || options.stderr === 'string') {
+    result.stderr = [];
     delete options.stderr;
   }
   var cp = spawn(command, args, options);
 
-  if (cp.stdout && stdout) {
+  if (cp.stdout && result.stdout) {
     cp.stdout.on('data', function (chunk) {
-      stdout.push(chunk);
+      result.stdout.push(chunk);
     });
   }
-  if (cp.stderr && stderr) {
+  if (cp.stderr && result.stderr) {
     cp.stderr.on('data', function (chunk) {
-      stderr.push(chunk);
+      result.stderr.push(chunk);
     });
   }
 
@@ -51,20 +45,16 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
   cp.on('close', function close(status) {
     nextTick(function closeNextTick() {
       result.status = status;
-      var err = status ? new Error('Non-zero exit code: ' + status) : null;
-      if (stderr && stderr.length) {
-        stderr = stderr.join('');
+      var err = result.status ? new Error('Non-zero exit code: ' + result.status) : null;
+      if (result.stderr && result.stderr.length) {
         err = err || new Error('stderr has content');
-        err.stderr = stderr;
-        return callback(err);
-      }
+        err.stderr = result.stderr.join('');
+      } else result.stderr = null;
       if (err) return callback(err);
-      if (stdout) result.stdout = stdout.join('');
-      else result.stdout = null;
+      if (result.stdout) result.stdout = result.stdout.join('');
       callback(null, result);
     });
   });
-  return cp;
 };
 
 module.exports.sync = require('./lib/sync');
