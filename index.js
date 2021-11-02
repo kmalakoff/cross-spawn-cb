@@ -11,18 +11,22 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = {};
-  }
-  options = assign({}, options || {});
+  } else if (!options) options = {};
+  else options = assign({}, options);
   callback = once(callback);
 
   var result = {};
   var stdout = null;
   var stderr = null;
-  if (options.stdout === 'string') {
+  if (options.stdio === 'string') {
     stdout = [];
     delete options.stdout;
-  }
-  if (options.stderr === 'string') {
+    stderr = [];
+    delete options.stderr;
+  } else if (options.stdout === 'string') {
+    stdout = [];
+    delete options.stdout;
+  } else if (options.stderr === 'string') {
     stderr = [];
     delete options.stderr;
   }
@@ -44,9 +48,10 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
     if (err.code !== 'OK') return callback(err);
   });
 
-  cp.on('close', function close(code) {
+  cp.on('close', function close(status) {
     nextTick(function closeNextTick() {
-      var err = code ? new Error('Non-zero exit code: ' + code) : null;
+      result.status = status;
+      var err = status ? new Error('Non-zero exit code: ' + status) : null;
       if (stderr && stderr.length) {
         stderr = stderr.join('');
         err = err || new Error('stderr has content');
@@ -55,8 +60,11 @@ module.exports = function crossSpawnCallback(command, args, options, callback) {
       }
       if (err) return callback(err);
       if (stdout) result.stdout = stdout.join('');
+      else result.stdout = null;
       callback(null, result);
     });
   });
   return cp;
 };
+
+module.exports.sync = require('./lib/sync');
