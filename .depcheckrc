@@ -1,1 +1,1 @@
-ignores: ["depcheck", "spawn-sync"]
+ignores: ["depcheck", "os-shim", "concat-stream"]
