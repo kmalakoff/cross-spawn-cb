@@ -1,6 +1,6 @@
 {
   "name": "cross-spawn-cb",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Cross spawn with a completion callback",
   "keywords": [
     "cross-spawn",
@@ -40,7 +40,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@typescript-eslint/parser": "^5.30.0",
     "depcheck": "^1.4.3",
-    "dis-dat": "^0.1.5",
+    "dis-dat": "^0.1.6",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
