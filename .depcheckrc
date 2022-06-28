@@ -1,1 +1,1 @@
-ignores: ["depcheck", "object-keys", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
+ignores: ["depcheck", "path-key", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
