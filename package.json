@@ -29,7 +29,6 @@
     "cross-spawn": "^7.0.3",
     "just-extend": "^6.0.1",
     "next-tick": "^1.1.0",
-    "object-assign": "^4.1.1",
     "object-keys": "^1.1.1",
     "once": "^1.4.0",
     "os-shim": "^0.1.3"
