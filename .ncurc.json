@@ -1,7 +1,4 @@
 {
   "upgrade": true,
-  "reject": [
-    "cross-env",
-    "concat-stream"
-  ]
+  "reject": ["cross-env", "concat-stream"]
 }
