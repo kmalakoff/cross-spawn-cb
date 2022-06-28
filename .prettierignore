@@ -1,2 +1,5 @@
 node_modules/
 lib/cross-spawn.js
+lib/json-buffer/
+lib/spawn-sync/
+
