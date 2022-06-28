@@ -1,1 +1,1 @@
-ignores: ["depcheck", "os-shim", "concat-stream"]
+ignores: ["depcheck", "os-shim", "concat-stream", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
