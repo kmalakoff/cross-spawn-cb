@@ -4,6 +4,8 @@ updates:
     directory: '/'
     schedule:
       interval: daily
+    ignore:
+      - dependency-name: "concat-stream"
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
