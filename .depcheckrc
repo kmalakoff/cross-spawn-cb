@@ -1,1 +1,1 @@
-ignores: ["depcheck", "object-keys", "os-shim", "concat-stream", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
+ignores: ["depcheck", "object-keys", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
