@@ -1,8 +1,11 @@
+require('./lib/polyfills');
+
 var path = require('path');
-var spawn = require('cross-spawn');
-var assign = require('object-assign');
+var assign = require('just-extend');
 var once = require('once');
 var nextTick = require('next-tick');
+
+var spawn = require('./lib/cross-spawn').spawn;
 
 // patch for legacy versions of node
 if (typeof path.delimiter === 'undefined') path.delimiter = process.platform === 'win32' ? ';' : ':';
