@@ -4,9 +4,9 @@ var commonjs = require('@rollup/plugin-commonjs');
 var getBabelOutputPlugin = require('@rollup/plugin-babel').getBabelOutputPlugin;
 
 module.exports = {
-  input: require.resolve('cross-spawn'),
+  input: require.resolve('path-key'),
   output: {
-    file: 'lib/cross-spawn.js',
+    file: 'lib/path-key/index.js',
     format: 'cjs',
     exports: 'named',
   },
