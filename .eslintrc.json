@@ -8,6 +8,7 @@
   },
   "rules": {
     "no-var": "off",
+    "object-shorthand": "off",
     "no-extend-native": "off"
   }
 }
