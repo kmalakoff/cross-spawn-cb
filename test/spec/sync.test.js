@@ -18,7 +18,7 @@ describe('sync', function () {
         var res = spawnSync('ls', [], { stdio: 'string' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
-        console.log(err)
+        console.log(err);
         assert.ok(!err);
       }
     });
@@ -39,7 +39,7 @@ describe('sync', function () {
         spawnSync('ls', ['junk'], { stderr: 'string' });
         assert.ok(false);
       } catch (err) {
-        console.log(err)
+        console.log(err);
         assert.equal(typeof err.stderr, 'string');
       }
     });
