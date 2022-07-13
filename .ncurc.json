@@ -1,4 +1,4 @@
 {
   "upgrade": true,
-  "reject": ["cross-env", "concat-stream"]
+  "reject": ["mkdirp", "spawn-sync"]
 }
