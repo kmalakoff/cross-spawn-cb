@@ -15,7 +15,7 @@ describe('sync', function () {
 
     it('stdout string', function () {
       try {
-        var res = spawnSync('ls', [], { stdio: 'string' });
+        var res = spawnSync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
@@ -36,7 +36,7 @@ describe('sync', function () {
 
     it('stderr string', function () {
       try {
-        spawnSync('ls', ['junk'], { stderr: 'string' });
+        spawnSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
       } catch (err) {
         console.log(err);

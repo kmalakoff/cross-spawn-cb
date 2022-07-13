@@ -14,7 +14,7 @@ describe('callback', function () {
     });
 
     it('stdout string', function (done) {
-      spawn('ls', [], { stdout: 'string' }, function (err, res) {
+      spawn('ls', [], { encoding: 'utf8' }, function (err, res) {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
@@ -32,7 +32,7 @@ describe('callback', function () {
     });
 
     it('stderr string', function (done) {
-      spawn('ls', ['junk'], { stderr: 'string' }, function (err) {
+      spawn('ls', ['junk'], { encoding: 'utf8' }, function (err) {
         assert.ok(!!err);
         assert.equal(typeof err.stderr, 'string');
         done();
