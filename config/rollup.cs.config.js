@@ -6,7 +6,7 @@ var getBabelOutputPlugin = require('@rollup/plugin-babel').getBabelOutputPlugin;
 module.exports = {
   input: require.resolve('cross-spawn'),
   output: {
-    file: 'lib/cross-spawn-3.0.1/index.js',
+    file: 'lib/cross-spawn-3.0.1.js',
     format: 'cjs',
     exports: 'named',
   },
