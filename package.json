@@ -16,7 +16,7 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint .",
-    "prepublishOnly": "dtd \"npm run lint\" \"depcheck\"",
+    "prepublishOnly": "npm run lint && depcheck",
     "test": "mocha-compat test/spec/**/*.test.js",
     "build": "rollup -c config/rollup.cs.config.js"
   },
@@ -37,7 +37,6 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@typescript-eslint/parser": "^5.30.6",
     "depcheck": "^1.4.3",
-    "dis-dat": "^0.1.7",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
