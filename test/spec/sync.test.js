@@ -5,6 +5,7 @@ var spawnSync = require('../..').sync;
 describe('sync', function () {
   describe('happy path', function () {
     it('stdio inherit', function () {
+      this.timeout(20000);
       try {
         var res = spawnSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
@@ -14,6 +15,7 @@ describe('sync', function () {
     });
 
     it('stdout string', function () {
+      this.timeout(20000);
       try {
         var res = spawnSync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
@@ -25,6 +27,7 @@ describe('sync', function () {
   });
 
   describe('unhappy path', function () {
+    this.timeout(20000);
     it('stdio inherit', function () {
       try {
         spawnSync('ls', ['junk'], { stdio: 'inherit' });
@@ -35,6 +38,7 @@ describe('sync', function () {
     });
 
     it('stderr string', function () {
+      this.timeout(20000);
       try {
         spawnSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
