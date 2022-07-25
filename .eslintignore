@@ -1,4 +1,2 @@
 node_modules/
-lib/cross-spawn-3.0.1.js
-lib/path-key/
-lib/spawn-sync/
+lib/cross-spawn*

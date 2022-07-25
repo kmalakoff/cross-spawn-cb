@@ -13,18 +13,20 @@
   },
   "license": "MIT",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "test:engines": "nvu engines npm test",
+    "build": "",
+    "build:spawn": "rollup -c config/rollup.cs.config.js",
     "format": "prettier --write .",
     "lint": "eslint .",
     "prepublishOnly": "npm run lint && depcheck",
     "test": "mocha-compat test/spec/**/*.test.js",
-    "build": "rollup -c config/rollup.cs.config.js"
+    "test:engines": "nvu engines npm test"
   },
-  "files": [
-    "lib"
-  ],
   "dependencies": {
+    "buffer-v6-polyfill": "^1.0.5",
     "core-js": "^3.23.5",
     "cross-spawn": "^7.0.3",
     "function-exec-sync": "^0.2.4",
