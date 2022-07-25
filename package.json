@@ -24,6 +24,7 @@
     "lib"
   ],
   "dependencies": {
+    "buffer-v6-polyfill": "^1.0.5",
     "core-js": "^3.24.0",
     "cross-spawn": "^7.0.3",
     "function-exec-sync": "^0.2.4",
