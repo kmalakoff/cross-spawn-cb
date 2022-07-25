@@ -36,11 +36,9 @@ describe('sync', function () {
 
     it('stderr string', function () {
       try {
-        var res = spawnSync('ls', ['junk'], { stderr: 'string' });
-        console.log(res)
+        spawnSync('ls', ['junk'], { stderr: 'string' });
         assert.ok(false);
       } catch (err) {
-        console.log(err)
         assert.ok(!!err);
         assert.equal(typeof err.stderr, 'string');
       }
