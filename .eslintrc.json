@@ -9,6 +9,7 @@
   "rules": {
     "no-var": "off",
     "object-shorthand": "off",
-    "no-extend-native": "off"
+    "no-extend-native": "off",
+    "n/no-path-concat": "off"
   }
 }

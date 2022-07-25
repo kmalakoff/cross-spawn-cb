@@ -3,10 +3,12 @@ var resolve = require('@rollup/plugin-node-resolve');
 var commonjs = require('@rollup/plugin-commonjs');
 var getBabelOutputPlugin = require('@rollup/plugin-babel').getBabelOutputPlugin;
 
+var input = require.resolve('cross-spawn');
+
 module.exports = {
-  input: require.resolve('cross-spawn'),
+  input,
   output: {
-    file: 'lib/cross-spawn-3.0.1.js',
+    file: `lib/cross-spawn.js`,
     format: 'cjs',
     exports: 'named',
   },
