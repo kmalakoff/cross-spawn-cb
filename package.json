@@ -24,6 +24,7 @@
     "lib"
   ],
   "dependencies": {
+    "core-js": "^3.24.0",
     "cross-spawn": "^7.0.3",
     "function-exec-sync": "^0.2.4",
     "json-buffer": "^3.0.1",
