@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "cross-spawn": "^7.0.3",
+    "function-exec-sync": "^0.2.4",
     "json-buffer": "^3.0.1",
     "just-extend": "^6.0.1",
     "mkdirp": "^0.5.6",
