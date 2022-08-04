@@ -24,12 +24,12 @@ var crossSpawn = require('../..');
 
 function addTests(version) {
   var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
-
   var npmVersion = find(npmVersions, match.bind(null, version));
 
   describe(version, function () {
     before(function (callback) {
       nodeInstall(version, INSTALL_DIR, OPTIONS, function (err) {
+        if (err) console.log('nodeInstall', err);
         callback(err);
       });
     });

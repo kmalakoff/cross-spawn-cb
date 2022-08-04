@@ -4,8 +4,16 @@ var spawnSync = require('../..').sync;
 
 describe('sync', function () {
   describe('happy path', function () {
+    it('returns a status code', function () {
+      try {
+        var res = spawnSync('ls', [], {});
+        assert.equal(res.status, 0);
+      } catch (err) {
+        assert.ok(!err);
+      }
+    });
+
     it('stdio inherit', function () {
-      this.timeout(20000);
       try {
         var res = spawnSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
@@ -15,7 +23,6 @@ describe('sync', function () {
     });
 
     it('stdout string', function () {
-      this.timeout(20000);
       try {
         var res = spawnSync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
@@ -38,7 +45,6 @@ describe('sync', function () {
     });
 
     it('stderr string', function () {
-      this.timeout(20000);
       try {
         spawnSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
