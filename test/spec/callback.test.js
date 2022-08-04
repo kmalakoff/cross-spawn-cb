@@ -4,6 +4,14 @@ var spawn = require('../..');
 
 describe('callback', function () {
   describe('happy path', function () {
+    it('returns a status code', function (done) {
+      spawn('ls', [], {}, function (err, res) {
+        assert.ok(!err);
+        assert.equal(res.status, 0);
+        done();
+      });
+    });
+
     it('stdio inherit', function (done) {
       spawn('ls', [], { stdio: 'inherit' }, function (err, res) {
         assert.ok(!err);
