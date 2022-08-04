@@ -5,7 +5,9 @@ updates:
     schedule:
       interval: daily
     ignore:
+      - dependency-name: 'mkdirp'
       - dependency-name: 'semver'
+      - dependency-name: 'rimraf'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
