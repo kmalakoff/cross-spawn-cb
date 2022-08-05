@@ -29,7 +29,7 @@
     "buffer-v6-polyfill": "^1.0.5",
     "core-js": "^3.24.1",
     "cross-spawn": "^7.0.3",
-    "function-exec-sync": "^0.2.8",
+    "function-exec-sync": "^0.2.9",
     "next-tick": "^1.1.0",
     "once": "^1.4.0"
   },
