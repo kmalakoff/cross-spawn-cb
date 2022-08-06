@@ -19,6 +19,7 @@ var OPTIONS = {
 };
 
 var VERSIONS = ['v14.1.0', 'v12.18.1', 'v0.8.25'];
+VERSIONS = ['v14.1.0'];
 
 var crossSpawn = require('../..');
 
@@ -46,7 +47,7 @@ function addTests(version) {
         });
       });
 
-      it('node --version', function (done) {
+      it.only('node --version', function (done) {
         crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res) {
           assert.ok(!err);
           var lines = cr(res.stdout).split('\n');
