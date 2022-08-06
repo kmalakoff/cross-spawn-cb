@@ -23,7 +23,7 @@ VERSIONS = ['v14.1.0'];
 
 var crossSpawn = require('../..');
 
-var spawns = ['../../lib/cross-spawn-3.0.1', '../../lib/cross-spawn-4.0.2', '../../lib/cross-spawn-5.1.0', '../../lib/cross-spawn-6.0.5', '../../lib/cross-spawn-7.0.3'];
+var spawns = ['../../lib/cross-spawn-5.1.0', '../../lib/cross-spawn-6.0.5', '../../lib/cross-spawn-7.0.3'];
 
 function addTests(version) {
   var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
