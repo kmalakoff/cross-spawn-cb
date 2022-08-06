@@ -1,1 +1,1 @@
-ignores: ["depcheck", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
+ignores: ["depcheck", "spawn-sync", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
