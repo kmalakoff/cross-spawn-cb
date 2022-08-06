@@ -23,8 +23,6 @@ VERSIONS = ['v14.1.0'];
 
 var crossSpawn = require('../..');
 
-var spawns = ['../../lib/cross-spawn-5.1.0', '../../lib/cross-spawn-6.0.5', '../../lib/cross-spawn-7.0.3'];
-
 function addTests(version) {
   var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
   var npmVersion = find(npmVersions, match.bind(null, version));
@@ -49,23 +47,7 @@ function addTests(version) {
         });
       });
 
-      for (var i=0; i<spawns.length; i++) {
-        describe(spawns[i], function() {
-          var spawn = require(spawns[i]);
-          if (spawn.default) spawn = spawn.default;
-
-          it.only('node --version', function (done) {
-            crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8', spawn: spawn }), function (err, res) {
-              assert.ok(!err);
-              var lines = cr(res.stdout).split('\n');
-              assert.equal(lines.slice(-2, -1)[0], version);
-              done();
-            });
-          });
-        });
-      }
-
-      it('node --version', function (done) {
+      it.only('node --version', function (done) {
         crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res) {
           assert.ok(!err);
           var lines = cr(res.stdout).split('\n');
