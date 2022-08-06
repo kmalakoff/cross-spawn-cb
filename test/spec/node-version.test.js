@@ -47,7 +47,7 @@ function addTests(version) {
         });
       });
 
-      it.only('node --version', function (done) {
+      it('node --version', function (done) {
         crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res) {
           assert.ok(!err);
           var lines = cr(res.stdout).split('\n');
