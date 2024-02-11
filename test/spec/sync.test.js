@@ -4,7 +4,7 @@ delete process.env.NODE_OPTIONS;
 
 var assert = require('assert');
 
-var spawnSync = require('../..').sync;
+var spawnSync = require('cross-spawn-cb').sync;
 
 describe('sync', function () {
   describe('happy path', function () {
