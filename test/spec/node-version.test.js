@@ -8,8 +8,6 @@ var path = require('path');
 var isVersion = require('is-version');
 var cr = require('cr');
 var nodeInstall = require('node-install-release');
-var match = require('match-semver');
-var find = require('lodash.find');
 var resolveVersions = require('node-resolve-versions');
 
 var versionUtils = require('node-version-utils');

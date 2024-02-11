@@ -4,7 +4,7 @@ delete process.env.NODE_OPTIONS;
 
 var assert = require('assert');
 
-var spawn = require('../..');
+var spawn = require('cross-spawn-cb');
 
 describe('callback', function () {
   describe('happy path', function () {
