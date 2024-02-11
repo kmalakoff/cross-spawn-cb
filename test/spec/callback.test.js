@@ -21,7 +21,7 @@ describe('callback', function () {
       });
     });
 
-    it.only('stdout string', function (done) {
+    it('stdout string', function (done) {
       spawn('ls', [], { encoding: 'utf8' }, function (err, res) {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'string');
