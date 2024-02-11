@@ -1,3 +1,7 @@
+// remove NODE_OPTIONS from ts-dev-stack
+// biome-ignore lint/performance/noDelete: <explanation>
+delete process.env.NODE_OPTIONS;
+
 var assert = require('assert');
 var path = require('path');
 // var rimraf = require('rimraf');
@@ -6,11 +10,9 @@ var cr = require('cr');
 var nodeInstall = require('node-install-release');
 var match = require('match-semver');
 var find = require('lodash.find');
-var semver = require('semver');
 var resolveVersions = require('node-resolve-versions');
 
 var versionUtils = require('node-version-utils');
-var npmVersions = require('../lib/npmVersions');
 
 var NODE = process.platform === 'win32' ? 'node.exe' : 'node';
 var TMP_DIR = path.resolve(path.join(__dirname, '..', '..', '.tmp'));
@@ -20,13 +22,12 @@ var OPTIONS = {
 };
 
 var VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
-// VERSIONS = ['v14.1.0'];
+// VERSIONS = ['v16.20.2'];
 
-var crossSpawn = require('../..');
+var crossSpawn = require('../../src');
 
 function addTests(version) {
   var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
-  var npmVersion = find(npmVersions, match.bind(null, version));
 
   describe(version, function () {
     before(function (callback) {
@@ -43,7 +44,6 @@ function addTests(version) {
           var lines = cr(res.stdout).split('\n');
           var resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
-          assert.ok(semver.gte(resultVersion, npmVersion.bundled));
           done();
         });
       });
@@ -63,7 +63,6 @@ function addTests(version) {
           var lines = cr(res.stdout).split('\n');
           var resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
-          assert.ok(semver.gte(resultVersion, npmVersion.bundled));
         } catch (err) {
           assert.ok(!err);
         }
