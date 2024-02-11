@@ -7,6 +7,7 @@ var nodeInstall = require('node-install-release');
 var match = require('match-semver');
 var find = require('lodash.find');
 var semver = require('semver');
+var resolveVersions = require('node-resolve-versions');
 
 var versionUtils = require('node-version-utils');
 var npmVersions = require('../lib/npmVersions');
@@ -18,8 +19,8 @@ var OPTIONS = {
   installedDirectory: path.join(TMP_DIR, 'installed'),
 };
 
-var VERSIONS = ['v14.1.0', 'v12.18.1', 'v0.8.25'];
-VERSIONS = ['v14.1.0'];
+var VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
+// VERSIONS = ['v14.1.0'];
 
 var crossSpawn = require('../..');
 
@@ -47,7 +48,7 @@ function addTests(version) {
         });
       });
 
-      it.only('node --version', function (done) {
+      it('node --version', function (done) {
         crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res) {
           assert.ok(!err);
           var lines = cr(res.stdout).split('\n');
