@@ -8,27 +8,29 @@
     "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
   },
   "license": "MIT",
-  "main": "lib/index.js",
-  "files": ["lib"],
+  "main": "dist/cjs/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": ["dist"],
   "scripts": {
-    "build": "",
-    "build:spawn": "rollup -c config/rollup.cs.config.js",
-    "format": "biome check --apply lib/ test/",
-    "prepublishOnly": "npm run format && depcheck",
-    "test": "mocha-compat test/spec/**/*.test.js --no-timeouts",
-    "test:engines": "nvu engines npm test"
+    "build": "tsds build",
+    "deploy": "tsds deploy",
+    "format": "biome check --apply src/ test/",
+    "test": "tsds test:node --timeout=40000",
+    "test:engines": "nvu engines tsds test:node --timeout=40000",
+    "version": "tsds version"
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
     "core-js": "^3.35.1",
     "cross-spawn": "^7.0.3",
-    "function-exec-sync": "^0.2.10",
+    "function-exec-sync": "^0.2.11",
     "next-tick": "^1.1.0",
     "once": "^1.4.0",
     "semver": "^5.7.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
+    "@types/mocha": "^10.0.6",
     "cr": "^0.1.0",
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
@@ -37,9 +39,14 @@
     "mocha-compat": "^3.5.5",
     "node-install-release": "^0.4.7",
     "node-resolve-versions": "^0.3.9",
-    "node-version-utils": "^0.5.6"
+    "node-version-utils": "^0.5.6",
+    "ts-dev-stack": "^0.9.2"
   },
   "engines": {
     "node": ">=0.8"
+  },
+  "tsds": {
+    "source": "src/index.js",
+    "targets": ["cjs"]
   }
 }
