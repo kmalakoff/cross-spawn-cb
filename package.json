@@ -2,11 +2,7 @@
   "name": "cross-spawn-cb",
   "version": "0.6.15",
   "description": "Cross spawn with a completion callback",
-  "keywords": [
-    "cross-spawn",
-    "callbacks",
-    "callback"
-  ],
+  "keywords": ["cross-spawn", "callbacks", "callback"],
   "repository": {
     "type": "git",
     "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
@@ -14,13 +10,11 @@
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "types": "dist/types/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", "assets"],
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "biome check --apply src/ test/",
+    "format": "biome check --apply-unsafe src/ test/",
     "test": "tsds test:node --timeout=40000",
     "test:engines": "nvu engines tsds test:node --timeout=40000",
     "version": "tsds version"
@@ -44,15 +38,13 @@
     "node-install-release": "^0.4.8",
     "node-resolve-versions": "^0.3.9",
     "node-version-utils": "^0.5.6",
-    "ts-dev-stack": "^0.9.3"
+    "ts-dev-stack": "^0.9.6"
   },
   "engines": {
     "node": ">=0.8"
   },
   "tsds": {
     "source": "src/index.js",
-    "targets": [
-      "cjs"
-    ]
+    "targets": ["cjs"]
   }
 }
