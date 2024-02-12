@@ -1,8 +1,12 @@
 {
   "name": "cross-spawn-cb",
-  "version": "0.6.16",
+  "version": "0.6.17",
   "description": "Cross spawn with a completion callback",
-  "keywords": ["cross-spawn", "callbacks", "callback"],
+  "keywords": [
+    "cross-spawn",
+    "callbacks",
+    "callback"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
@@ -10,7 +14,9 @@
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "types": "dist/types/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
@@ -45,6 +51,8 @@
   },
   "tsds": {
     "source": "src/index.js",
-    "targets": ["cjs"]
+    "targets": [
+      "cjs"
+    ]
   }
 }
