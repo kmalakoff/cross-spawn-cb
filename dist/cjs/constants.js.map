@@ -1,0 +1,1 @@
+{"version":3,"sources":["constants.js"],"sourcesContent":["module.exports = {\n  spawnKeys: ['pid', 'status', 'signal', 'stdout', 'stderr', 'output'],\n};\n"],"names":["module","exports","spawnKeys"],"mappings":";AAAAA,OAAOC,OAAO,GAAG;IACfC,WAAW;QAAC;QAAO;QAAU;QAAU;QAAU;QAAU;KAAS;AACtE"}

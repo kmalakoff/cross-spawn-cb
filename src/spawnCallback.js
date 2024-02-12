@@ -1,10 +1,10 @@
 require('./polyfills');
-var once = require('once');
-var nextTick = require('next-tick');
-var constants = require('./constants');
+const once = require('once');
+const nextTick = require('next-tick');
+const constants = require('./constants');
 
-var major = +process.versions.node.split('.')[0];
-var spawn = major <= 7 ? require('./cross-spawn-6.0.5').spawn : require('cross-spawn').spawn;
+const major = +process.versions.node.split('.')[0];
+const spawn = major <= 7 ? require('../../assets/cross-spawn-6.0.5.js').spawn : require('cross-spawn').spawn;
 
 module.exports = function spawnCallback(command, args, options, callback) {
   if (typeof options === 'function') {
@@ -14,10 +14,10 @@ module.exports = function spawnCallback(command, args, options, callback) {
   options = options || {};
   callback = once(callback);
 
-  var cp = spawn(command, args, options);
+  const cp = spawn(command, args, options);
 
   // collect output
-  var res = { stdout: null, stderr: null };
+  const res = { stdout: null, stderr: null };
   if (options.encoding) {
     if (cp.stdout) {
       res.stdout = [];
@@ -35,7 +35,7 @@ module.exports = function spawnCallback(command, args, options, callback) {
   });
 
   // done
-  cp.on('close', function (status, signal) {
+  cp.on('close', (status, signal) => {
     nextTick(function closeNextTick() {
       // prepare result
       res.pid = cp.pid;
@@ -56,10 +56,10 @@ module.exports = function spawnCallback(command, args, options, callback) {
       // res.status = res.status === null ? 0 : res.status;
 
       // process errors
-      var err = res.status !== 0 ? new Error('Non-zero exit code: ' + res.status) : null;
+      let err = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
       if (res.stderr && res.stderr.length) {
         err = err || new Error('stderr has content');
-        for (var key in res) {
+        for (const key in res) {
           if (constants.spawnKeys.indexOf(key) < 0) continue;
           err[key] = Buffer.isBuffer(res[key]) ? res[key].toString('utf8') : res[key];
         }
