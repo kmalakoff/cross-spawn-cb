@@ -1,7 +1,7 @@
 const constants = require('./constants');
 
 const major = +process.versions.node.split('.')[0];
-const spawnSync = major <= 7 ? require('../../assets/cross-spawn-6.0.5.js').sync : require('cross-spawn').sync;
+const spawnSync = major <= 7 ? require('./cross-spawn-6.0.5.js').sync : require('cross-spawn').sync;
 
 module.exports = function spawnSyncCallback(command, args, options) {
   options = options || {};
