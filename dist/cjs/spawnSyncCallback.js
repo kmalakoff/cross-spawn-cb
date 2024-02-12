@@ -1,7 +1,7 @@
 "use strict";
 var constants = require("./constants");
 var major = +process.versions.node.split(".")[0];
-var spawnSync = major <= 7 ? require("../../assets/cross-spawn-6.0.5.js").sync : require("cross-spawn").sync;
+var spawnSync = major <= 7 ? require("./cross-spawn-6.0.5.js").sync : require("cross-spawn").sync;
 module.exports = function spawnSyncCallback(command, args, options) {
     options = options || {};
     var syncOptions = Object.assign({}, options || {}, {
