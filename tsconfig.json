@@ -12,5 +12,5 @@
     "allowJs": true
   },
   "exclude": ["node_modules", "dist", "test/data"],
-  "include": ["src", "test"]
+  "include": ["src", "test", "assets/cross-spawn-6.0.5.js"]
 }

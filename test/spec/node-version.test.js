@@ -1,75 +1,71 @@
-// remove NODE_OPTIONS from ts-dev-stack
-// biome-ignore lint/performance/noDelete: <explanation>
-delete process.env.NODE_OPTIONS;
-
-const assert = require('assert');
-const path = require('path');
+var assert = require('assert');
+var path = require('path');
 // var rimraf = require('rimraf');
-const isVersion = require('is-version');
-const cr = require('cr');
-const nodeInstall = require('node-install-release');
-const resolveVersions = require('node-resolve-versions');
+var isVersion = require('is-version');
+var cr = require('cr');
+var nodeInstall = require('node-install-release');
+var resolveVersions = require('node-resolve-versions');
 
-const versionUtils = require('node-version-utils');
+var versionUtils = require('node-version-utils');
 
-const NODE = process.platform === 'win32' ? 'node.exe' : 'node';
-const TMP_DIR = path.resolve(path.join(__dirname, '..', '..', '.tmp'));
-const OPTIONS = {
+var NODE = process.platform === 'win32' ? 'node.exe' : 'node';
+var TMP_DIR = path.resolve(path.join(__dirname, '..', '..', '.tmp'));
+var OPTIONS = {
   cacheDirectory: path.join(TMP_DIR, 'cache'),
   installedDirectory: path.join(TMP_DIR, 'installed'),
 };
 
-const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
+var VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
 // VERSIONS = ['v16.20.2'];
 
-const crossSpawn = require('../../src');
+var crossSpawn = require('../..');
 
 function addTests(version) {
-  const INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
+  var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
 
-  describe(version, () => {
-    before((callback) => {
-      nodeInstall(version, INSTALL_DIR, OPTIONS, (err) => {
+  describe(version, function ()  {
+    before(function (callback)  {
+      nodeInstall(version, INSTALL_DIR, OPTIONS, function (err)  {
         if (err) console.log('nodeInstall', err);
         callback(err);
       });
     });
 
-    describe('spawnOptions', () => {
-      it('npm --version', (done) => {
-        crossSpawn('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
+    describe('spawnOptions', function ()  {
+      it('npm --version', function (done)  {
+        crossSpawn('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res)  {
           assert.ok(!err);
-          const lines = cr(res.stdout).split('\n');
-          const resultVersion = lines.slice(-2, -1)[0];
+          var lines = cr(res.stdout).split('\n');
+          var resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
           done();
         });
       });
 
-      it('node --version', (done) => {
-        crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
+      it('node --version', function (done)  {
+        crossSpawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), function (err, res)  {
           assert.ok(!err);
-          const lines = cr(res.stdout).split('\n');
+          var lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
           done();
         });
       });
 
-      it('npm --version', () => {
+      it('npm --version', function ()  {
         try {
-          const res = crossSpawn.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
-          const lines = cr(res.stdout).split('\n');
-          const resultVersion = lines.slice(-2, -1)[0];
+          var res = crossSpawn.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
+          var lines = cr(res.stdout).split('\n');
+          var resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
         } catch (err) {
           assert.ok(!err);
         }
       });
 
-      it('node --version', () => {
+      it('node --version', function ()  {
         try {
-          const res = crossSpawn.sync(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
-          const lines = cr(res.stdout).split('\n');
+          var res = crossSpawn.sync(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
+          var lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
         } catch (err) {
           assert.ok(!err);
@@ -79,19 +75,19 @@ function addTests(version) {
   });
 }
 
-describe('node-version', () => {
+describe('node-version', function ()  {
   // before(function (callback) {
   //   rimraf(TMP_DIR, function (err) {
   //     err && err.code !== 'EEXIST' ? callback(err) : callback();
   //   });
   // });
 
-  describe('happy path', () => {
-    for (let i = 0; i < VERSIONS.length; i++) {
+  describe('happy path', function ()  {
+    for (var i = 0; i < VERSIONS.length; i++) {
       addTests(VERSIONS[i]);
     }
   });
 
   // TODO
-  describe('unhappy path', () => {});
+  describe('unhappy path', function ()  {});
 });

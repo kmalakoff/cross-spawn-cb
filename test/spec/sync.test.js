@@ -1,34 +1,30 @@
-// remove NODE_OPTIONS from ts-dev-stack
-// biome-ignore lint/performance/noDelete: <explanation>
-delete process.env.NODE_OPTIONS;
+var assert = require('assert');
 
-const assert = require('assert');
+var spawnSync = require('../..').sync;
 
-const spawnSync = require('cross-spawn-cb').sync;
-
-describe('sync', () => {
-  describe('happy path', () => {
-    it('returns a status code', () => {
+describe('sync', function ()  {
+  describe('happy path', function ()  {
+    it('returns a status code', function ()  {
       try {
-        const res = spawnSync('ls', [], {});
+        var res = spawnSync('ls', [], {});
         assert.equal(res.status, 0);
       } catch (err) {
         assert.ok(!err);
       }
     });
 
-    it('stdio inherit', () => {
+    it('stdio inherit', function ()  {
       try {
-        const res = spawnSync('ls', [], { stdio: 'inherit' });
+        var res = spawnSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
       } catch (err) {
         assert.ok(!err);
       }
     });
 
-    it('stdout string', () => {
+    it('stdout string', function ()  {
       try {
-        const res = spawnSync('ls', [], { encoding: 'utf8' });
+        var res = spawnSync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
@@ -39,7 +35,7 @@ describe('sync', () => {
 
   describe('unhappy path', function () {
     this.timeout(20000);
-    it('stdio inherit', () => {
+    it('stdio inherit', function ()  {
       try {
         spawnSync('ls', ['junk'], { stdio: 'inherit' });
         assert.ok(false);
@@ -48,7 +44,7 @@ describe('sync', () => {
       }
     });
 
-    it('stderr string', () => {
+    it('stderr string', function ()  {
       try {
         spawnSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
