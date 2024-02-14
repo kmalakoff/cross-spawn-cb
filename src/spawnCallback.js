@@ -4,7 +4,7 @@ const nextTick = require('next-tick');
 const constants = require('./constants');
 
 const major = +process.versions.node.split('.')[0];
-const spawn = major <= 7 ? require('./cross-spawn-6.0.5.js').spawn : require('cross-spawn').spawn;
+const spawn = major <= 7 ? require('../../assets/cross-spawn-6.0.5.js').spawn : require('cross-spawn').spawn;
 
 module.exports = function spawnCallback(command, args, options, callback) {
   if (typeof options === 'function') {
