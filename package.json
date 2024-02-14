@@ -15,19 +15,20 @@
   "main": "dist/cjs/index.js",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "assets"
   ],
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
     "format": "biome check --apply-unsafe src/ test/",
-    "test": "tsds test:node --timeout=40000",
-    "test:engines": "nvu engines tsds test:node --timeout=40000",
+    "test": "mocha-compat test/**/*.test.js --no-timeouts",
+    "test:engines": "nvu engines npm test",
     "version": "tsds version"
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
-    "core-js": "^3.35.1",
+    "core-js": "^3.36.0",
     "cross-spawn": "^7.0.3",
     "function-exec-sync": "^0.2.11",
     "next-tick": "^1.1.0",
@@ -44,7 +45,7 @@
     "node-install-release": "^0.4.8",
     "node-resolve-versions": "^0.3.9",
     "node-version-utils": "^0.5.6",
-    "ts-dev-stack": "^0.9.6"
+    "ts-dev-stack": "^0.9.10"
   },
   "engines": {
     "node": ">=0.8"

@@ -611,7 +611,7 @@ function hookChildProcess(cp, parsed) {
       }
     }
 
-    return originalEmit.apply(cp, arguments); // eslint-disable-line prefer-rest-params
+    return originalEmit.apply(cp, arguments);
   };
 }
 
