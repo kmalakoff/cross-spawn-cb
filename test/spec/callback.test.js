@@ -1,19 +1,23 @@
-var assert = require('assert');
+// remove NODE_OPTIONS from ts-dev-stack
+// biome-ignore lint/performance/noDelete: <explanation>
+delete process.env.NODE_OPTIONS;
 
-var spawn = require('../..');
+const assert = require('assert');
 
-describe('callback', function ()  {
-  describe('happy path', function ()  {
-    it('returns a status code', function (done)  {
-      spawn('ls', [], {}, function (err, res)  {
+const spawn = require('../..');
+
+describe('callback', () => {
+  describe('happy path', () => {
+    it('returns a status code', (done) => {
+      spawn('ls', [], {}, (err, res) => {
         assert.ok(!err);
         assert.equal(res.status, 0);
         done();
       });
     });
 
-    it('stdio inherit', function (done)  {
-      spawn('ls', [], { stdio: 'inherit' }, function (err, res)  {
+    it('stdio inherit', (done) => {
+      spawn('ls', [], { stdio: 'inherit' }, (err, res) => {
         assert.ok(!err);
         assert.equal(res.stdout, null);
         assert.equal(res.status, 0);
@@ -21,8 +25,8 @@ describe('callback', function ()  {
       });
     });
 
-    it('stdout string', function (done)  {
-      spawn('ls', [], { encoding: 'utf8' }, function (err, res)  {
+    it('stdout string', (done) => {
+      spawn('ls', [], { encoding: 'utf8' }, (err, res) => {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
@@ -31,16 +35,16 @@ describe('callback', function ()  {
     });
   });
 
-  describe('unhappy path', function ()  {
-    it('stdio inherit', function (done)  {
-      spawn('ls', ['junk'], { stdio: 'inherit' }, function (err)  {
+  describe('unhappy path', () => {
+    it('stdio inherit', (done) => {
+      spawn('ls', ['junk'], { stdio: 'inherit' }, (err) => {
         assert.ok(!!err);
         done();
       });
     });
 
-    it('stderr string', function (done)  {
-      spawn('ls', ['junk'], { encoding: 'utf8' }, function (err)  {
+    it('stderr string', (done) => {
+      spawn('ls', ['junk'], { encoding: 'utf8' }, (err) => {
         assert.ok(!!err);
         assert.equal(typeof err.stderr, 'string');
         done();
