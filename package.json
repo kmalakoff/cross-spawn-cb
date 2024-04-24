@@ -22,13 +22,13 @@
     "build": "tsds build",
     "deploy": "tsds deploy",
     "format": "biome check --apply-unsafe src/ test/",
-    "test": "mocha-compat test/**/*.test.js --no-timeouts",
+    "test": "ts-swc node_modules/.bin/mocha-compat test/**/*.test.js --no-timeouts",
     "test:engines": "nvu engines npm test",
     "version": "tsds version"
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
-    "core-js": "^3.36.0",
+    "core-js": "^3.37.0",
     "cross-spawn": "^7.0.3",
     "function-exec-sync": "^0.2.11",
     "next-tick": "^1.1.0",
@@ -36,22 +36,23 @@
     "semver": "^5.7.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
+    "@biomejs/biome": "^1.7.1",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.12.7",
     "cr": "^0.1.0",
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
-    "node-install-release": "^0.4.8",
-    "node-resolve-versions": "^0.3.9",
+    "mocha-compat": "^3.5.5",
+    "node-install-release": "^1.1.1",
+    "node-resolve-versions": "^0.3.10",
     "node-version-utils": "^0.5.6",
-    "ts-dev-stack": "^0.9.10"
+    "ts-dev-stack": "^0.15.8"
   },
   "engines": {
     "node": ">=0.8"
   },
   "tsds": {
-    "source": "src/index.js",
+    "source": "src/index.mjs",
     "targets": [
       "cjs"
     ]

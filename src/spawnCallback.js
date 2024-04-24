@@ -1,4 +1,4 @@
-require('./polyfills');
+require('./polyfills.cjs');
 const once = require('once');
 const nextTick = require('next-tick');
 const constants = require('./constants');

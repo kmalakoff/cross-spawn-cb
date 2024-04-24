@@ -1,5 +1,5 @@
 "use strict";
-require("./polyfills");
+require("./polyfills.js");
 var once = require("once");
 var nextTick = require("next-tick");
 var constants = require("./constants");
@@ -72,9 +72,4 @@ module.exports = function spawnCallback(command, args, options, callback) {
         cp.stdin.end(options.input);
     }
 };
-
-if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
-  Object.defineProperty(exports.default, '__esModule', { value: true });
-  for (var key in exports) exports.default[key] = exports[key];
-  module.exports = exports.default;
-}
+/* CJS INTEROP */ if (exports.__esModule && exports.default) { Object.defineProperty(exports.default, '__esModule', { value: true }); for (var key in exports) exports.default[key] = exports[key]; module.exports = exports.default; }
