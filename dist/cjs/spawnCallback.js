@@ -1,18 +1,16 @@
 "use strict";
-require("./polyfills");
+require("./polyfills.js");
 var once = require("once");
 var nextTick = require("next-tick");
 var constants = require("./constants");
-var major = +process.versions.node.split(".")[0];
-var spawn = major <= 7 ? require("../../assets/cross-spawn-6.0.5.js").spawn : require("cross-spawn").spawn;
-module.exports = function spawnCallback(command, args, options, callback) {
+var spawn = require("./spawn");
+function normalize(cp, options, callback) {
     if (typeof options === "function") {
         callback = options;
         options = {};
     }
     options = options || {};
     callback = once(callback);
-    var cp = spawn(command, args, options);
     // collect output
     var res = {
         stdout: null,
@@ -71,10 +69,17 @@ module.exports = function spawnCallback(command, args, options, callback) {
     if (options.input && (typeof options.input === "string" || Buffer.isBuffer(options.input))) {
         cp.stdin.end(options.input);
     }
-};
-
-if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
-  Object.defineProperty(exports.default, '__esModule', { value: true });
-  for (var key in exports) exports.default[key] = exports[key];
-  module.exports = exports.default;
 }
+function spawnCallback(command, args, options, callback) {
+    if (typeof options === "function") {
+        callback = options;
+        options = {};
+    }
+    options = options || {};
+    callback = once(callback);
+    var cp = spawn(command, args, options);
+    return normalize(cp, options, callback);
+}
+module.exports = spawnCallback;
+module.exports.normalize = normalize;
+/* CJS INTEROP */ if (exports.__esModule && exports.default) { Object.defineProperty(exports.default, '__esModule', { value: true }); for (var key in exports) exports.default[key] = exports[key]; module.exports = exports.default; }

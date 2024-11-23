@@ -1,1 +1,1 @@
-ignores: ["depcheck", "ts-dev-stack", "spawn-sync", "@babel/*", "babel-*", "eslint-*", "rollup-*"]
+ignores: ["cross-spawn-cb", "depcheck", "ts-dev-stack", "@types/*", "spawn-sync"]

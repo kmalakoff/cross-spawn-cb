@@ -1,17 +1,9 @@
 "use strict";
 var constants = require("./constants");
-var major = +process.versions.node.split(".")[0];
-var spawnSync = major <= 7 ? require("../../assets/cross-spawn-6.0.5.js").sync : require("cross-spawn").sync;
-module.exports = function spawnSyncCallback(command, args, options) {
-    options = options || {};
-    var syncOptions = Object.assign({}, options || {}, {
-        env: options.env || process.env,
-        stdio: "pipe",
-        encoding: "utf8"
-    });
-    var res = spawnSync(command, args, syncOptions);
+var spawn = require("./spawn");
+function normalize(res, options) {
     // patch: early node on windows could return null
-    if (res.status === null) console.log("spawnSyncCallback null status code", res);
+    if (res.status === null) console.log("spawnCallbackSync null status code", res);
     // res.status = res.status === null ? 0 : res.status;
     // pipe if inherited
     if (res.stdout && (options.stdout === "inherit" || options.stdio === "inherit")) {
@@ -33,10 +25,17 @@ module.exports = function spawnSyncCallback(command, args, options) {
     }
     if (err) throw err;
     return res;
-};
-
-if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
-  Object.defineProperty(exports.default, '__esModule', { value: true });
-  for (var key in exports) exports.default[key] = exports[key];
-  module.exports = exports.default;
 }
+function spawnCallbackSync(command, args, options) {
+    options = options || {};
+    var syncOptions = Object.assign({}, options || {}, {
+        env: options.env || process.env,
+        stdio: "pipe",
+        encoding: "utf8"
+    });
+    var res = spawn.sync(command, args, syncOptions);
+    return normalize(res, options);
+}
+module.exports = spawnCallbackSync;
+module.exports.normalize = normalize;
+/* CJS INTEROP */ if (exports.__esModule && exports.default) { Object.defineProperty(exports.default, '__esModule', { value: true }); for (var key in exports) exports.default[key] = exports[key]; module.exports = exports.default; }
