@@ -1,20 +1,16 @@
-require('./polyfills');
+require('./polyfills.cjs');
 const once = require('once');
 const nextTick = require('next-tick');
 const constants = require('./constants');
+const spawn = require('./spawn');
 
-const major = +process.versions.node.split('.')[0];
-const spawn = major <= 7 ? require('../../assets/cross-spawn-6.0.5.js').spawn : require('cross-spawn').spawn;
-
-module.exports = function spawnCallback(command, args, options, callback) {
+function normalize(cp, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = {};
   }
   options = options || {};
   callback = once(callback);
-
-  const cp = spawn(command, args, options);
 
   // collect output
   const res = { stdout: null, stderr: null };
@@ -72,4 +68,18 @@ module.exports = function spawnCallback(command, args, options, callback) {
   if (options.input && (typeof options.input === 'string' || Buffer.isBuffer(options.input))) {
     cp.stdin.end(options.input);
   }
-};
+}
+
+function spawnCallback(command, args, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+  options = options || {};
+  callback = once(callback);
+  const cp = spawn(command, args, options);
+  return normalize(cp, options, callback);
+}
+
+module.exports = spawnCallback;
+module.exports.normalize = normalize;
