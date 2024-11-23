@@ -11,6 +11,6 @@
     "downlevelIteration": true,
     "allowJs": true
   },
-  "exclude": ["node_modules", "dist", "test/data"],
-  "include": ["src", "test", "assets/cross-spawn-6.0.5.js"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src", "test"]
 }
