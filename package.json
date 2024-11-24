@@ -38,7 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.9.2",
+    "@types/node": "^22.9.3",
     "cr": "^0.1.0",
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
@@ -46,7 +46,7 @@
     "node-install-release": "^1.1.1",
     "node-resolve-versions": "^0.3.10",
     "node-version-utils": "^0.5.6",
-    "ts-dev-stack": "^0.15.8"
+    "ts-dev-stack": "^0.16.0"
   },
   "engines": {
     "node": ">=0.8"
