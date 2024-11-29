@@ -14,7 +14,7 @@ describe('sync', () => {
         const res = spawnCallbackSync('ls', [], {});
         assert.equal(res.status, 0);
       } catch (err) {
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
       }
     });
 
@@ -23,7 +23,7 @@ describe('sync', () => {
         const res = spawnCallbackSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
       } catch (err) {
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
       }
     });
 
@@ -33,7 +33,7 @@ describe('sync', () => {
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
       }
     });
 
@@ -46,7 +46,7 @@ describe('sync', () => {
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
-        assert.ok(!err);
+        assert.ok(!err, err ? err.message : '');
       }
     });
   });
@@ -67,7 +67,8 @@ describe('sync', () => {
         spawnCallbackSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
       } catch (err) {
-        console.log(err);
+        assert.ok(typeof err.status === 'number');
+        assert.ok(err.status !== 0);
         assert.equal(typeof err.stderr, 'string');
       }
     });
