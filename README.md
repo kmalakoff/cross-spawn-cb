@@ -7,7 +7,7 @@ var assert = require('assert');
 var spawn = require('cross-spawn-cb');
 
 spawn('node', ['--version'], { stdio: 'inherit' }, function (err, res) {
-  assert.ok(!err);
+  assert.ok(!err, err ? err.message : '');
   done();
 });
 ```

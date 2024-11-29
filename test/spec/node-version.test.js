@@ -4,7 +4,7 @@ delete process.env.NODE_OPTIONS;
 
 const assert = require('assert');
 const path = require('path');
-// var rimraf = require('rimraf');
+// var rimraf2 = require('rimraf2');
 const isVersion = require('is-version');
 const cr = require('cr');
 const nodeInstall = require('node-install-release');
@@ -38,7 +38,7 @@ function addTests(version) {
     describe('spawnOptions', () => {
       it('npm --version', (done) => {
         spawnCallback('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
-          assert.ok(!err);
+          assert.ok(!err, err ? err.message : '');
           const lines = cr(res.stdout).split('\n');
           const resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
@@ -48,7 +48,7 @@ function addTests(version) {
 
       it('node --version', (done) => {
         spawnCallback(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
-          assert.ok(!err);
+          assert.ok(!err, err ? err.message : '');
           const lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
           done();
@@ -62,7 +62,7 @@ function addTests(version) {
           const resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
         } catch (err) {
-          assert.ok(!err);
+          assert.ok(!err, err ? err.message : '');
         }
       });
 
@@ -72,7 +72,7 @@ function addTests(version) {
           const lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
         } catch (err) {
-          assert.ok(!err);
+          assert.ok(!err, err ? err.message : '');
         }
       });
     });
@@ -81,7 +81,7 @@ function addTests(version) {
 
 describe('node-version', () => {
   // before(function (callback) {
-  //   rimraf(TMP_DIR, function (err) {
+  //   rimraf2(TMP_DIR, { disableGlob: true }, function (err) {
   //     err && err.code !== 'EEXIST' ? callback(err) : callback();
   //   });
   // });
