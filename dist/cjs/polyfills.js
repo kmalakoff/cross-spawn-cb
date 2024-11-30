@@ -4,7 +4,10 @@ require('core-js/actual/object/keys');
 require('core-js/actual/array/find');
 require('buffer-v6-polyfill');
 var path = require('path');
-if (!path.delimiter) path.delimiter = process.platform === 'win32' ? ';' : ':';
+if (!path.delimiter) {
+    var isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
+    path.delimiter = isWindows ? ';' : ':';
+}
 var cp = require('child_process');
 if (!cp.spawnSync) {
     var spawnCallback = path.join(__dirname, 'spawnCallback.js');
