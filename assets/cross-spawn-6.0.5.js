@@ -142,7 +142,7 @@ function requireMode() {
 
 var core;
 
-if (process.platform === 'win32' || commonjsGlobal.TESTING_WINDOWS) {
+if (process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE) || commonjsGlobal.TESTING_WINDOWS) {
   core = requireWindows();
 } else {
   core = requireMode();
@@ -201,7 +201,7 @@ function sync$1(path, options) {
 
 var which_1 = which$1;
 which$1.sync = whichSync;
-var isWindows = process.platform === 'win32' || process.env.OSTYPE === 'cygwin' || process.env.OSTYPE === 'msys';
+var isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE) || process.env.OSTYPE === 'cygwin' || process.env.OSTYPE === 'msys';
 var path$2 = require$$0__default$1["default"];
 var COLON = isWindows ? ';' : ':';
 var isexe = isexe_1;
@@ -465,7 +465,7 @@ var resolveCommand = resolveCommand_1;
 var escape = _escape;
 var readShebang = readShebang_1;
 var semver = require$$5__default["default"];
-var isWin$1 = process.platform === 'win32';
+var isWin$1 = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 var isExecutableRegExp = /\.(?:com|exe)$/i;
 var isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i; // `options.shell` is supported in Node ^4.8.0, ^5.7.0 and >= 6.0.0
 
@@ -580,7 +580,7 @@ function parse$1(command, args, options) {
 }
 
 var parse_1 = parse$1;
-var isWin = process.platform === 'win32';
+var isWin = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 
 function notFoundError(original, syscall) {
   return Object.assign(new Error("".concat(syscall, " ").concat(original.command, " ENOENT")), {
