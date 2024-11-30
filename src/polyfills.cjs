@@ -4,7 +4,10 @@ require('core-js/actual/array/find');
 require('buffer-v6-polyfill');
 
 const path = require('path');
-if (!path.delimiter) path.delimiter = process.platform === 'win32' ? ';' : ':';
+if (!path.delimiter) {
+  const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
+  path.delimiter = isWindows ? ';' : ':';
+}
 
 const cp = require('child_process');
 if (!cp.spawnSync) {
