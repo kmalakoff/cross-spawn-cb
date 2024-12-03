@@ -28,11 +28,11 @@
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
+    "call-once-fn": "^1.0.1",
     "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.0.0",
+    "function-exec-sync": "^1.0.1",
     "next-tick": "^1.1.0",
-    "once": "^1.4.0",
     "semver": "^5.7.1"
   },
   "devDependencies": {
@@ -45,8 +45,8 @@
     "mocha-compat": "^3.6.1",
     "node-install-release": "^1.4.0",
     "node-resolve-versions": "^1.0.0",
-    "node-version-utils": "^1.0.0",
-    "ts-dev-stack": "^0.17.0"
+    "node-version-utils": "^1.0.1",
+    "ts-dev-stack": "^1.0.1"
   },
   "engines": {
     "node": ">=0.8"

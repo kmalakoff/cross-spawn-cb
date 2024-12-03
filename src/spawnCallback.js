@@ -1,5 +1,5 @@
 require('./polyfills.cjs');
-const once = require('once');
+const once = require('call-once-fn');
 const nextTick = require('next-tick');
 const constants = require('./constants');
 const spawn = require('./spawn');
