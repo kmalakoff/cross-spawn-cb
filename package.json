@@ -31,22 +31,22 @@
     "call-once-fn": "^1.0.1",
     "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.0.1",
+    "function-exec-sync": "^1.0.3",
     "next-tick": "^1.1.0",
     "semver": "^5.7.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.10.1",
+    "@types/node": "^14.18.63",
     "cr": "^0.1.0",
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
-    "mocha-compat": "^3.6.1",
-    "node-install-release": "^1.4.0",
+    "mocha-compat": "^3.6.2",
+    "node-install-release": "^1.4.3",
     "node-resolve-versions": "^1.0.0",
-    "node-version-utils": "^1.0.1",
-    "ts-dev-stack": "^1.0.1"
+    "node-version-utils": "^1.0.2",
+    "ts-dev-stack": "^1.4.0"
   },
   "engines": {
     "node": ">=0.8"

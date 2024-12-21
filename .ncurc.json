@@ -1,4 +1,4 @@
 {
   "upgrade": true,
-  "reject": ["mkdirp", "semver"]
+  "reject": ["@types/node", "semver"]
 }
