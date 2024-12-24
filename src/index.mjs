@@ -1,6 +1,7 @@
 // early node is missing spawnSync
 const cp = require('child_process');
 if (!cp.spawnSync) {
+  const path = require('path');
   const spawnCallback = path.join(__dirname, 'spawnCallback.js');
 
   let functionExec = null; // break dependencies
