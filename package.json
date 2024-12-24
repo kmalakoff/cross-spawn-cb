@@ -27,27 +27,29 @@
     "version": "tsds version"
   },
   "dependencies": {
+    "array-find": "^1.0.0",
     "buffer-v6-polyfill": "^1.0.5",
     "call-once-fn": "^1.0.1",
-    "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.0.3",
+    "function-exec-sync": "^1.1.1",
     "next-tick": "^1.1.0",
-    "semver": "^5.7.1"
+    "object-assign": "^4.1.1",
+    "object-keys": "^1.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^14.18.63",
+    "@types/node": "^22.10.2",
     "cr": "^0.1.0",
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
     "mocha-compat": "^3.6.2",
-    "node-install-release": "^1.4.3",
+    "node-install-release": "^1.4.4",
     "node-resolve-versions": "^1.0.0",
     "node-version-utils": "^1.0.2",
-    "ts-dev-stack": "^1.4.0"
+    "ts-dev-stack": "^1.5.2"
   },
+  "packageManager": "npm@11.0.0+sha512.11dff29565d2297c74e7c594a9762581bde969f0aa5cbe6f5b3644bf008a16c065ece61094d9ffbb81125be38df8e1ba43eb8244b3d30c61eb797e9a2440e3ec",
   "engines": {
     "node": ">=0.8"
   },

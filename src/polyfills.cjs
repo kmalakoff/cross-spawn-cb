@@ -1,6 +1,6 @@
-require('core-js/actual/object/assign');
-require('core-js/actual/object/keys');
-require('core-js/actual/array/find');
+if (!Object.assign) Object.assign = require('object-assign');
+if (!Object.keys) Object.assign = require('object-keys');
+if (!Array.prototype.find) Array.prototype.find = require('array-find');
 require('buffer-v6-polyfill');
 
 const path = require('path');

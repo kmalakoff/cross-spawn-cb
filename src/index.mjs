@@ -1,5 +1,4 @@
 import './polyfills.cjs';
-
 import spawnCallback from './spawnCallback';
 
 export default spawnCallback;
