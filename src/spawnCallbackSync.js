@@ -29,14 +29,8 @@ function normalize(res, options) {
 
 function spawnCallbackSync(command, args, options) {
   options = options || {};
-
-  const syncOptions = Object.assign({}, options || {}, {
-    env: options.env || process.env,
-    stdio: 'pipe',
-    encoding: 'utf8',
-  });
+  const syncOptions = { ...options, env: options.env || process.env, stdio: 'pipe', encoding: 'utf8' };
   const res = spawn.sync(command, args, syncOptions);
-
   return normalize(res, options);
 }
 
