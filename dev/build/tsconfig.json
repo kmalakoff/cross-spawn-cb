@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": ["ES5"],
+    "types": ["mocha", "node"],
+    "target": "ES5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "allowJs": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["src"]
+}
