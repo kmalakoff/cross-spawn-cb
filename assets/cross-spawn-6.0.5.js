@@ -3870,6 +3870,10 @@ function requireParse() {
         var commandFile = detectShebang(parsed);
         // We don't need a shell if the command filename is an executable
         var needsShell = !isExecutableRegExp.test(commandFile);
+
+        // KM: force node to use the shell
+        if (!needsShell && ['node', 'node.exe', 'node.cmd'].indexOf(path.basename(commandFile).toLowerCase()) >= 0) needsShell = true;
+
         // If a shell is required, use cmd.exe and take care of escaping everything correctly
         // Note that `forceShell` is an hidden option used only in tests
         if (parsed.options.forceShell || needsShell) {
