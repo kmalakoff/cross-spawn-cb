@@ -40,9 +40,9 @@
     "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
     "mocha-compat": "^3.6.2",
-    "node-install-release": "^1.4.6",
+    "node-install-release": "^1.5.0",
     "node-resolve-versions": "^1.0.1",
-    "node-version-utils": "^1.0.3",
+    "node-version-utils": "^1.1.0",
     "rimraf2": "^2.8.2",
     "ts-dev-stack": "^1.5.4"
   },
