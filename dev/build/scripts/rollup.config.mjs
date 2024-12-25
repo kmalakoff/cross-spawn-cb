@@ -8,5 +8,5 @@ export default {
     format: 'cjs',
     name: 'crossSpawn',
   },
-  plugins: [resolve(), commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
+  plugins: [resolve({ resolveOnly: module => !module.includes('function-exec-sync') }), commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
 };

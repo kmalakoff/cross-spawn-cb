@@ -1,14 +1,13 @@
 // remove NODE_OPTIONS from ts-dev-stack
-// biome-ignore lint/performance/noDelete: <explanation>
 delete process.env.NODE_OPTIONS;
 
 const assert = require('assert');
 const path = require('path');
-// var rimraf2 = require('rimraf2');
 const isVersion = require('is-version');
 const cr = require('cr');
 const nodeInstall = require('node-install-release');
 const resolveVersions = require('node-resolve-versions');
+const _rimraf2 = require('rimraf2');
 
 const versionUtils = require('node-version-utils');
 
@@ -81,11 +80,7 @@ function addTests(version) {
 }
 
 describe('node-version', () => {
-  // before(function (callback) {
-  //   rimraf2(TMP_DIR, { disableGlob: true }, function (err) {
-  //     err && err.code !== 'EEXIST' ? callback(err) : callback();
-  //   });
-  // });
+  // before((cb) => rimraf2(TMP_DIR, { disableGlob: true }, cb.bind(null, null)));
 
   describe('happy path', () => {
     for (let i = 0; i < VERSIONS.length; i++) {

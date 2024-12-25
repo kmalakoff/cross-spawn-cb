@@ -6,7 +6,7 @@ import spawn from 'cross-spawn-cb';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
 const src = path.join(__dirname, '..', 'src', 'index.cjs');
-const dest = path.join(__dirname, '..', '..', '..', 'assets', 'cross-spawn-6.0.5.cjs');
+const dest = path.join(__dirname, '..', '..', '..', 'assets', 'cross-spawn-6.0.5.js');
 
 function build(callback) {
   const config = path.resolve(__dirname, 'rollup.config.mjs');
