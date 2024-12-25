@@ -3,6 +3,7 @@
 var require$$0 = require('buffer');
 var require$$0$2 = require('path');
 var require$$0$3 = require('child_process');
+var require$$6 = require('function-exec-sync');
 var require$$0$1 = require('fs');
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -2140,7 +2141,7 @@ function requireBufferV6Polyfill() {
     return bufferV6Polyfill;
 }
 
-var crossSpawn = {
+var crossSpawn6_0_5 = {
     exports: {}
 };
 
@@ -2440,11 +2441,9 @@ function requireResolveCommand() {
     function resolveCommandAttempt(parsed, withoutPathExt) {
         var cwd = process.cwd();
         var hasCustomCwd = parsed.options.cwd != null;
-        // Worker threads do not have process.chdir()
-        var shouldSwitchCwd = hasCustomCwd && process.chdir !== undefined;
         // If a custom `cwd` was specified, we need to change the process cwd
         // because `which` will do stat calls but does not support a custom cwd
-        if (shouldSwitchCwd) {
+        if (hasCustomCwd) {
             try {
                 process.chdir(parsed.options.cwd);
             } catch (err) {
@@ -2458,9 +2457,7 @@ function requireResolveCommand() {
             });
         } catch (e) {
         /* Empty */ } finally{
-            if (shouldSwitchCwd) {
-                process.chdir(cwd);
-            }
+            process.chdir(cwd);
         }
         // If we successfully resolved, ensure that an absolute path is returned
         // Note that when a custom `cwd` was used, we need to resolve to an absolute path based on it
@@ -2493,15 +2490,13 @@ function require_escape() {
         // Convert to string
         arg = "".concat(arg);
         // Algorithm below is based on https://qntm.org/cmd
-        // It's slightly altered to disable JS backtracking to avoid hanging on specially crafted input
-        // Please see https://github.com/moxystudio/node-cross-spawn/pull/160 for more information
         // Sequence of backslashes followed by a double quote:
         // double up all the backslashes and escape the double quote
-        arg = arg.replace(/(?=(\\+?)?)\1"/g, '$1$1\\"');
+        arg = arg.replace(/(\\*)"/g, '$1$1\\"');
         // Sequence of backslashes followed by the end of the string
         // (which will become a double quote later):
         // double up all the backslashes
-        arg = arg.replace(/(?=(\\+?)?)\1$/, '$1$1');
+        arg = arg.replace(/(\\*)$/, '$1$1');
         // All other backslashes occur literally
         // Quote the whole thing:
         arg = '"'.concat(arg, '"');
@@ -4019,10 +4014,10 @@ function requireEnoent() {
     return enoent;
 }
 
-var hasRequiredCrossSpawn;
-function requireCrossSpawn() {
-    if (hasRequiredCrossSpawn) return crossSpawn.exports;
-    hasRequiredCrossSpawn = 1;
+var hasRequiredCrossSpawn6_0_5;
+function requireCrossSpawn6_0_5() {
+    if (hasRequiredCrossSpawn6_0_5) return crossSpawn6_0_5.exports;
+    hasRequiredCrossSpawn6_0_5 = 1;
     var cp = require$$0$3;
     var parse = requireParse();
     var enoent = requireEnoent();
@@ -4045,12 +4040,12 @@ function requireCrossSpawn() {
         result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
         return result;
     }
-    crossSpawn.exports = spawn;
-    crossSpawn.exports.spawn = spawn;
-    crossSpawn.exports.sync = spawnSync;
-    crossSpawn.exports._parse = parse;
-    crossSpawn.exports._enoent = enoent;
-    return crossSpawn.exports;
+    crossSpawn6_0_5.exports = spawn;
+    crossSpawn6_0_5.exports.spawn = spawn;
+    crossSpawn6_0_5.exports.sync = spawnSync;
+    crossSpawn6_0_5.exports._parse = parse;
+    crossSpawn6_0_5.exports._enoent = enoent;
+    return crossSpawn6_0_5.exports;
 }
 
 var src;
@@ -4067,7 +4062,20 @@ function requireSrc() {
         var isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
         path.delimiter = isWindows ? ';' : ':';
     }
-    src = requireCrossSpawn();
+    // early node is missing spawnSync
+    var cp = require$$0$3;
+    if (!cp.spawnSync) {
+        var path1 = require$$0$2;
+        var spawnCallback = path1.join(__dirname, '..', 'dist', 'cjs', 'spawnCallback.js');
+        var functionExec = null; // break dependencies
+        cp.spawnSync = function spawnSyncPolyfill(cmd, args, options) {
+            if (!functionExec) functionExec = require$$6;
+            return functionExec({
+                callbacks: true
+            }, spawnCallback, cmd, args, options || {});
+        };
+    }
+    src = requireCrossSpawn6_0_5();
     return src;
 }
 
