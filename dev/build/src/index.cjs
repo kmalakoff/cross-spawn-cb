@@ -22,4 +22,27 @@ if (!cp.spawnSync) {
   };
 }
 
-module.exports = require('cross-spawn-6.0.5');
+const NODES = ['node', 'node.exe', 'node.cmd'];
+const spawn = require('cross-spawn-6.0.5');
+function patchNode(command, _args, options) {
+  if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
+
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+  options = options || {};
+  const env = options.env || process.env;
+  return env.NODE || env.npm_node_execpath;
+}
+
+function spawnCompat(command, args, options, callback) {
+  return spawn.spawn(patchNode(command, args, options), args, options, callback);
+}
+function spawnSyncCompat(command, args, options) {
+  return spawn.sync(patchNode(command, args, options), args, options);
+}
+spawnCompat.sync = spawnSyncCompat;
+
+module.exports = spawnCompat;
+module.exports.spawn = spawnCompat;

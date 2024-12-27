@@ -11,6 +11,10 @@ function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
+var src$1 = {
+    exports: {}
+};
+
 var es_object_assign = {};
 
 function _type_of$6(obj) {
@@ -2145,21 +2149,21 @@ var crossSpawn6_0_5 = {
     exports: {}
 };
 
-var src$1;
+var src;
 var hasRequiredSrc$1;
 function requireSrc$1() {
-    if (hasRequiredSrc$1) return src$1;
+    if (hasRequiredSrc$1) return src;
     hasRequiredSrc$1 = 1;
     /**
 	 * Tries to execute a function and discards any error that occurs.
 	 * @param {Function} fn - Function that might or might not throw an error.
 	 * @returns {?*} Return-value of the function when no error occurred.
-	 */ src$1 = function src(fn) {
+	 */ src = function src(fn) {
         try {
             return fn();
         } catch (e) {}
     };
-    return src$1;
+    return src;
 }
 
 var windows;
@@ -3870,10 +3874,6 @@ function requireParse() {
         var commandFile = detectShebang(parsed);
         // We don't need a shell if the command filename is an executable
         var needsShell = !isExecutableRegExp.test(commandFile);
-
-        // KM: force node to use the shell
-        if (!needsShell && ['node', 'node.exe', 'node.cmd'].indexOf(path.basename(commandFile).toLowerCase()) >= 0) needsShell = true;
-
         // If a shell is required, use cmd.exe and take care of escaping everything correctly
         // Note that `forceShell` is an hidden option used only in tests
         if (parsed.options.forceShell || needsShell) {
@@ -4052,10 +4052,9 @@ function requireCrossSpawn6_0_5() {
     return crossSpawn6_0_5.exports;
 }
 
-var src;
 var hasRequiredSrc;
 function requireSrc() {
-    if (hasRequiredSrc) return src;
+    if (hasRequiredSrc) return src$1.exports;
     hasRequiredSrc = 1;
     requireAssign();
     requireKeys();
@@ -4079,8 +4078,32 @@ function requireSrc() {
             }, spawnCallback, cmd, args, options || {});
         };
     }
-    src = requireCrossSpawn6_0_5();
-    return src;
+    var NODES = [
+        'node',
+        'node.exe',
+        'node.cmd'
+    ];
+    var spawn = requireCrossSpawn6_0_5();
+    function patchNode(command, _args, options) {
+        if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+        options = options || {};
+        var env = options.env || process.env;
+        return env.NODE || env.npm_node_execpath;
+    }
+    function spawnCompat(command, args, options, callback1) {
+        return spawn.spawn(patchNode(command, args, options), args, options, callback1);
+    }
+    function spawnSyncCompat(command, args, options) {
+        return spawn.sync(patchNode(command, args, options), args, options);
+    }
+    spawnCompat.sync = spawnSyncCompat;
+    src$1.exports = spawnCompat;
+    src$1.exports.spawn = spawnCompat;
+    return src$1.exports;
 }
 
 var srcExports = requireSrc();
