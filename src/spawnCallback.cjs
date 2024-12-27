@@ -3,7 +3,7 @@ const nextTick = require('next-tick');
 const constants = require('./constants');
 const spawn = require('./spawn');
 
-function normalize(cp, options, callback) {
+function worker(cp, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = {};
@@ -75,8 +75,8 @@ function spawnCallback(command, args, options, callback) {
   options = options || {};
   callback = once(callback);
   const cp = spawn(command, args, options);
-  return normalize(cp, options, callback);
+  return worker(cp, options, callback);
 }
 
 module.exports = spawnCallback;
-module.exports.normalize = normalize;
+module.exports.worker = worker;
