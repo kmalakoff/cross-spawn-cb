@@ -41,7 +41,7 @@ describe('sync', () => {
         const spawn = spawnCallback.spawn;
         const options = { encoding: 'utf8' };
         let res = spawn.sync('ls', [], options);
-        res = spawnCallbackSync.normalize(res, options);
+        res = spawnCallbackSync.worker(res, options);
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);

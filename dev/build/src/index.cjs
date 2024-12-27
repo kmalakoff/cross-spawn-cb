@@ -4,6 +4,7 @@ require('core-js/actual/array/find');
 require('buffer-v6-polyfill');
 
 const path = require('path');
+
 if (!path.delimiter) {
   const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
   path.delimiter = isWindows ? ';' : ':';
@@ -35,14 +36,9 @@ function patchNode(command, _args, options) {
   return env.NODE || env.npm_node_execpath;
 }
 
-const spawn = require('cross-spawn-6.0.5');
-function spawnCompat(command, args, options, callback) {
-  return spawn.spawn(patchNode(command, args, options), args, options, callback);
-}
-function spawnSyncCompat(command, args, options) {
-  return spawn.sync(patchNode(command, args, options), args, options);
-}
-spawnCompat.sync = spawnSyncCompat;
-
-module.exports = spawnCompat;
-module.exports.spawn = spawnCompat;
+const spawn_ = require('cross-spawn-6.0.5');
+module.exports = spawn_;
+module.exports.spawn = (command, args, options, callback) => spawn_.spawn(patchNode(command, args, options), args, options, callback);
+module.exports.spawnSync = (command, args, options) => spawn_.sync(patchNode(command, args, options), args, options);
+module.exports._parse = spawn_._parse;
+module.exports._enoent = spawn_._enoent;

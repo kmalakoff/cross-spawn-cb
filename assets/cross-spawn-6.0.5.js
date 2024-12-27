@@ -4093,16 +4093,16 @@ function requireSrc() {
         var env = options.env || process.env;
         return env.NODE || env.npm_node_execpath;
     }
-    var spawn = requireCrossSpawn6_0_5();
-    function spawnCompat(command, args, options, callback1) {
-        return spawn.spawn(patchNode(command, args, options), args, options, callback1);
-    }
-    function spawnSyncCompat(command, args, options) {
-        return spawn.sync(patchNode(command, args, options), args, options);
-    }
-    spawnCompat.sync = spawnSyncCompat;
-    src$1.exports = spawnCompat;
-    src$1.exports.spawn = spawnCompat;
+    var spawn_ = requireCrossSpawn6_0_5();
+    src$1.exports = spawn_;
+    src$1.exports.spawn = function(command, args, options, callback1) {
+        return spawn_.spawn(patchNode(command, args, options), args, options, callback1);
+    };
+    src$1.exports.spawnSync = function(command, args, options) {
+        return spawn_.sync(patchNode(command, args, options), args, options);
+    };
+    src$1.exports._parse = spawn_._parse;
+    src$1.exports._enoent = spawn_._enoent;
     return src$1.exports;
 }
 
