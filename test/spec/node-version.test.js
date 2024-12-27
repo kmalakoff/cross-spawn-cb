@@ -20,7 +20,7 @@ const OPTIONS = {
 };
 
 const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
-// VERSIONS = ['v16.20.2'];
+// const VERSIONS = ['v16.20.2'];
 
 const spawnCallback = require('../..');
 
@@ -57,6 +57,7 @@ function addTests(version) {
 
       it('npm --version', () => {
         try {
+          console.log();
           const res = spawnCallback.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
           const lines = cr(res.stdout).split('\n');
           const resultVersion = lines.slice(-2, -1)[0];

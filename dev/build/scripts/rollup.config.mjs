@@ -10,5 +10,5 @@ export default {
     format: 'cjs',
     name: 'crossSpawn',
   },
-  plugins: [resolve({ resolveOnly: module => SKIPS.indexOf(module) < 0 }), commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
+  plugins: [resolve({ resolveOnly: (module) => SKIPS.indexOf(module) < 0 }), commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
 };
