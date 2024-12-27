@@ -1,1 +1,1 @@
-ignores: ["cross-spawn-cb", "depcheck", "ts-swc-loaders", "@types/*", "@biomejs/*", "spawn-sync", "mocha-compat", "function-exec-sync"]
+ignores: ["cross-spawn-cb", "depcheck", "@types/*", "@biomejs/*", "spawn-sync", "mocha-compat", "function-exec-sync", "ts-swc-loaders"]
