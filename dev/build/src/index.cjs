@@ -23,7 +23,6 @@ if (!cp.spawnSync) {
 }
 
 const NODES = ['node', 'node.exe', 'node.cmd'];
-const spawn = require('cross-spawn-6.0.5');
 function patchNode(command, _args, options) {
   if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
 
@@ -36,6 +35,7 @@ function patchNode(command, _args, options) {
   return env.NODE || env.npm_node_execpath;
 }
 
+const spawn = require('cross-spawn-6.0.5');
 function spawnCompat(command, args, options, callback) {
   return spawn.spawn(patchNode(command, args, options), args, options, callback);
 }
