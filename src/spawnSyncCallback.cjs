@@ -1,7 +1,7 @@
 const constants = require('./constants');
 const spawn = require('./spawn');
 
-function normalize(res, options) {
+function worker(res, options) {
   // pipe if inherited
   if (res.stdout && (options.stdout === 'inherit' || options.stdio === 'inherit')) {
     process.stdout.write(res.stdout);
@@ -31,8 +31,8 @@ function spawnCallbackSync(command, args, options) {
   options = options || {};
   const syncOptions = { ...options, env: options.env || process.env, stdio: 'pipe', encoding: 'utf8' };
   const res = spawn.sync(command, args, syncOptions);
-  return normalize(res, options);
+  return worker(res, options);
 }
 
 module.exports = spawnCallbackSync;
-module.exports.normalize = normalize;
+module.exports.worker = worker;

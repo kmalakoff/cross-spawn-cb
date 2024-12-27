@@ -37,7 +37,7 @@ describe('callback', () => {
       const spawn = spawnCallback.spawn;
       const options = { encoding: 'utf8' };
       const cp = spawn('ls', [], options);
-      spawnCallback.normalize(cp, options, (err, res) => {
+      spawnCallback.worker(cp, options, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
