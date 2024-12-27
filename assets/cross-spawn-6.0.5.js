@@ -4083,7 +4083,6 @@ function requireSrc() {
         'node.exe',
         'node.cmd'
     ];
-    var spawn = requireCrossSpawn6_0_5();
     function patchNode(command, _args, options) {
         if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
         if (typeof options === 'function') {
@@ -4094,6 +4093,7 @@ function requireSrc() {
         var env = options.env || process.env;
         return env.NODE || env.npm_node_execpath;
     }
+    var spawn = requireCrossSpawn6_0_5();
     function spawnCompat(command, args, options, callback1) {
         return spawn.spawn(patchNode(command, args, options), args, options, callback1);
     }
