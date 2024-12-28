@@ -1,3 +1,34 @@
+// BEGIN SHIMS
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+
+function _object_spread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
+        if (typeof Object.getOwnPropertySymbols === "function") {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+            }));
+        }
+        ownKeys.forEach(function (key) {
+            _define_property(target, key, source[key]);
+        });
+    }
+    return target;
+}
+// END SHIMS
 'use strict';
 
 var require$$0$2 = require('child_process');
@@ -30,7 +61,7 @@ function requireWindows() {
         if (pathext.indexOf('') !== -1) {
             return true;
         }
-        for(var i = 0; i < pathext.length; i++){
+        for (var i = 0; i < pathext.length; i++) {
             var p = pathext[i].toLowerCase();
             if (p && path.substr(-p.length).toLowerCase() === p) {
                 return true;
@@ -45,7 +76,7 @@ function requireWindows() {
         return checkPathExt(path, options);
     }
     function isexe(path, options, cb) {
-        fs.stat(path, function(er, stat) {
+        fs.stat(path, function (er, stat) {
             cb(er, er ? false : checkStat(stat, path, options));
         });
     }
@@ -64,7 +95,7 @@ function requireMode() {
     isexe.sync = sync;
     var fs = require$$0;
     function isexe(path, options, cb) {
-        fs.stat(path, function(er, stat) {
+        fs.stat(path, function (er, stat) {
             cb(er, er ? false : checkStat(stat, options));
         });
     }
@@ -112,8 +143,8 @@ function requireIsexe() {
             if (typeof Promise !== 'function') {
                 throw new TypeError('callback not provided');
             }
-            return new Promise(function(resolve, reject) {
-                isexe(path, options || {}, function(er, is) {
+            return new Promise(function (resolve, reject) {
+                isexe(path, options || {}, function (er, is) {
                     if (er) {
                         reject(er);
                     } else {
@@ -122,7 +153,7 @@ function requireIsexe() {
                 });
             });
         }
-        core(path, options || {}, function(er, is) {
+        core(path, options || {}, function (er, is) {
             // ignore EACCES because that just means we aren't allowed to run it
             if (er) {
                 if (er.code === 'EACCES' || options && options.ignoreErrors) {
@@ -150,7 +181,7 @@ function requireIsexe() {
 
 function _array_like_to_array$1(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    for (var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
 function _array_without_holes(arr) {
@@ -182,21 +213,21 @@ function requireWhich() {
     var path = require$$0$1;
     var COLON = isWindows ? ';' : ':';
     var isexe = requireIsexe();
-    var getNotFoundError = function(cmd) {
-        return Object.assign(new Error("not found: ".concat(cmd)), {
+    var getNotFoundError = function (cmd) {
+        return _object_spread(new Error("not found: ".concat(cmd)), {
             code: 'ENOENT'
         });
     };
-    var getPathInfo = function(cmd, opt) {
+    var getPathInfo = function (cmd, opt) {
         var colon = opt.colon || COLON;
         // If it has a slash, then we don't bother searching the pathenv.
         // just check the file itself, and that's it.
         var pathEnv = cmd.match(/\//) || isWindows && cmd.match(/\\/) ? [
             ''
         ] : // windows always checks the cwd first
-        _to_consumable_array(isWindows ? [
-            process.cwd()
-        ] : []).concat(_to_consumable_array((opt.path || process.env.PATH || /* istanbul ignore next: very unusual */ '').split(colon)));
+            _to_consumable_array(isWindows ? [
+                process.cwd()
+            ] : []).concat(_to_consumable_array((opt.path || process.env.PATH || /* istanbul ignore next: very unusual */ '').split(colon)));
         var pathExtExe = isWindows ? opt.pathExt || process.env.PATHEXT || '.EXE;.CMD;.BAT;.COM' : '';
         var pathExt = isWindows ? pathExtExe.split(colon) : [
             ''
@@ -210,7 +241,7 @@ function requireWhich() {
             pathExtExe: pathExtExe
         };
     };
-    var which = function(cmd, opt, cb) {
+    var which = function (cmd, opt, cb) {
         if (typeof opt === 'function') {
             cb = opt;
             opt = {};
@@ -218,8 +249,8 @@ function requireWhich() {
         if (!opt) opt = {};
         var _getPathInfo = getPathInfo(cmd, opt), pathEnv = _getPathInfo.pathEnv, pathExt = _getPathInfo.pathExt, pathExtExe = _getPathInfo.pathExtExe;
         var found = [];
-        var step = function(i) {
-            return new Promise(function(resolve, reject) {
+        var step = function (i) {
+            return new Promise(function (resolve, reject) {
                 if (i === pathEnv.length) return opt.all && found.length ? resolve(found) : reject(getNotFoundError(cmd));
                 var ppRaw = pathEnv[i];
                 var pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
@@ -228,13 +259,13 @@ function requireWhich() {
                 resolve(subStep(p, i, 0));
             });
         };
-        var subStep = function(p, i, ii) {
-            return new Promise(function(resolve, reject) {
+        var subStep = function (p, i, ii) {
+            return new Promise(function (resolve, reject) {
                 if (ii === pathExt.length) return resolve(step(i + 1));
                 var ext = pathExt[ii];
                 isexe(p + ext, {
                     pathExt: pathExtExe
-                }, function(er, is) {
+                }, function (er, is) {
                     if (!er && is) {
                         if (opt.all) found.push(p + ext);
                         else return resolve(p + ext);
@@ -243,20 +274,20 @@ function requireWhich() {
                 });
             });
         };
-        return cb ? step(0).then(function(res) {
+        return cb ? step(0).then(function (res) {
             return cb(null, res);
         }, cb) : step(0);
     };
-    var whichSync = function(cmd, opt) {
+    var whichSync = function (cmd, opt) {
         opt = opt || {};
         var _getPathInfo = getPathInfo(cmd, opt), pathEnv = _getPathInfo.pathEnv, pathExt = _getPathInfo.pathExt, pathExtExe = _getPathInfo.pathExtExe;
         var found = [];
-        for(var i = 0; i < pathEnv.length; i++){
+        for (var i = 0; i < pathEnv.length; i++) {
             var ppRaw = pathEnv[i];
             var pathPart = /^".*"$/.test(ppRaw) ? ppRaw.slice(1, -1) : ppRaw;
             var pCmd = path.join(pathPart, cmd);
             var p = !pathPart && /^\.[\\\/]/.test(cmd) ? cmd.slice(0, 2) + pCmd : pCmd;
-            for(var j = 0; j < pathExt.length; j++){
+            for (var j = 0; j < pathExt.length; j++) {
                 var cur = p + pathExt[j];
                 try {
                     var is = isexe.sync(cur, {
@@ -266,7 +297,7 @@ function requireWhich() {
                         if (opt.all) found.push(cur);
                         else return cur;
                     }
-                } catch (ex) {}
+                } catch (ex) { }
             }
         }
         if (opt.all && found.length) return found;
@@ -286,14 +317,14 @@ var hasRequiredPathKey;
 function requirePathKey() {
     if (hasRequiredPathKey) return pathKey.exports;
     hasRequiredPathKey = 1;
-    var pathKey$1 = function() {
+    var pathKey$1 = function () {
         var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
         var environment = options.env || process.env;
         var platform = options.platform || process.platform;
         if (platform !== 'win32') {
             return 'PATH';
         }
-        return Object.keys(environment).reverse().find(function(key) {
+        return Object.keys(environment).reverse().find(function (key) {
             return key.toUpperCase() === 'PATH';
         }) || 'Path';
     };
@@ -323,7 +354,8 @@ function requireResolveCommand() {
             try {
                 process.chdir(parsed.options.cwd);
             } catch (err) {
-            /* Empty */ }
+                /* Empty */
+}
         }
         var resolved;
         try {
@@ -334,7 +366,8 @@ function requireResolveCommand() {
                 pathExt: withoutPathExt ? path.delimiter : undefined
             });
         } catch (e) {
-        /* Empty */ } finally{
+            /* Empty */
+} finally {
             if (shouldSwitchCwd) {
                 process.chdir(cwd);
             }
@@ -406,7 +439,7 @@ function requireShebangRegex() {
 
 function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    for (var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
 function _array_with_holes(arr) {
@@ -420,17 +453,17 @@ function _iterable_to_array_limit(arr, i) {
     var _d = false;
     var _s, _e;
     try {
-        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
+        for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
             _arr.push(_s.value);
             if (i && _arr.length === i) break;
         }
     } catch (err) {
         _d = true;
         _e = err;
-    } finally{
+    } finally {
         try {
             if (!_n && _i["return"] != null) _i["return"]();
-        } finally{
+        } finally {
             if (_d) throw _e;
         }
     }
@@ -456,7 +489,7 @@ function requireShebangCommand() {
     if (hasRequiredShebangCommand) return shebangCommand;
     hasRequiredShebangCommand = 1;
     var shebangRegex = requireShebangRegex();
-    shebangCommand = function() {
+    shebangCommand = function () {
         var string = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : '';
         var match = string.match(shebangRegex);
         if (!match) {
@@ -488,7 +521,7 @@ function requireReadShebang() {
             fd = fs.openSync(command, 'r');
             fs.readSync(fd, buffer, 0, size, 0);
             fs.closeSync(fd);
-        } catch (e) {}
+        } catch (e) { }
         // Attempt to extract shebang (null is returned if not a shebang)
         return shebangCommand(buffer.toString());
     }
@@ -539,7 +572,7 @@ function requireParse() {
             parsed.command = path.normalize(parsed.command);
             // Escape command & arguments
             parsed.command = escape.command(parsed.command);
-            parsed.args = parsed.args.map(function(arg) {
+            parsed.args = parsed.args.map(function (arg) {
                 return escape.argument(arg, needsDoubleEscapeMetaChars);
             });
             var shellCommand = [
@@ -563,7 +596,7 @@ function requireParse() {
             args = null;
         }
         args = args ? args.slice(0) : []; // Clone array to avoid changing the original
-        options = Object.assign({}, options); // Clone object to avoid changing the original
+        options = _object_spread({}, options); // Clone object to avoid changing the original
         // Build our parsed object
         var parsed = {
             command: command,
@@ -589,7 +622,7 @@ function requireEnoent() {
     hasRequiredEnoent = 1;
     var isWin = process.platform === 'win32';
     function notFoundError(original, syscall) {
-        return Object.assign(new Error("".concat(syscall, " ").concat(original.command, " ENOENT")), {
+        return _object_spread(new Error("".concat(syscall, " ").concat(original.command, " ENOENT")), {
             code: 'ENOENT',
             errno: 'ENOENT',
             syscall: "".concat(syscall, " ").concat(original.command),
@@ -602,7 +635,7 @@ function requireEnoent() {
             return;
         }
         var originalEmit = cp.emit;
-        cp.emit = function(name, arg1) {
+        cp.emit = function (name, arg1) {
             // If emitting "exit" event and exit code is 1, we need to check if
             // the command exists and emit an "error" instead
             // See https://github.com/IndigoUnited/node-cross-spawn/issues/16
