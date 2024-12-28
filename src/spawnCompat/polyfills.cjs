@@ -1,4 +1,4 @@
-require('core-js/actual/object/assign');
+Object.assign = require('core-js/actual/object/assign');
 require('core-js/actual/object/keys');
 require('core-js/actual/array/find');
 require('buffer-v6-polyfill');
