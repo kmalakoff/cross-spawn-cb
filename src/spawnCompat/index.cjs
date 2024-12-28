@@ -1,6 +1,7 @@
+require('./polyfills.cjs');
 const path = require('path');
 const cp = require('child_process');
-const spawn_ = require('cross-spawn-6.0.5');
+const spawn_ = require('../../../assets/cross-spawn-6.0.5.js');
 
 const NODES = ['node', 'node.exe', 'node.cmd'];
 function parse(command, args, options) {
