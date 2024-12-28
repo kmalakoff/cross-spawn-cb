@@ -1,3 +1,4 @@
+require('./polyfills.cjs');
 const path = require('path');
 const cp = require('child_process');
 const spawn_ = require('cross-spawn-6.0.5');
