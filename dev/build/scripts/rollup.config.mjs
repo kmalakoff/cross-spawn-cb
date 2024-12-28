@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import externals from 'rollup-plugin-node-externals';
 import swc from 'ts-swc-rollup-plugin';
 
-const SKIPS = ['function-exec-sync'];
+const SKIPS = ['function-exec-sync', 'object-assign', 'object-keys', 'buffer-v6-polyfill'];
 
 export default {
   output: {
