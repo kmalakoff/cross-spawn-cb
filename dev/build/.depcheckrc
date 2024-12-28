@@ -1,1 +1,1 @@
-ignores: ["build"]
+ignores: ["build", "is-fs-case-sensitive", "jsonc-parser", "tslib", "slash"]

@@ -3,15 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/assets.mjs"
+    "build": "node scripts/assets.mjs",
+    "format": "biome check --write --unsafe src/ scripts/"
   },
   "dependencies": {
-    "is-fs-case-sensitive": "^1.0.0",
-    "jsonc-parser": "^3.3.1",
-    "slash": "^5.1.0",
-    "tslib": "^2.8.1"
+    "buffer-v6-polyfill": "^1.0.5",
+    "core-js": "^3.39.0",
+    "cross-spawn-6.0.5": "npm:cross-spawn@6.0.5",
+    "function-exec-sync": "^1.1.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "cross-spawn-cb": "^1.5.4",
