@@ -3,14 +3,14 @@ delete process.env.NODE_OPTIONS;
 
 const assert = require('assert');
 
-const spawnCallback = require('../..');
-const spawnCallbackSync = spawnCallback.sync;
+const spawn = require('../..');
+const spawnSync = spawn.sync;
 
 describe('sync', () => {
   describe('happy path', () => {
     it('returns a status code', () => {
       try {
-        const res = spawnCallbackSync('ls', [], {});
+        const res = spawnSync('ls', [], {});
         assert.equal(res.status, 0);
       } catch (err) {
         assert.ok(!err, err ? err.message : '');
@@ -19,7 +19,7 @@ describe('sync', () => {
 
     it('stdio inherit', () => {
       try {
-        const res = spawnCallbackSync('ls', [], { stdio: 'inherit' });
+        const res = spawnSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
       } catch (err) {
         assert.ok(!err, err ? err.message : '');
@@ -28,7 +28,7 @@ describe('sync', () => {
 
     it('stdout string', () => {
       try {
-        const res = spawnCallbackSync('ls', [], { encoding: 'utf8' });
+        const res = spawnSync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
@@ -38,10 +38,9 @@ describe('sync', () => {
 
     it('stdout string (manual)', () => {
       try {
-        const spawn = spawnCallback.spawn;
         const options = { encoding: 'utf8' };
-        let res = spawn.sync('ls', [], options);
-        res = spawnCallbackSync.worker(res, options);
+        let res = spawn.spawn.sync('ls', [], options);
+        res = spawnSync.worker(res, options);
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
         console.log(err);
@@ -54,7 +53,7 @@ describe('sync', () => {
     this.timeout(20000);
     it('stdio inherit', () => {
       try {
-        spawnCallbackSync('ls', ['junk'], { stdio: 'inherit' });
+        spawnSync('ls', ['junk'], { stdio: 'inherit' });
         assert.ok(false);
       } catch (err) {
         assert.ok(!!err);
@@ -63,7 +62,7 @@ describe('sync', () => {
 
     it('stderr string', () => {
       try {
-        spawnCallbackSync('ls', ['junk'], { encoding: 'utf8' });
+        spawnSync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
       } catch (err) {
         assert.ok(typeof err.status === 'number');
