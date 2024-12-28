@@ -47,7 +47,7 @@
     "node-resolve-versions": "^1.0.2",
     "node-version-utils": "^1.1.2",
     "rimraf2": "^2.8.2",
-    "ts-swc-loaders": "^1.5.11"
+    "ts-swc-loaders": "^1.5.13"
   },
   "engines": {
     "node": ">=0.8"
