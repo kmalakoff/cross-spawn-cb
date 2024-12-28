@@ -27,10 +27,13 @@
     "version": "tsds version"
   },
   "dependencies": {
+    "buffer-v6-polyfill": "^1.0.5",
     "call-once-fn": "^1.0.1",
     "cross-spawn": "^7.0.6",
     "function-exec-sync": "^1.1.2",
-    "next-tick": "^1.1.0"
+    "next-tick": "^1.1.0",
+    "object-assign": "^4.1.1",
+    "object-keys": "^1.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
