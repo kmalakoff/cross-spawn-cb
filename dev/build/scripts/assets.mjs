@@ -23,5 +23,6 @@ function build(callback) {
 }
 
 build((err) => {
+  return console.log('Not building anymore');
   !err || console.error(err);
 });
