@@ -10,5 +10,5 @@
     "downlevelIteration": true,
     "allowJs": true
   },
-  "include": ["src", "node_modules/get-tsconfig"]
+  "include": ["src", "../../src/spawnCompat/polyfills.cjs", "../../src/spawnCompat.cjs"]
 }
