@@ -5,8 +5,8 @@ import url from 'url';
 import spawn from 'cross-spawn-cb';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
-const cwd = path.join(__dirname, '..', 'node-cross-spawn');
-const src = path.join(__dirname, '..', 'node-cross-spawn', 'index.js');
+const cwd = process.cwd();
+const src = path.join(__dirname, '..', 'node_modules', 'cross-spawn-6.0.5', 'index.js');
 const dest = path.join(__dirname, '..', '..', '..', 'assets', 'cross-spawn.js');
 
 import fs from 'fs';
