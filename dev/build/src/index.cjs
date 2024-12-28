@@ -23,22 +23,34 @@ if (!cp.spawnSync) {
   };
 }
 
-const NODES = ['node', 'node.exe', 'node.cmd'];
-function patchNode(command, _args, options) {
-  if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
+const spawn_ = require('cross-spawn-6.0.5');
 
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
+const NODES = ['node', 'node.exe', 'node.cmd'];
+function parse(command, args, options) {
+  if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
+    const env = options ? options.env || process.env : process.env;
+    command = env.NODE || env.npm_node_execpath;
   }
-  options = options || {};
-  const env = options.env || process.env;
-  return env.NODE || env.npm_node_execpath;
+  return spawn_._parse(command, args, options);
+}
+const enoent = spawn_._enoent;
+
+function spawn(command, args, options) {
+  const parsed = parse(command, args, options);
+  const spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
+  enoent.hookChildProcess(spawned, parsed);
+  return spawned;
 }
 
-const spawn_ = require('cross-spawn-6.0.5');
-module.exports = spawn_;
-module.exports.spawn = (command, args, options, callback) => spawn_.spawn(patchNode(command, args, options), args, options, callback);
-module.exports.spawnSync = (command, args, options) => spawn_.sync(patchNode(command, args, options), args, options);
-module.exports._parse = spawn_._parse;
-module.exports._enoent = spawn_._enoent;
+function spawnSync(command, args, options) {
+  const parsed = parse(command, args, options);
+  const result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
+  result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
+  return result;
+}
+
+module.exports = spawn;
+module.exports.spawn = spawn;
+module.exports.sync = spawnSync;
+module.exports._parse = parse;
+module.exports._enoent = enoent;

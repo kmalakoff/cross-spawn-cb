@@ -22,7 +22,7 @@ const OPTIONS = {
 const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
 // const VERSIONS = ['v16.20.2'];
 
-const spawnCallback = require('../..');
+const spawn = require('../..');
 
 function addTests(version) {
   const INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
@@ -37,7 +37,7 @@ function addTests(version) {
 
     describe('spawnOptions', () => {
       it('npm --version', (done) => {
-        spawnCallback('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
+        spawn('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
           assert.ok(!err, err ? err.message : '');
           const lines = cr(res.stdout).split('\n');
           const resultVersion = lines.slice(-2, -1)[0];
@@ -47,7 +47,7 @@ function addTests(version) {
       });
 
       it('node --version', (done) => {
-        spawnCallback(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
+        spawn(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }), (err, res) => {
           assert.ok(!err, err ? err.message : '');
           const lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
@@ -58,7 +58,7 @@ function addTests(version) {
       it('npm --version', () => {
         try {
           console.log();
-          const res = spawnCallback.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
+          const res = spawn.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
           const lines = cr(res.stdout).split('\n');
           const resultVersion = lines.slice(-2, -1)[0];
           assert.ok(isVersion(resultVersion));
@@ -69,7 +69,7 @@ function addTests(version) {
 
       it('node --version', () => {
         try {
-          const res = spawnCallback.sync(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
+          const res = spawn.sync(NODE, ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
           const lines = cr(res.stdout).split('\n');
           assert.equal(lines.slice(-2, -1)[0], version);
         } catch (err) {

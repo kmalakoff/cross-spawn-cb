@@ -4078,31 +4078,37 @@ function requireSrc() {
             }, spawnCallback, cmd, args, options || {});
         };
     }
+    var spawn_ = requireCrossSpawn6_0_5();
     var NODES = [
         'node',
         'node.exe',
         'node.cmd'
     ];
-    function patchNode(command, _args, options) {
-        if (NODES.indexOf(path.basename(command).toLowerCase()) < 0) return command;
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
+    function parse(command, args, options) {
+        if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
+            var env = options ? options.env || process.env : process.env;
+            command = env.NODE || env.npm_node_execpath;
         }
-        options = options || {};
-        var env = options.env || process.env;
-        return env.NODE || env.npm_node_execpath;
+        return spawn_._parse(command, args, options);
     }
-    var spawn_ = requireCrossSpawn6_0_5();
-    src$1.exports = spawn_;
-    src$1.exports.spawn = function(command, args, options, callback1) {
-        return spawn_.spawn(patchNode(command, args, options), args, options, callback1);
-    };
-    src$1.exports.spawnSync = function(command, args, options) {
-        return spawn_.sync(patchNode(command, args, options), args, options);
-    };
-    src$1.exports._parse = spawn_._parse;
-    src$1.exports._enoent = spawn_._enoent;
+    var enoent = spawn_._enoent;
+    function spawn(command, args, options) {
+        var parsed = parse(command, args, options);
+        var spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
+        enoent.hookChildProcess(spawned, parsed);
+        return spawned;
+    }
+    function spawnSync(command, args, options) {
+        var parsed = parse(command, args, options);
+        var result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
+        result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
+        return result;
+    }
+    src$1.exports = spawn;
+    src$1.exports.spawn = spawn;
+    src$1.exports.sync = spawnSync;
+    src$1.exports._parse = parse;
+    src$1.exports._enoent = enoent;
     return src$1.exports;
 }
 

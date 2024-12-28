@@ -3,12 +3,12 @@ delete process.env.NODE_OPTIONS;
 
 const assert = require('assert');
 
-const spawnCallback = require('../..');
+const spawn = require('../..');
 
 describe('callback', () => {
   describe('happy path', () => {
     it('returns a status code', (done) => {
-      spawnCallback('ls', [], {}, (err, res) => {
+      spawn('ls', [], {}, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(res.status, 0);
         done();
@@ -16,7 +16,7 @@ describe('callback', () => {
     });
 
     it('stdio inherit', (done) => {
-      spawnCallback('ls', [], { stdio: 'inherit' }, (err, res) => {
+      spawn('ls', [], { stdio: 'inherit' }, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(res.stdout, null);
         assert.equal(res.status, 0);
@@ -25,7 +25,7 @@ describe('callback', () => {
     });
 
     it('stdout string', (done) => {
-      spawnCallback('ls', [], { encoding: 'utf8' }, (err, res) => {
+      spawn('ls', [], { encoding: 'utf8' }, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
@@ -34,10 +34,9 @@ describe('callback', () => {
     });
 
     it('stdout string (manual)', (done) => {
-      const spawn = spawnCallback.spawn;
       const options = { encoding: 'utf8' };
-      const cp = spawn('ls', [], options);
-      spawnCallback.worker(cp, options, (err, res) => {
+      const cp = spawn.spawn('ls', [], options);
+      spawn.worker(cp, options, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
@@ -48,14 +47,14 @@ describe('callback', () => {
 
   describe('unhappy path', () => {
     it('stdio inherit', (done) => {
-      spawnCallback('ls', ['junk'], { stdio: 'inherit' }, (err) => {
+      spawn('ls', ['junk'], { stdio: 'inherit' }, (err) => {
         assert.ok(!!err);
         done();
       });
     });
 
     it('stderr string', (done) => {
-      spawnCallback('ls', ['junk'], { encoding: 'utf8' }, (err, res) => {
+      spawn('ls', ['junk'], { encoding: 'utf8' }, (err, res) => {
         assert.ok(!res);
         assert.ok(!!err);
         assert.ok(typeof err.status === 'number');
