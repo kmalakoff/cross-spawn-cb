@@ -7,7 +7,7 @@ if (!path.delimiter) path.delimiter = process.platform === 'win32' ? ';' : ':';
 
 const cp = require('child_process');
 if (!cp.spawnSync) {
-  const spawnCallback = path.join(__dirname, '..', 'spawnCallback.js');
+  const spawnCallback = path.join(__dirname, 'workers', 'spawnCallback.js');
 
   let functionExec = null; // break dependencies
   cp.spawnSync = function spawnSyncPolyfill(cmd, args, options) {
