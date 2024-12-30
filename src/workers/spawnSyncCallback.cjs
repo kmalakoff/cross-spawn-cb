@@ -1,5 +1,5 @@
-const constants = require('./constants');
-const spawn = require('./spawn');
+const constants = require('../constants.js');
+const spawn = require('../spawn.js');
 
 function worker(res, options) {
   // pipe if inherited

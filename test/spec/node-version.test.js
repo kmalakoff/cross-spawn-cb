@@ -7,7 +7,7 @@ const isVersion = require('is-version');
 const cr = require('cr');
 const nodeInstall = require('node-install-release');
 const resolveVersions = require('node-resolve-versions');
-const _rimraf2 = require('rimraf2');
+// const _rimraf2 = require('rimraf2');
 
 const versionUtils = require('node-version-utils');
 
@@ -15,7 +15,7 @@ const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process
 const NODE = isWindows ? 'node.exe' : 'node';
 const TMP_DIR = path.resolve(path.join(__dirname, '..', '..', '.tmp'));
 const OPTIONS = {
-  cacheDirectory: path.join(TMP_DIR, 'cache'),
+  cachePath: path.join(TMP_DIR, 'cache'),
   installedDirectory: path.join(TMP_DIR, 'installed'),
 };
 
