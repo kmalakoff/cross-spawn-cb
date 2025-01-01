@@ -1,11 +1,12 @@
-const assert = require('assert');
+import assert from 'assert';
 
-const spawn = require('../../dist/cjs');
+import spawn from 'cross-spawn-cb';
+import { crossSpawn } from 'cross-spawn-cb';
 
 describe('_parse', () => {
   describe('happy path', () => {
     it('parses', (done) => {
-      const parsed = spawn._parse('ls', ['-la'], { cwd: process.cwd(), env: process.env });
+      const parsed = crossSpawn._parse('ls', ['-la'], { cwd: process.cwd(), env: process.env });
       assert.equal(typeof parsed.command, 'string');
       assert.equal(typeof parsed.args[0], 'string');
       assert.equal(typeof parsed.options.cwd, 'string');
