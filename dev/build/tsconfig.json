@@ -11,5 +11,5 @@
     "downlevelIteration": true,
     "allowJs": true
   },
-  "include": ["src", "node_modules/get-tsconfig"]
+  "include": ["node_modules"]
 }

@@ -1,18 +1,20 @@
 // remove NODE_OPTIONS from ts-dev-stack
 delete process.env.NODE_OPTIONS;
 
-const assert = require('assert');
-const path = require('path');
-const isVersion = require('is-version');
-const cr = require('cr');
-const nodeInstall = require('node-install-release');
-const resolveVersions = require('node-resolve-versions');
+import assert from 'assert';
+import path from 'path';
+import url from 'url';
+import cr from 'cr';
+import isVersion from 'is-version';
+import nodeInstall from 'node-install-release';
+import resolveVersions from 'node-resolve-versions';
 // const _rimraf2 = require('rimraf2');
 
-const versionUtils = require('node-version-utils');
+import * as versionUtils from 'node-version-utils';
 
 const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 const NODE = isWindows ? 'node.exe' : 'node';
+const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
 const TMP_DIR = path.resolve(path.join(__dirname, '..', '..', '.tmp'));
 const OPTIONS = {
   cachePath: path.join(TMP_DIR, 'cache'),
@@ -22,7 +24,7 @@ const OPTIONS = {
 const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
 // const VERSIONS = ['v16.20.2'];
 
-const spawn = require('../..');
+import spawn from 'cross-spawn-cb';
 
 function addTests(version) {
   const INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
@@ -57,7 +59,6 @@ function addTests(version) {
 
       it('npm --version', () => {
         try {
-          console.log();
           const res = spawn.sync('npm', ['--version'], versionUtils.spawnOptions(INSTALL_DIR, { silent: true, encoding: 'utf8' }));
           const lines = cr(res.stdout).split('\n');
           const resultVersion = lines.slice(-2, -1)[0];
