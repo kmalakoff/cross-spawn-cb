@@ -12,7 +12,17 @@
     "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
   },
   "license": "MIT",
-  "main": "dist/cjs/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
   "files": [
     "dist",
@@ -39,19 +49,16 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "cr": "^0.1.0",
-    "depcheck": "^1.4.7",
     "is-version": "^0.2.1",
     "node-install-release": "^1.6.3",
     "node-resolve-versions": "^1.0.5",
-    "node-version-utils": "^1.1.3"
+    "node-version-utils": "^1.2.0",
+    "pinkie-promise": "^2.0.1"
   },
   "engines": {
     "node": ">=0.8"
   },
   "tsds": {
-    "source": "src/index.cjs",
-    "targets": [
-      "cjs"
-    ]
+    "source": "src/index.ts"
   }
 }

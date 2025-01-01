@@ -1,6 +1,9 @@
-const assert = require('assert');
+import assert from 'assert';
 
-const spawn = require('../..');
+import Pinkie from 'pinkie-promise';
+
+import spawn from 'cross-spawn-cb';
+import { type SpawnOptions, crossSpawn } from 'cross-spawn-cb';
 
 describe('callback', () => {
   describe('happy path', () => {
@@ -31,13 +34,33 @@ describe('callback', () => {
     });
 
     it('stdout string (manual)', (done) => {
-      const options = { encoding: 'utf8' };
-      const cp = spawn.spawn('ls', [], options);
-      spawn.worker(cp, options, (err, res) => {
+      const cp = crossSpawn('ls', [], { encoding: 'utf8' });
+      spawn.worker(cp, { encoding: 'utf8' }, (err, res) => {
         assert.ok(!err, err ? err.message : '');
         assert.equal(typeof res.stdout, 'string');
         assert.equal(res.status, 0);
         done();
+      });
+    });
+  });
+
+  describe('happy path - promise', () => {
+    (() => {
+      // patch and restore promise
+      // @ts-ignore
+      let rootPromise: Promise;
+      before(() => {
+        rootPromise = global.Promise;
+        global.Promise = Pinkie;
+      });
+      after(() => {
+        global.Promise = rootPromise;
+      });
+    })();
+
+    it('returns a status code', async () => {
+      const _res = await spawn('ls', [], {}, (_err, res) => {
+        assert.equal(res.status, 0);
       });
     });
   });
