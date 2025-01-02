@@ -7,12 +7,12 @@ if (!path.delimiter) path.delimiter = process.platform === 'win32' ? ';' : ':';
 
 const cp = require('child_process');
 if (!cp.spawnSync) {
-  const spawnCallback = path.join(__dirname, 'async.cjs');
+  const spawn = path.join(__dirname, '..', 'spawn.cjs');
 
   let functionExec = null; // break dependencies
   cp.spawnSync = function spawnSyncPolyfill(cmd, args, options) {
     if (!functionExec) functionExec = require('function-exec-sync');
 
-    return functionExec({ callbacks: true }, spawnCallback, cmd, args, options || {});
+    return functionExec({ callbacks: true }, spawn, cmd, args, options || {});
   };
 }

@@ -20,7 +20,7 @@ const OPTIONS = {
   storagePath: path.join(TMP_DIR),
 };
 
-const VERSIONS = resolveVersions.sync('>=22', { range: 'major,even' });
+const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
 // const VERSIONS = ['v16.20.2'];
 
 import spawn from 'cross-spawn-cb';
