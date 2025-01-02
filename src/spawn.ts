@@ -1,6 +1,6 @@
-import worker from './workers/async';
-import spawnSync from './spawnSync';
 import crossSpawn from './crossSpawn.cjs';
+import spawnSync from './spawnSync';
+import worker from './workers/async';
 
 import type { SpawnCallback, SpawnOptions, SpawnResult } from './types';
 export default function spawn(command: string, args: string[], options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback): undefined | Promise<SpawnResult> {
