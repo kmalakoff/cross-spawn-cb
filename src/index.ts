@@ -1,4 +1,3 @@
-
 export type * from './types';
 export { default } from './spawn';
 export { default as sync } from './spawnSync';
