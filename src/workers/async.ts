@@ -15,7 +15,7 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
   let stderr: Buffer[] = null;
 
   // collect output
-  const res = { stdout: null, stderr: null } as SpawnResult;
+  const res = { pid: 0, output: [], stdout: null, stderr: null, status: null, signal: null } as SpawnResult;
   if (options.encoding) {
     if (cp.stdout) {
       stdout = [];
