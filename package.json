@@ -42,7 +42,7 @@
     "call-once-fn": "^1.0.1",
     "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.1.6",
+    "function-exec-sync": "^1.1.7",
     "next-tick": "^1.1.0"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "@types/node": "^22.10.2",
     "cr": "^0.1.0",
     "is-version": "^0.2.1",
-    "node-install-release": "^1.8.0",
+    "node-install-release": "^1.8.1",
     "node-resolve-versions": "^1.0.5",
     "node-version-utils": "^1.2.1",
     "pinkie-promise": "^2.0.1"
