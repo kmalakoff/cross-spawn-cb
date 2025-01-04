@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmalakoff/cross-spawn-cb.git"
+    "url": "git+ssh://git@github.com/kmalakoff/cross-spawn-cb.git"
   },
   "license": "MIT",
   "type": "module",
@@ -42,7 +42,7 @@
     "call-once-fn": "^1.0.4",
     "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.1.8",
+    "function-exec-sync": "^1.1.9",
     "next-tick": "^1.1.0"
   },
   "devDependencies": {
