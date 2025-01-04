@@ -39,10 +39,10 @@
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
-    "call-once-fn": "^1.0.1",
+    "call-once-fn": "^1.0.3",
     "core-js": "^3.39.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.1.7",
+    "function-exec-sync": "^1.1.8",
     "next-tick": "^1.1.0"
   },
   "devDependencies": {
