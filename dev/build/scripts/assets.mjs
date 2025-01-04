@@ -26,7 +26,7 @@ function patch(callback) {
 }
 
 function build(callback) {
-  const config = path.resolve(__dirname, 'rollup.config.mjs');
+  const config = path.join(__dirname, 'rollup.config.mjs');
   const args = ['rollup', '--config', config, '--input', src, '--file', dest];
   spawn(args[0], args.slice(1), { cwd: cwd, stdio: 'inherit' }, (err) => err ? callback(err) : patch(callback));
 }
