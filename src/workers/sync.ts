@@ -2,7 +2,7 @@ import { spawnKeys } from '../constants';
 
 import type { SpawnOptions, SpawnResult } from '../types';
 
-export default function worker(res: SpawnResult, options?: SpawnOptions) {
+export default function worker(res: SpawnResult, options?: SpawnOptions): SpawnResult {
   options = options || {};
 
   // pipe if inherited
