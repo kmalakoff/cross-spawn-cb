@@ -1,5 +1,3 @@
-/// <reference types="node" />
-
 import type * as child_process from 'child_process';
 
 export type ChildProcess = child_process.ChildProcess;
