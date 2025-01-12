@@ -14,12 +14,9 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./*": "./*"
+    "import": "./dist/esm/index.mjs",
+    "require": "./dist/cjs/index.cjs",
+    "types": "./dist/types/index.d.ts"
   },
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
@@ -37,10 +34,10 @@
   },
   "dependencies": {
     "buffer-v6-polyfill": "^1.0.5",
-    "call-once-fn": "^1.0.6",
-    "core-js": "^3.39.0",
+    "call-once-fn": "^1.0.7",
+    "core-js": "^3.40.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.2.3",
+    "function-exec-sync": "^1.2.5",
     "next-tick": "^1.1.0"
   },
   "devDependencies": {
@@ -48,8 +45,8 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
     "cr": "^0.1.0",
-    "is-version": "^0.2.5",
-    "node-install-release": "^1.9.0",
+    "is-version": "^0.2.7",
+    "node-install-release": "^1.9.2",
     "node-resolve-versions": "^1.0.10",
     "node-version-utils": "^1.2.4",
     "pinkie-promise": "^2.0.1"
