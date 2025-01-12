@@ -1,1 +1,1 @@
-ignores: ["build", "is-fs-case-sensitive", "jsonc-parser", "tslib", "slash"]
+ignores: ["cross-spawn-6.0.5"]
