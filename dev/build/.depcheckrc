@@ -1,1 +1,1 @@
-ignores: ["cross-spawn-6.0.5"]
+ignores: ["@types/*", "cross-spawn-6.0.5"]
