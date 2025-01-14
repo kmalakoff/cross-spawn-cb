@@ -46,9 +46,9 @@
     "@types/node": "^22.10.2",
     "cr": "^0.1.0",
     "is-version": "^0.2.7",
-    "node-install-release": "^1.9.2",
-    "node-resolve-versions": "^1.0.10",
-    "node-version-utils": "^1.2.4",
+    "node-install-release": "^1.10.0",
+    "node-resolve-versions": "^1.0.11",
+    "node-version-utils": "^1.2.5",
     "pinkie-promise": "^2.0.1"
   },
   "engines": {
