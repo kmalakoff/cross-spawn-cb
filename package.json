@@ -37,7 +37,7 @@
     "call-once-fn": "^1.0.9",
     "core-js": "^3.40.0",
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.2.10",
+    "function-exec-sync": "^1.2.11",
     "next-tick": "^1.1.0"
   },
   "devDependencies": {
