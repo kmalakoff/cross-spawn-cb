@@ -1,1 +1,1 @@
-ignores: ["@types/*", "cross-spawn-cb", "@biomejs/*"]
+ignores: ["cross-spawn-cb"]
