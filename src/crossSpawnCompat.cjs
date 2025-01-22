@@ -3,10 +3,10 @@ const cp = require('child_process');
 const crossSpawn = require('../../assets/cross-spawn.cjs');
 
 if (!cp.spawnSync) {
-  const workerPath = path.join(__dirname, '..', 'spawn.cjs');
+  const workerPath = path.join(__dirname, '..', 'cjs', 'spawn.cjs');
 
   let functionExec = null; // break dependencies
-  cp.spawnSync = function spawnSyncPolyfill(cmd, args, options) {
+  cp.spawnSync = function spawnSync(cmd, args, options) {
     if (!functionExec) functionExec = require('function-exec-sync');
     return functionExec({ callbacks: true }, workerPath, cmd, args, options || {});
   };
