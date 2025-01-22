@@ -1,1 +1,1 @@
-ignores: ["cross-spawn-cb"]
+ignores: ["cross-spawn-cb", "function-exec-sync"]

@@ -1,7 +1,16 @@
-require('./patch.cjs');
 const path = require('path');
 const cp = require('child_process');
-const spawn_ = require('../../../assets/cross-spawn.cjs');
+const crossSpawn = require('../../assets/cross-spawn.cjs');
+
+if (!cp.spawnSync) {
+  const workerPath = path.join(__dirname, '..', 'spawn.cjs');
+
+  let functionExec = null; // break dependencies
+  cp.spawnSync = function spawnSyncPolyfill(cmd, args, options) {
+    if (!functionExec) functionExec = require('function-exec-sync');
+    return functionExec({ callbacks: true }, workerPath, cmd, args, options || {});
+  };
+}
 
 const NODES = ['node', 'node.exe', 'node.cmd'];
 function parse(command, args, options) {
@@ -9,9 +18,9 @@ function parse(command, args, options) {
     const env = options ? options.env || process.env : process.env;
     command = env.NODE || env.npm_node_execpath;
   }
-  return spawn_._parse(command, args, options);
+  return crossSpawn._parse(command, args, options);
 }
-const enoent = spawn_._enoent;
+const enoent = crossSpawn._enoent;
 
 function spawn(command, args, options) {
   const parsed = parse(command, args, options);

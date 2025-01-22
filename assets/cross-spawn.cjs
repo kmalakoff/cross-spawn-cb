@@ -1,34 +1,18 @@
-// BEGIN SHIMS
-function _define_property(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-
-function _object_spread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
-    if (typeof Object.getOwnPropertySymbols === "function") {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
-    }
-    ownKeys.forEach(function (key) {
-      _define_property(target, key, source[key]);
-    });
+function objectAssign(target, obj) {
+  for (var key in obj) {
+    if (!target.hasOwnProperty(key)) target[key] = obj[key];
   }
   return target;
 }
-// END SHIMS
+
+function findKey(obj, fn) {
+  for (var key in obj) {
+    if (fn(key)) return key;
+  }
+  return null
+}
+
+var pathDelimiter = process.platform === 'win32' ? ';' : ':';
 'use strict';
 
 var require$$0$2 = require('child_process');
@@ -322,7 +306,7 @@ function requirePathKey() {
         if (platform !== 'win32') {
             return 'PATH';
         }
-        return Object.keys(env).find(function(x) {
+        return findKey(env,function(x) {
             return x.toUpperCase() === 'PATH';
         }) || 'Path';
     };
@@ -352,7 +336,7 @@ function requireResolveCommand() {
         try {
             resolved = which.sync(parsed.command, {
                 path: (parsed.options.env || process.env)[pathKey],
-                pathExt: withoutPathExt ? path.delimiter : undefined
+                pathExt: withoutPathExt ? pathDelimiter : undefined
             });
         } catch (e) {
         /* Empty */ } finally{
@@ -1840,7 +1824,7 @@ function requireParse() {
             args = null;
         }
         args = args ? args.slice(0) : []; // Clone array to avoid changing the original
-        options = _object_spread({}, options); // Clone object to avoid changing the original
+        options = objectAssign({}, options); // Clone object to avoid changing the original
         // Build our parsed object
         var parsed = {
             command: command,
@@ -1866,7 +1850,7 @@ function requireEnoent() {
     hasRequiredEnoent = 1;
     var isWin = process.platform === 'win32';
     function notFoundError(original, syscall) {
-        return _object_spread(new Error("".concat(syscall, " ").concat(original.command, " ENOENT")), {
+        return objectAssign(new Error("".concat(syscall, " ").concat(original.command, " ENOENT")), {
             code: 'ENOENT',
             errno: 'ENOENT',
             syscall: "".concat(syscall, " ").concat(original.command),
