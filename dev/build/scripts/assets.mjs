@@ -10,8 +10,25 @@ const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : 
 const cwd = process.cwd();
 const dest = path.join(__dirname, '..', '..', '..', 'assets');
 
+// https://github.com/sindresorhus/escape-string-regexp/blob/main/index.js#L8C1-L11C1
+function escape(string) {
+  return string
+    .replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
+    .replace(/-/g, '\\x2d');
+}
+
 const BUILDS = [
-  { in: 'cross-spawn-6.0.5', out: 'cross-spawn.cjs', pre: path.join(__dirname, '..', 'assets', 'pre.js'), post: path.join(__dirname, '..', 'assets', 'post.js'), replacements: [{ from: 'Object.assign', to: '_object_spread' }] }
+  {
+    in: 'cross-spawn-6.0.5',
+    out: 'cross-spawn.cjs',
+    pre: path.join(__dirname, '..', 'assets', 'pre.js'),
+    post: path.join(__dirname, '..', 'assets', 'post.js'),
+    replacements: [
+      { from: escape('Object.assign'), to: 'objectAssign' },
+      { from: escape('Object.keys(env).find('), to: 'findKey(env,' },
+      { from: escape('path.delimiter'), to: 'pathDelimiter' },
+    ]
+  }
 ];
 
 import fs from 'fs';
