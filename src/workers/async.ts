@@ -1,6 +1,5 @@
-import once from 'call-once-fn';
-import nextTick from 'next-tick';
 import { spawnKeys } from '../constants';
+import once from '../lib/once';
 
 import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types';
 
@@ -10,56 +9,43 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
     options = {};
   }
   options = options || {};
-  callback = once(callback);
-  let stdout: Buffer[] = null;
-  let stderr: Buffer[] = null;
+  callback = once(callback); // some versions of node emit both an error and close
 
   // collect output
   const res = { pid: 0, output: [], stdout: null, stderr: null, status: null, signal: null } as SpawnResult;
-  if (options.encoding) {
-    if (cp.stdout) {
-      stdout = [];
-      cp.stdout.on('data', stdout.push.bind(stdout));
-    }
-    if (cp.stderr) {
-      stderr = [];
-      cp.stderr.on('data', stderr.push.bind(stderr));
-    }
-  }
+  const stdout: Buffer[] = [];
+  const stderr: Buffer[] = [];
+  if (options.encoding && cp.stdout) cp.stdout.on('data', stdout.push.bind(stdout));
+  if (options.encoding && cp.stderr) cp.stderr.on('data', stderr.push.bind(stderr));
 
-  // some versions of node emit both an error and close
   cp.on('error', (err: SpawnError) => err.code === 'OK' || callback(err));
-
-  // done
   cp.on('close', (status, signal) => {
-    nextTick(function closeNextTick() {
+    setTimeout(function close() {
       // prepare result
       res.pid = cp.pid;
       res.status = status;
       res.signal = signal;
-      if (stdout) {
+      if (options.encoding && cp.stdout) {
         res.stdout = Buffer.concat(stdout);
         if (options.encoding !== 'binary') res.stdout = res.stdout.toString(options.encoding);
       }
-      if (stderr) {
+      if (options.encoding && cp.stderr) {
         res.stderr = Buffer.concat(stderr);
         if (options.encoding !== 'binary') res.stderr = res.stderr.toString(options.encoding);
       }
       res.output = [null, res.stdout, res.stderr];
-
-      // patch: early node on windows could return null
-      if (res.status === null) res.status = 0;
+      if (res.status === null) res.status = 0; // patch: early node on windows could return null
 
       // process errors
       const err = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
       if (err) {
         for (const key in res) {
           if (spawnKeys.indexOf(key) < 0) continue;
-          err[key] = Buffer.isBuffer(res[key]) ? res[key].toString('utf8') : res[key];
+          err[key] = Buffer.isBuffer(res[key]) ? res[key].toString(options.encoding || 'utf8') : res[key];
         }
       }
       err ? callback(err) : callback(null, res);
-    });
+    }, 0);
   });
 
   // pipe input
