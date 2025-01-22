@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.2.11"
+    "function-exec-sync": "^1.2.12"
   },
   "devDependencies": {
     "@types/mocha": "*",
