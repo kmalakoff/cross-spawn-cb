@@ -33,7 +33,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "call-once-fn": "^1.0.9",
+    "call-once-fn": "^1.0.10",
     "cross-spawn": "^7.0.6",
     "function-exec-sync": "^1.2.12"
   },
