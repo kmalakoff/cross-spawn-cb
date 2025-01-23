@@ -1,4 +1,4 @@
-import crossSpawn from './crossSpawn.cjs';
+import crossSpawn from './lib/crossSpawn.cjs';
 import worker from './workers/sync';
 
 import type { SpawnOptions, SpawnResult } from './types';

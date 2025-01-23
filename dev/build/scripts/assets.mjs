@@ -24,9 +24,11 @@ const BUILDS = [
     pre: path.join(__dirname, '..', 'assets', 'pre.js'),
     post: path.join(__dirname, '..', 'assets', 'post.js'),
     replacements: [
+      { from: escape('\'use strict\';'), to: '' },
       { from: escape('Object.assign'), to: 'objectAssign' },
       { from: escape('Object.keys(env).find('), to: 'findKey(env,' },
       { from: escape('path.delimiter'), to: 'pathDelimiter' },
+      { from: escape('cp.spawnSync'), to: 'cpSpawnSync' },
     ]
   }
 ];

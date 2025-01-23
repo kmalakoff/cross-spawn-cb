@@ -1,6 +1,15 @@
-function objectAssign(target, obj) {
-  for (var key in obj) {
-    if (!target.hasOwnProperty(key)) target[key] = obj[key];
+'use strict';
+
+/* COMPATIBILITY POLYFILLS */
+
+function objectAssign(target) {
+  // biome-ignore lint/style/noArguments: <explanation>
+  var objects = Array.prototype.slice.call(arguments, 1);
+  while (objects.length) {
+    var object = objects.pop();
+    for (var key in object) {
+      target[key] = object[key];
+    }
   }
   return target;
 }
@@ -13,7 +22,10 @@ function findKey(obj, fn) {
 }
 
 var pathDelimiter = process.platform === 'win32' ? ';' : ':';
-'use strict';
+
+var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/lib/spawnSyncPolyfill.cjs');
+
+/* COMPATIBILITY POLYFILLS */
 
 var require$$0$2 = require('child_process');
 var require$$0$1 = require('path');
@@ -1918,7 +1930,7 @@ function requireCrossSpawn6_0_5() {
         // Parse the arguments
         var parsed = parse(command, args, options);
         // Spawn the child process
-        var result = cp.spawnSync(parsed.command, parsed.args, parsed.options);
+        var result = cpSpawnSync(parsed.command, parsed.args, parsed.options);
         // Analyze if the command does not exist, see: https://github.com/IndigoUnited/node-cross-spawn/issues/16
         result.error = result.error || enoent.verifyENOENTSync(result.status, parsed);
         return result;

@@ -1,5 +1,5 @@
+import once from 'call-once-fn';
 import { spawnKeys } from '../constants';
-import once from '../lib/once';
 
 import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types';
 
