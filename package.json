@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.2.14",
+    "function-exec-sync": "^1.2.15",
     "on-one": "^0.1.1"
   },
   "devDependencies": {
