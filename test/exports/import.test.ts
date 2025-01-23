@@ -1,6 +1,7 @@
 import assert from 'assert';
 // @ts-ignore
 import spawn from 'cross-spawn-cb';
+// @ts-ignore
 import * as spawnStar from 'cross-spawn-cb';
 // @ts-ignore
 import { crossSpawn, sync } from 'cross-spawn-cb';

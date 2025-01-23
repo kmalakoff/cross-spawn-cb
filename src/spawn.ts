@@ -1,4 +1,4 @@
-import crossSpawn from './crossSpawn.cjs';
+import crossSpawn from './lib/crossSpawn.cjs';
 import spawnSync from './spawnSync';
 import worker from './workers/async';
 

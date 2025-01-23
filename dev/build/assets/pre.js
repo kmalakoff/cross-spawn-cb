@@ -1,6 +1,15 @@
-function objectAssign(target, obj) {
-  for (var key in obj) {
-    if (!target.hasOwnProperty(key)) target[key] = obj[key];
+'use strict';
+
+/* COMPATIBILITY POLYFILLS */
+
+function objectAssign(target) {
+  // biome-ignore lint/style/noArguments: <explanation>
+  var objects = Array.prototype.slice.call(arguments, 1);
+  while (objects.length) {
+    var object = objects.pop();
+    for (var key in object) {
+      target[key] = object[key];
+    }
   }
   return target;
 }
@@ -13,3 +22,7 @@ function findKey(obj, fn) {
 }
 
 var pathDelimiter = process.platform === 'win32' ? ';' : ':';
+
+var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/lib/spawnSyncPolyfill.cjs');
+
+/* COMPATIBILITY POLYFILLS */

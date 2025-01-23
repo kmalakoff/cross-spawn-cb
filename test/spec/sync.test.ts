@@ -1,5 +1,6 @@
 import assert from 'assert';
 
+// @ts-ignore
 import { crossSpawn, sync } from 'cross-spawn-cb';
 
 describe('sync', () => {
