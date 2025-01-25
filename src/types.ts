@@ -8,9 +8,7 @@ export interface SpawnOptions extends child_process.SpawnOptions {
 }
 export type SpawnResult = child_process.SpawnSyncReturns<string | Buffer>;
 
-export interface SpawnError extends Error {
-  status?: number;
-  stderr?: string | Buffer;
+export interface SpawnError extends Error, SpawnResult {
   code?: string;
 }
 export type SpawnCallback = (err?: SpawnError, res?: SpawnResult) => void;
