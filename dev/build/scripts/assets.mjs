@@ -10,28 +10,12 @@ const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : 
 const cwd = process.cwd();
 const dest = path.join(__dirname, '..', '..', '..', 'assets');
 
-// https://github.com/sindresorhus/escape-string-regexp/blob/main/index.js#L8C1-L11C1
-function escape(string) {
-  return string
-    .replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
-    .replace(/-/g, '\\x2d');
-}
-
-const BUILDS = [
-  {
-    in: 'cross-spawn-6.0.5',
-    out: 'cross-spawn.cjs',
-    pre: path.join(__dirname, '..', 'assets', 'pre.js'),
-    post: path.join(__dirname, '..', 'assets', 'post.js'),
-    replacements: [
-      { from: escape('\'use strict\';'), to: '' },
-      { from: escape('Object.assign'), to: 'objectAssign' },
-      { from: escape('Object.keys(env).find('), to: 'findKey(env,' },
-      { from: escape('path.delimiter'), to: 'pathDelimiter' },
-      { from: escape('cp.spawnSync'), to: 'cpSpawnSync' },
-    ]
-  }
-];
+const BUILDS = [{
+  in: 'cross-spawn-6.0.5',
+  out: 'cross-spawn.cjs',
+  pre: path.join(__dirname, '..', 'assets', 'pre.js'),
+  post: path.join(__dirname, '..', 'assets', 'post.js')
+}];
 
 import fs from 'fs';
 function patch(build, callback) {
@@ -40,7 +24,6 @@ function patch(build, callback) {
     const pre = build.pre ? fs.readFileSync(build.pre, 'utf8') : '';
     const post = build.post ? fs.readFileSync(build.post, 'utf8') : '';
     let content = fs.readFileSync(outPath, 'utf8');
-    if (build.replacements) content = build.replacements.reduce((m, r) => m.replace(new RegExp(r.from, 'g'), r.to), content)
     fs.writeFileSync(outPath, pre + content + post, 'utf8');
     callback();
   } catch (err) {
