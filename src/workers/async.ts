@@ -52,7 +52,7 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
         err[key] = Buffer.isBuffer(res[key]) ? res[key].toString(options.encoding || 'utf8') : res[key];
       }
     }
-    err ? callback(err) : callback(null, res);
+    err ? callback(err as SpawnError) : callback(null, res);
   });
 
   // pipe input

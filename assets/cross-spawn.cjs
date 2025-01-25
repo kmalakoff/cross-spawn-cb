@@ -26,7 +26,6 @@ var pathDelimiter = process.platform === 'win32' ? ';' : ':';
 var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/lib/spawnSyncPolyfill.cjs');
 
 /* COMPATIBILITY POLYFILLS */
-
 var require$$0$2 = require('child_process');
 var require$$0$1 = require('path');
 var require$$0 = require('fs');
@@ -318,7 +317,7 @@ function requirePathKey() {
         if (platform !== 'win32') {
             return 'PATH';
         }
-        return findKey(env,function(x) {
+        return findKey(env, function(x) {
             return x.toUpperCase() === 'PATH';
         }) || 'Path';
     };
