@@ -1,6 +1,6 @@
 const path = require('path');
 
-const workerPath = path.join(__dirname, '..', '..', 'cjs', 'spawn.cjs');
+const workerPath = path.join(__dirname, '..', '..', 'cjs', 'spawn.js');
 
 let functionExec = null; // break dependencies
 module.exports = function spawnSyncPolyfill(cmd, args, options) {
