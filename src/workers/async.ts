@@ -1,7 +1,7 @@
 import oo from 'on-one';
-import { spawnKeys } from '../constants';
+import { spawnKeys } from '../constants.js';
 
-import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types';
+import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types.js';
 
 function isError(obj) {
   return Object.prototype.toString.call(obj) === '[object Error]';
