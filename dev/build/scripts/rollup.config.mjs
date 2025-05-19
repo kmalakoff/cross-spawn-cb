@@ -17,5 +17,5 @@ const replace = (replacements) => ({
 
 export default {
   output: { format: 'cjs', strict: false },
-  plugins: [replace(replacements), resolve(), commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
+  plugins: [replace(replacements), , commonjs(), externals({ deps: false, devDeps: false, builtinsPrefix: 'strip' }), swc()],
 };
