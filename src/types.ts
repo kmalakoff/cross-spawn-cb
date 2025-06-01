@@ -6,9 +6,26 @@ export interface SpawnOptions extends child_process.SpawnOptions {
   env?: NodeJS.ProcessEnv;
   input?: string | Buffer;
 }
+export interface SpawnSyncOptions extends child_process.SpawnSyncOptions {
+  encoding?: BufferEncoding;
+  env?: NodeJS.ProcessEnv;
+  input?: string | Buffer;
+}
 export type SpawnResult = child_process.SpawnSyncReturns<string | Buffer>;
 
-export interface SpawnError extends Error, SpawnResult {
-  code?: string;
+export interface Parsed {
+  command: string;
+  args: string[];
+  options: SpawnOptions | SpawnSyncOptions;
 }
+
+export interface NotFoundError extends Error {
+  code?: string;
+  errno?: string;
+  syscall?: string;
+  path?: string;
+  spawnargs?: string[];
+}
+export interface SpawnError extends NotFoundError, SpawnResult {}
+
 export type SpawnCallback = (err?: SpawnError, res?: SpawnResult) => void;
