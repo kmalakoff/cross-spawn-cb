@@ -22,9 +22,9 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
   if (options.encoding && cp.stderr) cp.stderr.on('data', stderr.push.bind(stderr));
 
   // some versions of node emit both an error and close
-  oo(cp, ['error', 'close'], (status, signal) => {
+  oo(cp, ['error', 'close'], (status: number | null, signal: NodeJS.Signals | null) => {
     if (isError(status)) {
-      const err = status as SpawnError;
+      const err = status as unknown as SpawnError;
       if (err.code === 'OK') return; // ignore
       return callback(err);
     }
