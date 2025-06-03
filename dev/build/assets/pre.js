@@ -23,6 +23,6 @@ function findKey(obj, fn) {
 
 var pathDelimiter = process.platform === 'win32' ? ';' : ':';
 
-var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/lib/spawnSyncPolyfill.cjs');
+var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/polyfills/spawnSync.cjs');
 
 /* COMPATIBILITY POLYFILLS */
