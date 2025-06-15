@@ -4,7 +4,7 @@ import path from 'path';
 import spawnSyncPolyfill from './polyfills/spawnSync.cjs';
 
 import type { ChildProcess } from 'child_process';
-import type { Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions, hookChildProcess, notFoundError, verifyENOENT, verifyENOENTSync } from './types.js';
+import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.js';
 
 const major = +process.versions.node.split('.')[0];
 const _require = typeof require === 'undefined' ? Module.createRequire(import.meta.url) : require;
@@ -35,10 +35,4 @@ function _parse(command: string, args: string[], options?: SpawnOptions | SpawnS
   return crossSpawn._parse(command, args, options);
 }
 spawn._parse = (major <= 7 ? _parse : crossSpawn._parse) as typeof _parse;
-
-spawn._enoent = {
-  hookChildProcess: crossSpawn._enoent.hookChildProcess as hookChildProcess,
-  verifyENOENT: crossSpawn._enoent.verifyENOENT as verifyENOENT,
-  verifyENOENTSync: crossSpawn._enoent.verifyENOENTSync as verifyENOENTSync,
-  notFoundError: crossSpawn._enoent.notFoundError as notFoundError,
-};
+spawn._enoent = crossSpawn._enoent as Enoent;
