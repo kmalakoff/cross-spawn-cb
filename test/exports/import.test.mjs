@@ -1,7 +1,6 @@
 import assert from 'assert';
-import spawn from 'cross-spawn-cb';
 import * as spawnStar from 'cross-spawn-cb';
-import { crossSpawn, sync } from 'cross-spawn-cb';
+import spawn, { crossSpawn, sync } from 'cross-spawn-cb';
 
 describe('exports .mjs', () => {
   it('exports on default', () => {

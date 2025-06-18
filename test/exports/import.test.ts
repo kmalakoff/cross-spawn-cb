@@ -1,10 +1,9 @@
 import assert from 'assert';
 // @ts-ignore
-import spawn from 'cross-spawn-cb';
-// @ts-ignore
 import * as spawnStar from 'cross-spawn-cb';
 // @ts-ignore
-import { crossSpawn, sync } from 'cross-spawn-cb';
+// @ts-ignore
+import spawn, { crossSpawn, sync } from 'cross-spawn-cb';
 
 describe('exports .ts', () => {
   it('exports on default', () => {
