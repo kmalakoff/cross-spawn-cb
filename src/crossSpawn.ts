@@ -1,9 +1,8 @@
+import type { ChildProcess } from 'child_process';
 import cp from 'child_process';
 import Module from 'module';
 import path from 'path';
 import spawnSyncPolyfill from './polyfills/spawnSync.cjs';
-
-import type { ChildProcess } from 'child_process';
 import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.js';
 
 const major = +process.versions.node.split('.')[0];

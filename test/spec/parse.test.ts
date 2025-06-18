@@ -1,8 +1,6 @@
 import assert from 'assert';
-
-import spawn from 'cross-spawn-cb';
 // @ts-ignore
-import { crossSpawn } from 'cross-spawn-cb';
+import spawn, { crossSpawn } from 'cross-spawn-cb';
 
 describe('_parse', () => {
   describe('happy path', () => {

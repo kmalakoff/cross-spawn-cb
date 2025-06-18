@@ -1,10 +1,7 @@
 import assert from 'assert';
-
-import Pinkie from 'pinkie-promise';
-
-import spawn from 'cross-spawn-cb';
 // @ts-ignore
-import { crossSpawn } from 'cross-spawn-cb';
+import spawn, { crossSpawn } from 'cross-spawn-cb';
+import Pinkie from 'pinkie-promise';
 
 describe('callback', () => {
   describe('happy path', () => {
