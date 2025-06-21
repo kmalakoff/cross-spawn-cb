@@ -7,8 +7,7 @@ import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from
 
 const major = +process.versions.node.split('.')[0];
 const _require = typeof require === 'undefined' ? Module.createRequire(import.meta.url) : require;
-const crossSpawnPath = major <= 7 ? '../../assets/cross-spawn.cjs' : 'cross-spawn';
-const crossSpawn = _require(crossSpawnPath);
+const crossSpawn = _require(major <= 7 ? '../../assets/cross-spawn.cjs' : 'cross-spawn');
 
 export default function spawn(command: string, args: string[], options?: SpawnOptions): ChildProcess {
   const parsed = spawn._parse(command, args, options);
