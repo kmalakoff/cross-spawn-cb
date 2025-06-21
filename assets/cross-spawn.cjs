@@ -3,27 +3,27 @@
 /* COMPATIBILITY POLYFILLS */
 
 function objectAssign(target) {
-  // biome-ignore lint/style/noArguments: <explanation>
-  var objects = Array.prototype.slice.call(arguments, 1);
-  while (objects.length) {
-    var object = objects.pop();
-    for (var key in object) {
-      target[key] = object[key];
+    // biome-ignore lint/style/noArguments: <explanation>
+    var objects = Array.prototype.slice.call(arguments, 1);
+    while (objects.length) {
+        var object = objects.pop();
+        for (var key in object) {
+            target[key] = object[key];
+        }
     }
-  }
-  return target;
+    return target;
 }
 
 function findKey(obj, fn) {
-  for (var key in obj) {
-    if (fn(key)) return key;
-  }
-  return null
+    for (var key in obj) {
+        if (fn(key)) return key;
+    }
+    return null
 }
 
 var pathDelimiter = process.platform === 'win32' ? ';' : ':';
 
-var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/polyfills/spawnSync.js');
+var cpSpawnSync = require('child_process').spawnSync || require('../dist/cjs/polyfills/spawnSync.cjs');
 
 /* COMPATIBILITY POLYFILLS */
 var require$$0$2 = require('child_process');
@@ -51,7 +51,7 @@ function requireSrc() {
 	 */ src = function src(fn) {
         try {
             return fn();
-        } catch (e) {}
+        } catch (e) { }
     };
     return src;
 }
@@ -73,7 +73,7 @@ function requireWindows() {
         if (pathext.indexOf('') !== -1) {
             return true;
         }
-        for(var i = 0; i < pathext.length; i++){
+        for (var i = 0; i < pathext.length; i++) {
             var p = pathext[i].toLowerCase();
             if (p && path.substr(-p.length).toLowerCase() === p) {
                 return true;
@@ -88,7 +88,7 @@ function requireWindows() {
         return checkPathExt(path, options);
     }
     function isexe(path, options, cb) {
-        fs.stat(path, function(er, stat) {
+        fs.stat(path, function (er, stat) {
             cb(er, er ? false : checkStat(stat, path, options));
         });
     }
@@ -107,7 +107,7 @@ function requireMode() {
     isexe.sync = sync;
     var fs = require$$0;
     function isexe(path, options, cb) {
-        fs.stat(path, function(er, stat) {
+        fs.stat(path, function (er, stat) {
             cb(er, er ? false : checkStat(stat, options));
         });
     }
@@ -155,8 +155,8 @@ function requireIsexe() {
             if (typeof Promise !== 'function') {
                 throw new TypeError('callback not provided');
             }
-            return new Promise(function(resolve, reject) {
-                isexe(path, options || {}, function(er, is) {
+            return new Promise(function (resolve, reject) {
+                isexe(path, options || {}, function (er, is) {
                     if (er) {
                         reject(er);
                     } else {
@@ -165,7 +165,7 @@ function requireIsexe() {
                 });
             });
         }
-        core(path, options || {}, function(er, is) {
+        core(path, options || {}, function (er, is) {
             // ignore EACCES because that just means we aren't allowed to run it
             if (er) {
                 if (er.code === 'EACCES' || options && options.ignoreErrors) {
@@ -260,7 +260,7 @@ function requireWhich() {
                 var ext = pathExt[ii];
                 isexe(p + ext, {
                     pathExt: pathExtExe
-                }, function(er, is) {
+                }, function (er, is) {
                     if (!er && is) {
                         if (opt.all) found.push(p + ext);
                         else return cb(null, p + ext);
@@ -277,14 +277,14 @@ function requireWhich() {
         var pathExt = info.ext;
         var pathExtExe = info.extExe;
         var found = [];
-        for(var i = 0, l = pathEnv.length; i < l; i++){
+        for (var i = 0, l = pathEnv.length; i < l; i++) {
             var pathPart = pathEnv[i];
             if (pathPart.charAt(0) === '"' && pathPart.slice(-1) === '"') pathPart = pathPart.slice(1, -1);
             var p = path.join(pathPart, cmd);
             if (!pathPart && /^\.[\\\/]/.test(cmd)) {
                 p = cmd.slice(0, 2) + p;
             }
-            for(var j = 0, ll = pathExt.length; j < ll; j++){
+            for (var j = 0, ll = pathExt.length; j < ll; j++) {
                 var cur = p + pathExt[j];
                 var is;
                 try {
@@ -295,7 +295,7 @@ function requireWhich() {
                         if (opt.all) found.push(cur);
                         else return cur;
                     }
-                } catch (ex) {}
+                } catch (ex) { }
             }
         }
         if (opt.all && found.length) return found;
@@ -310,14 +310,14 @@ var hasRequiredPathKey;
 function requirePathKey() {
     if (hasRequiredPathKey) return pathKey;
     hasRequiredPathKey = 1;
-    pathKey = function(opts) {
+    pathKey = function (opts) {
         opts = opts || {};
         var env = opts.env || process.env;
         var platform = opts.platform || process.platform;
         if (platform !== 'win32') {
             return 'PATH';
         }
-        return findKey(env, function(x) {
+        return findKey(env, function (x) {
             return x.toUpperCase() === 'PATH';
         }) || 'Path';
     };
@@ -341,7 +341,8 @@ function requireResolveCommand() {
             try {
                 process.chdir(parsed.options.cwd);
             } catch (err) {
-            /* Empty */ }
+                /* Empty */
+}
         }
         var resolved;
         try {
@@ -350,7 +351,8 @@ function requireResolveCommand() {
                 pathExt: withoutPathExt ? pathDelimiter : undefined
             });
         } catch (e) {
-        /* Empty */ } finally{
+            /* Empty */
+} finally {
             process.chdir(cwd);
         }
         // If we successfully resolved, ensure that an absolute path is returned
@@ -459,7 +461,7 @@ function requireReadShebang() {
             fd = fs.openSync(command, 'r');
             fs.readSync(fd, buffer, 0, size, 0);
             fs.closeSync(fd);
-        } catch (e) {}
+        } catch (e) { }
         // Attempt to extract shebang (null is returned if not a shebang)
         return shebangCommand(buffer.toString());
     }
@@ -486,7 +488,7 @@ var hasRequiredSemver;
 function requireSemver() {
     if (hasRequiredSemver) return semver.exports;
     hasRequiredSemver = 1;
-    (function(module, exports) {
+    (function (module, exports) {
         exports = module.exports = SemVer;
         var debug;
         /* istanbul ignore next */ if ((typeof process === "undefined" ? "undefined" : _type_of(process)) === 'object' && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG)) {
@@ -496,7 +498,7 @@ function requireSemver() {
                 console.log.apply(console, args);
             };
         } else {
-            debug = function debug() {};
+            debug = function debug() { };
         }
         // Note: this is the semver.org version of the spec that it implements
         // Not necessarily the package version of this code.
@@ -533,7 +535,7 @@ function requireSemver() {
             ]
         ];
         function makeSafeRe(value) {
-            for(var i = 0; i < safeRegexReplacements.length; i++){
+            for (var i = 0; i < safeRegexReplacements.length; i++) {
                 var token = safeRegexReplacements[i][0];
                 var max = safeRegexReplacements[i][1];
                 value = value.split(token + '*').join(token + '{0,' + max + '}').split(token + '+').join(token + '{1,' + max + '}');
@@ -670,7 +672,7 @@ function requireSemver() {
         src[STAR] = '(<|>)?=?\\s*\\*';
         // Compile to actual regexp objects.
         // All are flag-free, unless they were created above with a flag.
-        for(var i = 0; i < R; i++){
+        for (var i = 0; i < R; i++) {
             debug(i, src[i]);
             if (!re[i]) {
                 re[i] = new RegExp(src[i]);
@@ -768,7 +770,7 @@ function requireSemver() {
             if (!m[4]) {
                 this.prerelease = [];
             } else {
-                this.prerelease = m[4].split('.').map(function(id) {
+                this.prerelease = m[4].split('.').map(function (id) {
                     if (/^[0-9]+$/.test(id)) {
                         var num = +id;
                         if (num >= 0 && num < MAX_SAFE_INTEGER) {
@@ -781,30 +783,30 @@ function requireSemver() {
             this.build = m[5] ? m[5].split('.') : [];
             this.format();
         }
-        SemVer.prototype.format = function() {
+        SemVer.prototype.format = function () {
             this.version = this.major + '.' + this.minor + '.' + this.patch;
             if (this.prerelease.length) {
                 this.version += '-' + this.prerelease.join('.');
             }
             return this.version;
         };
-        SemVer.prototype.toString = function() {
+        SemVer.prototype.toString = function () {
             return this.version;
         };
-        SemVer.prototype.compare = function(other) {
+        SemVer.prototype.compare = function (other) {
             debug('SemVer.compare', this.version, this.options, other);
             if (!_instanceof(other, SemVer)) {
                 other = new SemVer(other, this.options);
             }
             return this.compareMain(other) || this.comparePre(other);
         };
-        SemVer.prototype.compareMain = function(other) {
+        SemVer.prototype.compareMain = function (other) {
             if (!_instanceof(other, SemVer)) {
                 other = new SemVer(other, this.options);
             }
             return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
         };
-        SemVer.prototype.comparePre = function(other) {
+        SemVer.prototype.comparePre = function (other) {
             if (!_instanceof(other, SemVer)) {
                 other = new SemVer(other, this.options);
             }
@@ -832,12 +834,12 @@ function requireSemver() {
                 } else {
                     return compareIdentifiers(a, b);
                 }
-            }while (++i);
+            } while (++i);
         };
         // preminor will bump the version up to the next minor release, and immediately
         // down to pre-release. premajor and prepatch work the same way.
-        SemVer.prototype.inc = function(release, identifier) {
-            switch(release){
+        SemVer.prototype.inc = function (release, identifier) {
+            switch (release) {
                 case 'premajor':
                     this.prerelease.length = 0;
                     this.patch = 0;
@@ -909,7 +911,7 @@ function requireSemver() {
                         ];
                     } else {
                         var i = this.prerelease.length;
-                        while(--i >= 0){
+                        while (--i >= 0) {
                             if (typeof this.prerelease[i] === 'number') {
                                 this.prerelease[i]++;
                                 i = -2;
@@ -969,7 +971,7 @@ function requireSemver() {
                     prefix = 'pre';
                     var defaultResult = 'prerelease';
                 }
-                for(var key in v1){
+                for (var key in v1) {
                     if (key === 'major' || key === 'minor' || key === 'patch') {
                         if (v1[key] !== v2[key]) {
                             return prefix + key;
@@ -977,7 +979,7 @@ function requireSemver() {
                     }
                 }
                 return defaultResult // may be undefined
-                ;
+                    ;
             }
         }
         exports.compareIdentifiers = compareIdentifiers;
@@ -1021,13 +1023,13 @@ function requireSemver() {
         }
         exports.sort = sort;
         function sort(list, loose) {
-            return list.sort(function(a, b) {
+            return list.sort(function (a, b) {
                 return exports.compare(a, b, loose);
             });
         }
         exports.rsort = rsort;
         function rsort(list, loose) {
-            return list.sort(function(a, b) {
+            return list.sort(function (a, b) {
                 return exports.rcompare(a, b, loose);
             });
         }
@@ -1057,7 +1059,7 @@ function requireSemver() {
         }
         exports.cmp = cmp;
         function cmp(a, op, b, loose) {
-            switch(op){
+            switch (op) {
                 case '===':
                     if ((typeof a === "undefined" ? "undefined" : _type_of(a)) === 'object') a = a.version;
                     if ((typeof b === "undefined" ? "undefined" : _type_of(b)) === 'object') b = b.version;
@@ -1115,7 +1117,7 @@ function requireSemver() {
             debug('comp', this);
         }
         var ANY = {};
-        Comparator.prototype.parse = function(comp) {
+        Comparator.prototype.parse = function (comp) {
             var r = this.options.loose ? safeRe[COMPARATORLOOSE] : safeRe[COMPARATOR];
             var m = comp.match(r);
             if (!m) {
@@ -1132,10 +1134,10 @@ function requireSemver() {
                 this.semver = new SemVer(m[2], this.options.loose);
             }
         };
-        Comparator.prototype.toString = function() {
+        Comparator.prototype.toString = function () {
             return this.value;
         };
-        Comparator.prototype.test = function(version) {
+        Comparator.prototype.test = function (version) {
             debug('Comparator.test', version, this.options.loose);
             if (this.semver === ANY) {
                 return true;
@@ -1145,7 +1147,7 @@ function requireSemver() {
             }
             return cmp(version, this.operator, this.semver, this.options);
         };
-        Comparator.prototype.intersects = function(comp, options) {
+        Comparator.prototype.intersects = function (comp, options) {
             if (!_instanceof(comp, Comparator)) {
                 throw new TypeError('a Comparator is required');
             }
@@ -1200,9 +1202,9 @@ function requireSemver() {
             // future error messages as well.
             this.raw = range.trim().split(/\s+/).join(' ');
             // First, split based on boolean or ||
-            this.set = this.raw.split('||').map(function(range) {
+            this.set = this.raw.split('||').map(function (range) {
                 return this.parseRange(range.trim());
-            }, this).filter(function(c) {
+            }, this).filter(function (c) {
                 // throw out any that are not relevant for whatever reason
                 return c.length;
             });
@@ -1211,16 +1213,16 @@ function requireSemver() {
             }
             this.format();
         }
-        Range.prototype.format = function() {
-            this.range = this.set.map(function(comps) {
+        Range.prototype.format = function () {
+            this.range = this.set.map(function (comps) {
                 return comps.join(' ').trim();
             }).join('||').trim();
             return this.range;
         };
-        Range.prototype.toString = function() {
+        Range.prototype.toString = function () {
             return this.range;
         };
-        Range.prototype.parseRange = function(range) {
+        Range.prototype.parseRange = function (range) {
             var loose = this.options.loose;
             // `1.2.3 - 1.2.4` => `>=1.2.3 <=1.2.4`
             var hr = loose ? safeRe[HYPHENRANGELOOSE] : safeRe[HYPHENRANGE];
@@ -1236,28 +1238,28 @@ function requireSemver() {
             // At this point, the range is completely trimmed and
             // ready to be split into comparators.
             var compRe = loose ? safeRe[COMPARATORLOOSE] : safeRe[COMPARATOR];
-            var set = range.split(' ').map(function(comp) {
+            var set = range.split(' ').map(function (comp) {
                 return parseComparator(comp, this.options);
             }, this).join(' ').split(/\s+/);
             if (this.options.loose) {
                 // in loose mode, throw out any that are not valid comparators
-                set = set.filter(function(comp) {
+                set = set.filter(function (comp) {
                     return !!comp.match(compRe);
                 });
             }
-            set = set.map(function(comp) {
+            set = set.map(function (comp) {
                 return new Comparator(comp, this.options);
             }, this);
             return set;
         };
-        Range.prototype.intersects = function(range, options) {
+        Range.prototype.intersects = function (range, options) {
             if (!_instanceof(range, Range)) {
                 throw new TypeError('a Range is required');
             }
-            return this.set.some(function(thisComparators) {
-                return thisComparators.every(function(thisComparator) {
-                    return range.set.some(function(rangeComparators) {
-                        return rangeComparators.every(function(rangeComparator) {
+            return this.set.some(function (thisComparators) {
+                return thisComparators.every(function (thisComparator) {
+                    return range.set.some(function (rangeComparators) {
+                        return rangeComparators.every(function (rangeComparator) {
                             return thisComparator.intersects(rangeComparator, options);
                         });
                     });
@@ -1267,8 +1269,8 @@ function requireSemver() {
         // Mostly just for testing and legacy API reasons
         exports.toComparators = toComparators;
         function toComparators(range, options) {
-            return new Range(range, options).set.map(function(comp) {
-                return comp.map(function(c) {
+            return new Range(range, options).set.map(function (comp) {
+                return comp.map(function (c) {
                     return c.value;
                 }).join(' ').trim().split(' ');
             });
@@ -1298,13 +1300,13 @@ function requireSemver() {
         // ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0
         // ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0
         function replaceTildes(comp, options) {
-            return comp.trim().split(/\s+/).map(function(comp) {
+            return comp.trim().split(/\s+/).map(function (comp) {
                 return replaceTilde(comp, options);
             }).join(' ');
         }
         function replaceTilde(comp, options) {
             var r = options.loose ? safeRe[TILDELOOSE] : safeRe[TILDE];
-            return comp.replace(r, function(_, M, m, p, pr) {
+            return comp.replace(r, function (_, M, m, p, pr) {
                 debug('tilde', comp, _, M, m, p, pr);
                 var ret;
                 if (isX(M)) {
@@ -1332,14 +1334,14 @@ function requireSemver() {
         // ^1.2.3 --> >=1.2.3 <2.0.0
         // ^1.2.0 --> >=1.2.0 <2.0.0
         function replaceCarets(comp, options) {
-            return comp.trim().split(/\s+/).map(function(comp) {
+            return comp.trim().split(/\s+/).map(function (comp) {
                 return replaceCaret(comp, options);
             }).join(' ');
         }
         function replaceCaret(comp, options) {
             debug('caret', comp, options);
             var r = options.loose ? safeRe[CARETLOOSE] : safeRe[CARET];
-            return comp.replace(r, function(_, M, m, p, pr) {
+            return comp.replace(r, function (_, M, m, p, pr) {
                 debug('caret', comp, _, M, m, p, pr);
                 var ret;
                 if (isX(M)) {
@@ -1381,14 +1383,14 @@ function requireSemver() {
         }
         function replaceXRanges(comp, options) {
             debug('replaceXRanges', comp, options);
-            return comp.split(/\s+/).map(function(comp) {
+            return comp.split(/\s+/).map(function (comp) {
                 return replaceXRange(comp, options);
             }).join(' ');
         }
         function replaceXRange(comp, options) {
             comp = comp.trim();
             var r = options.loose ? safeRe[XRANGELOOSE] : safeRe[XRANGE];
-            return comp.replace(r, function(ret, gtlt, M, m, p, pr) {
+            return comp.replace(r, function (ret, gtlt, M, m, p, pr) {
                 debug('xRange', comp, ret, gtlt, M, m, p, pr);
                 var xM = isX(M);
                 var xm = xM || isX(m);
@@ -1481,14 +1483,14 @@ function requireSemver() {
             return (from + ' ' + to).trim();
         }
         // if ANY of the sets match ALL of its comparators, then pass
-        Range.prototype.test = function(version) {
+        Range.prototype.test = function (version) {
             if (!version) {
                 return false;
             }
             if (typeof version === 'string') {
                 version = new SemVer(version, this.options);
             }
-            for(var i = 0; i < this.set.length; i++){
+            for (var i = 0; i < this.set.length; i++) {
                 if (testSet(this.set[i], version, this.options)) {
                     return true;
                 }
@@ -1496,7 +1498,7 @@ function requireSemver() {
             return false;
         };
         function testSet(set, version, options) {
-            for(var i = 0; i < set.length; i++){
+            for (var i = 0; i < set.length; i++) {
                 if (!set[i].test(version)) {
                     return false;
                 }
@@ -1507,7 +1509,7 @@ function requireSemver() {
                 // That should allow `1.2.3-pr.2` to pass.
                 // However, `1.2.4-alpha.notready` should NOT be allowed,
                 // even though it's within the range set by the comparators.
-                for(i = 0; i < set.length; i++){
+                for (i = 0; i < set.length; i++) {
                     debug(set[i].semver);
                     if (set[i].semver === ANY) {
                         continue;
@@ -1542,7 +1544,7 @@ function requireSemver() {
             } catch (er) {
                 return null;
             }
-            versions.forEach(function(v) {
+            versions.forEach(function (v) {
                 if (rangeObj.test(v)) {
                     // satisfies(v, range, options)
                     if (!max || maxSV.compare(v) === -1) {
@@ -1563,7 +1565,7 @@ function requireSemver() {
             } catch (er) {
                 return null;
             }
-            versions.forEach(function(v) {
+            versions.forEach(function (v) {
                 if (rangeObj.test(v)) {
                     // satisfies(v, range, options)
                     if (!min || minSV.compare(v) === 1) {
@@ -1587,12 +1589,12 @@ function requireSemver() {
                 return minver;
             }
             minver = null;
-            for(var i = 0; i < range.set.length; ++i){
+            for (var i = 0; i < range.set.length; ++i) {
                 var comparators = range.set[i];
-                comparators.forEach(function(comparator) {
+                comparators.forEach(function (comparator) {
                     // Clone to avoid manipulating the comparator's semver object.
                     var compver = new SemVer(comparator.semver.version);
-                    switch(comparator.operator){
+                    switch (comparator.operator) {
                         case '>':
                             if (compver.prerelease.length === 0) {
                                 compver.patch++;
@@ -1644,7 +1646,7 @@ function requireSemver() {
             version = new SemVer(version, options);
             range = new Range(range, options);
             var gtfn, ltefn, ltfn, comp, ecomp;
-            switch(hilo){
+            switch (hilo) {
                 case '>':
                     gtfn = gt;
                     ltefn = lte;
@@ -1668,11 +1670,11 @@ function requireSemver() {
             }
             // From now on, variable terms are as if we're in "gtr" mode.
             // but note that everything is flipped for the "ltr" function.
-            for(var i = 0; i < range.set.length; ++i){
+            for (var i = 0; i < range.set.length; ++i) {
                 var comparators = range.set[i];
                 var high = null;
                 var low = null;
-                comparators.forEach(function(comparator) {
+                comparators.forEach(function (comparator) {
                     if (comparator.semver === ANY) {
                         comparator = new Comparator('>=0.0.0');
                     }
@@ -1743,7 +1745,7 @@ function requireParse() {
     var isExecutableRegExp = /\.(?:com|exe)$/i;
     var isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
     // `options.shell` is supported in Node ^4.8.0, ^5.7.0 and >= 6.0.0
-    var supportsShellOption = niceTry(function() {
+    var supportsShellOption = niceTry(function () {
         return semver.satisfies(process.version, '^4.8.0 || ^5.7.0 || >= 6.0.0', true);
     }) || false;
     function detectShebang(parsed) {
@@ -1777,7 +1779,7 @@ function requireParse() {
             parsed.command = path.normalize(parsed.command);
             // Escape command & arguments
             parsed.command = escape.command(parsed.command);
-            parsed.args = parsed.args.map(function(arg) {
+            parsed.args = parsed.args.map(function (arg) {
                 return escape.argument(arg, needsDoubleEscapeMetaChars);
             });
             var shellCommand = [
@@ -1874,7 +1876,7 @@ function requireEnoent() {
             return;
         }
         var originalEmit = cp.emit;
-        cp.emit = function(name, arg1) {
+        cp.emit = function (name, arg1) {
             // If emitting "exit" event and exit code is 1, we need to check if
             // the command exists and emit an "error" instead
             // See https://github.com/IndigoUnited/node-cross-spawn/issues/16
