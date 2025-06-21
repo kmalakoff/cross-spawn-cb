@@ -1,6 +1,6 @@
-import crossSpawn from './crossSpawn.js';
-import type { SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.js';
-import worker from './workers/sync.js';
+import crossSpawn from './crossSpawn.ts';
+import type { SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.ts';
+import worker from './workers/sync.ts';
 
 export default function spawnSync(command: string, args: string[], options?: SpawnSyncOptions): SpawnResult {
   options = options || {};

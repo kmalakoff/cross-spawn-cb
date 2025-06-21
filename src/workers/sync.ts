@@ -1,6 +1,6 @@
-import { spawnKeys } from '../constants.js';
+import { spawnKeys } from '../constants.ts';
 
-import type { SpawnOptions, SpawnResult } from '../types.js';
+import type { SpawnOptions, SpawnResult } from '../types.ts';
 
 export default function worker(res: SpawnResult, options?: SpawnOptions): SpawnResult {
   options = options || {};
