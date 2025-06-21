@@ -3,7 +3,7 @@ import cp from 'child_process';
 import Module from 'module';
 import path from 'path';
 import spawnSyncPolyfill from './polyfills/spawnSync.cjs';
-import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.js';
+import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.ts';
 
 const major = +process.versions.node.split('.')[0];
 const _require = typeof require === 'undefined' ? Module.createRequire(import.meta.url) : require;
