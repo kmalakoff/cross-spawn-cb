@@ -1,4 +1,4 @@
-export { default as crossSpawn } from './crossSpawn.js';
-export { default, default as spawn } from './spawn.js';
-export { default as sync } from './spawnSync.js';
-export type * from './types.js';
+export { default as crossSpawn } from './crossSpawn.ts';
+export { default, default as spawn } from './spawn.ts';
+export { default as sync } from './spawnSync.ts';
+export type * from './types.ts';
