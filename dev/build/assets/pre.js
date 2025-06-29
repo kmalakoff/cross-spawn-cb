@@ -3,7 +3,6 @@
 /* COMPATIBILITY POLYFILLS */
 
 function objectAssign(target) {
-  // biome-ignore lint/style/noArguments: <explanation>
   var objects = Array.prototype.slice.call(arguments, 1);
   while (objects.length) {
     var object = objects.pop();
