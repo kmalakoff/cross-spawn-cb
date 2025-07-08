@@ -34,9 +34,9 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "cross-spawn": "^7.0.6",
-    "function-exec-sync": "^1.4.6",
-    "on-one": "^1.0.1"
+    "cross-spawn": "*",
+    "function-exec-sync": "*",
+    "on-one": "*"
   },
   "devDependencies": {
     "@types/mocha": "*",
