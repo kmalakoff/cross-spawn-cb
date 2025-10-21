@@ -1,5 +1,4 @@
 import assert from 'assert';
-// @ts-ignore
 import spawn, { crossSpawn } from 'cross-spawn-cb';
 
 describe('_parse', () => {
