@@ -1,5 +1,4 @@
 import assert from 'assert';
-// @ts-ignore
 import spawn, { crossSpawn } from 'cross-spawn-cb';
 import Pinkie from 'pinkie-promise';
 
