@@ -25,7 +25,6 @@ import * as resolveVersions from 'node-resolve-versions';
 
 const VERSIONS = resolveVersions.sync('>=0.8', { range: 'major,even' });
 
-// @ts-ignore
 import spawn from 'cross-spawn-cb';
 // VERSIONS.splice(0, VERSIONS.length, 'v0.8.28')
 import { spawnOptions } from 'node-version-utils';
