@@ -29,7 +29,7 @@ const NODES = ['node', 'node.exe', 'node.cmd'];
 function _parse(command: string, args: string[], options?: SpawnOptions | SpawnSyncOptions): Parsed {
   if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
     const env = options ? options.env || process.env : process.env;
-    command = env.NODE || env.npm_node_execpath;
+    command = env.NODE || env.npm_node_execpath || command;
   }
   return crossSpawn._parse(command, args, options);
 }
