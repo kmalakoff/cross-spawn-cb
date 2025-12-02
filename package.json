@@ -30,7 +30,7 @@
     "build": "tsds build",
     "format": "biome check --write --unsafe",
     "prepublishOnly": "tsds validate",
-    "test": "mocha --no-timeouts test/**/*.test.*",
+    "test": "tsds test:node --no-timeouts",
     "test:engines": "nvu engines tsds test:node --no-timeouts",
     "version": "tsds version"
   },
@@ -40,14 +40,17 @@
     "on-one": "*"
   },
   "devDependencies": {
+    "@biomejs/biome": "*",
     "@types/mocha": "*",
     "@types/node": "*",
     "cr": "*",
     "is-version": "*",
     "node-install-release": "*",
     "node-resolve-versions": "*",
+    "node-version-use": "*",
     "node-version-utils": "*",
-    "pinkie-promise": "*"
+    "pinkie-promise": "*",
+    "ts-dev-stack": "*"
   },
   "engines": {
     "node": ">=0.8"
