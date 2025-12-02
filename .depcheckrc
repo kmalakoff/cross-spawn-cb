@@ -1,1 +1,1 @@
-ignores: ["cross-spawn-cb", "function-exec-sync", "cross-spawn"]
+ignores: ["node-version-use", "ts-dev-stack", "@biomejs/biome", "cross-spawn-cb", "function-exec-sync", "cross-spawn"]
