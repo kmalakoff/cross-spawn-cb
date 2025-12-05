@@ -7,7 +7,7 @@ describe('callback', () => {
     it('returns a status code', (done) => {
       spawn('ls', [], {}, (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(res.status, 0);
@@ -18,7 +18,7 @@ describe('callback', () => {
     it('stdio inherit', (done) => {
       spawn('ls', [], { stdio: 'inherit' }, (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(res.stdout, null);
@@ -30,7 +30,7 @@ describe('callback', () => {
     it('stdout string', (done) => {
       spawn('ls', [], { encoding: 'utf8' }, (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(typeof res.stdout, 'string');
@@ -43,7 +43,7 @@ describe('callback', () => {
       const cp = crossSpawn('ls', [], { encoding: 'utf8' });
       spawn.worker(cp, { encoding: 'utf8' }, (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(typeof res.stdout, 'string');

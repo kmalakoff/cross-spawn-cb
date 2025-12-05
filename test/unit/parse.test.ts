@@ -12,7 +12,7 @@ describe('_parse', () => {
 
       spawn(parsed.command, parsed.args, parsed.options, (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         assert.equal(res.status, 0);
