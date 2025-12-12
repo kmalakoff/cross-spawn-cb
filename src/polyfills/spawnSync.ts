@@ -10,8 +10,7 @@ const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : 
 // Path is relative to dist/cjs/polyfills/ at runtime
 const workerPath = path.join(__dirname, '..', '..', 'cjs', 'spawn.js');
 
-let functionExec: ((opts: { callbacks: boolean }, worker: string, cmd: string, args: string[], spawnOpts: object) => SpawnResult) | null = null; // break dependencies
-
+let functionExec = null; // break dependencies
 export default function spawnSyncPolyfill(cmd: string, args: string[], options?: object): SpawnResult {
   if (!functionExec) functionExec = _require('function-exec-sync');
   return functionExec?.({ callbacks: true }, workerPath, cmd, args, options || {});
