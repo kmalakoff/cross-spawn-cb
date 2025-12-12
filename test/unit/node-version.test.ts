@@ -1,4 +1,4 @@
-// remove NODE_OPTIONS from ts-dev-stack
+// remove NODE_OPTIONS to not interfere with tests
 delete process.env.NODE_OPTIONS;
 
 import assert from 'assert';
@@ -8,7 +8,7 @@ import install from 'node-install-release';
 import path from 'path';
 import url from 'url';
 
-// import rimraf2 from 'rimraf2';
+// import { safeRm, safeRmSync } from 'fs-remove-compat';
 
 const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
 const NODE = isWindows ? 'node.exe' : 'node';
@@ -43,7 +43,7 @@ function addTests(version) {
     it('npm --version', (done) => {
       spawn('npm', ['--version'], spawnOptions(installPath, { encoding: 'utf8' }), (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         const lines = cr(res.stdout).split('\n');
@@ -56,7 +56,7 @@ function addTests(version) {
     it('node --version', (done) => {
       spawn(NODE, ['--version'], spawnOptions(installPath, { encoding: 'utf8' }), (err, res) => {
         if (err) {
-          done(err.message);
+          done(err);
           return;
         }
         const lines = cr(res.stdout).split('\n');
@@ -81,8 +81,8 @@ function addTests(version) {
 }
 
 describe('node-version', () => {
-  // before(rimraf2.bind(null, TMP_DIR, { disableGlob: true }));
-  // after(rimraf2.bind(null, TMP_DIR, { disableGlob: true }));
+  // before((cb) => safeRm(TMP_DIR, cb));
+  // after((cb) => safeRm(TMP_DIR, cb));
 
   describe('happy path', () => {
     for (let i = 0; i < VERSIONS.length; i++) {
