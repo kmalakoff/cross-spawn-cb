@@ -6,15 +6,28 @@
 import envPathKey from 'env-path-key';
 import path from 'path';
 import which from 'which';
+import { isWindows } from '../constants.ts';
 import type { Parsed } from './types.ts';
 
-const isWin = process.platform === 'win32';
+const pathDelimiter = isWindows ? ';' : ':';
+const NODES = ['node', 'node.exe', 'node.cmd'];
 
-export function resolveCommand(parsed: Parsed): string | null {
+function resolveCommandAttempt(parsed: Parsed, withoutPathExt?: boolean): string | null {
   const command = parsed.command;
   const options = parsed.options;
+  const env = options.env || process.env;
   const cwd = process.cwd();
   const hasCustomCwd = options.cwd != null;
+
+  // Handle NODE/npm_node_execpath env vars for node commands
+  // This is needed because shebang detection may change the command to 'node'
+  // after the initial NODE env check in crossSpawn.ts has already passed
+  if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
+    const nodeFromEnv = env.NODE || env.npm_node_execpath;
+    if (nodeFromEnv) {
+      return nodeFromEnv;
+    }
+  }
 
   // If a custom cwd was specified, we need to change the process cwd
   // because which will do stat calls but does not support a custom cwd
@@ -32,7 +45,9 @@ export function resolveCommand(parsed: Parsed): string | null {
   try {
     resolved = which.sync(command, {
       path: (options.env || process.env)[pathKey],
-      pathExt: isWin ? undefined : path.delimiter, // On non-Windows, don't use PATHEXT
+      // On Windows: undefined uses PATHEXT, pathDelimiter bypasses it
+      // withoutPathExt fallback is needed to find files without extensions
+      pathExt: withoutPathExt ? pathDelimiter : undefined,
     });
   } catch (_e) {
     /* not found */
@@ -48,4 +63,9 @@ export function resolveCommand(parsed: Parsed): string | null {
   }
 
   return resolved;
+}
+
+// Try twice: first with PATHEXT (finds .cmd/.bat/.exe), then without (finds extensionless files)
+export function resolveCommand(parsed: Parsed): string | null {
+  return resolveCommandAttempt(parsed) || resolveCommandAttempt(parsed, true);
 }

@@ -5,12 +5,12 @@
 
 import path from 'path';
 import { objectAssign } from '../compat.ts';
+import { isWindows } from '../constants.ts';
 import { escapeArgument, escapeCommand } from './escape.ts';
 import { resolveCommand } from './resolve.ts';
 import { readShebang } from './shebang.ts';
 import type { Parsed, ShimSpawnOptions } from './types.ts';
 
-const isWin = process.platform === 'win32';
 const isExecutableRegExp = /\.(?:com|exe)$/i;
 const isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
 
@@ -28,7 +28,7 @@ function detectShebang(parsed: Parsed): string | null {
 }
 
 function parseNonShell(parsed: Parsed): Parsed {
-  if (!isWin) return parsed;
+  if (!isWindows) return parsed;
 
   // Detect & add support for shebangs
   const commandFile = detectShebang(parsed);
@@ -61,7 +61,7 @@ function parseShell(parsed: Parsed): Parsed {
   // Mimic node shell option for older Node versions
   const shellCommand = [parsed.command].concat(parsed.args).join(' ');
 
-  if (isWin) {
+  if (isWindows) {
     parsed.command = typeof parsed.options.shell === 'string' ? parsed.options.shell : process.env.comspec || 'cmd.exe';
     parsed.args = ['/d', '/s', '/c', `"${shellCommand}"`];
     parsed.options.windowsVerbatimArguments = true;
