@@ -17,6 +17,11 @@ export interface Parsed {
   command: string;
   args: string[];
   options: SpawnOptions | SpawnSyncOptions;
+  file?: string | null;
+  original?: {
+    command: string;
+    args: string[];
+  };
 }
 
 export interface NotFoundError extends Error {
