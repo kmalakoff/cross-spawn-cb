@@ -38,7 +38,7 @@
     "cross-spawn": "^7.0.6",
     "env-path-key": "^1.0.0",
     "function-exec-sync": "^1.0.0",
-    "on-one": "^1.0.10",
+    "on-one": "^1.0.0",
     "which": "^1.0.0"
   },
   "devDependencies": {

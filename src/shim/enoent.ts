@@ -4,9 +4,8 @@
  */
 
 import type { ChildProcess } from 'child_process';
+import { isWindows } from '../constants.ts';
 import type { ENOENTError, Parsed } from './types.ts';
-
-const isWin = process.platform === 'win32';
 
 export function notFoundError(original: Parsed['original'], syscall: string): ENOENTError {
   const err = new Error(`${syscall} ${original.command} ENOENT`) as ENOENTError;
@@ -19,7 +18,7 @@ export function notFoundError(original: Parsed['original'], syscall: string): EN
 }
 
 export function hookChildProcess(cp: ChildProcess, parsed: Parsed): void {
-  if (!isWin) return;
+  if (!isWindows) return;
 
   const originalEmit = cp.emit.bind(cp);
   cp.emit = (name: string | symbol, ...args: unknown[]): boolean => {
@@ -34,14 +33,14 @@ export function hookChildProcess(cp: ChildProcess, parsed: Parsed): void {
 }
 
 export function verifyENOENT(status: number, parsed: Parsed): ENOENTError | null {
-  if (isWin && status === 1 && !parsed.file) {
+  if (isWindows && status === 1 && !parsed.file) {
     return notFoundError(parsed.original, 'spawn');
   }
   return null;
 }
 
 export function verifyENOENTSync(status: number, parsed: Parsed): ENOENTError | null {
-  if (isWin && status === 1 && !parsed.file) {
+  if (isWindows && status === 1 && !parsed.file) {
     return notFoundError(parsed.original, 'spawnSync');
   }
   return null;
