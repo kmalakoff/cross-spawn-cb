@@ -10,24 +10,12 @@ import { isWindows } from '../constants.ts';
 import type { Parsed } from './types.ts';
 
 const pathDelimiter = isWindows ? ';' : ':';
-const NODES = ['node', 'node.exe', 'node.cmd'];
 
 function resolveCommandAttempt(parsed: Parsed, withoutPathExt?: boolean): string | null {
   const command = parsed.command;
   const options = parsed.options;
-  const env = options.env || process.env;
   const cwd = process.cwd();
   const hasCustomCwd = options.cwd != null;
-
-  // Handle NODE/npm_node_execpath env vars for node commands
-  // This is needed because shebang detection may change the command to 'node'
-  // after the initial NODE env check in crossSpawn.ts has already passed
-  if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
-    const nodeFromEnv = env.NODE || env.npm_node_execpath;
-    if (nodeFromEnv) {
-      return nodeFromEnv;
-    }
-  }
 
   // If a custom cwd was specified, we need to change the process cwd
   // because which will do stat calls but does not support a custom cwd
@@ -40,7 +28,7 @@ function resolveCommandAttempt(parsed: Parsed, withoutPathExt?: boolean): string
   }
 
   let resolved: string | null = null;
-  const pathKey = envPathKey({ env: options.env || process.env }) || 'PATH';
+  const pathKey = envPathKey({ env: options.env || process.env });
 
   try {
     resolved = which.sync(command, {

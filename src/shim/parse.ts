@@ -14,6 +14,11 @@ import type { Parsed, ShimSpawnOptions } from './types.ts';
 const isExecutableRegExp = /\.(?:com|exe)$/i;
 const isCmdShimRegExp = /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i;
 
+// Node ^4.8.0 || ^5.7.0 || >= 6.0.0 supports shell option natively
+// See: https://github.com/nodejs/node/pull/4598
+const [major, minor] = process.versions.node.split('.').map(Number);
+const supportsShellOption = major >= 6 || (major === 5 && minor >= 7) || (major === 4 && minor >= 8);
+
 function detectShebang(parsed: Parsed): string | null {
   parsed.file = resolveCommand(parsed);
 
@@ -58,6 +63,11 @@ function parseNonShell(parsed: Parsed): Parsed {
 }
 
 function parseShell(parsed: Parsed): Parsed {
+  // If node supports the shell option, there's no need to mimic its behavior
+  if (supportsShellOption) {
+    return parsed;
+  }
+
   // Mimic node shell option for older Node versions
   const shellCommand = [parsed.command].concat(parsed.args).join(' ');
 
@@ -79,6 +89,9 @@ function parseShell(parsed: Parsed): Parsed {
   return parsed;
 }
 
+// Handle NODE/npm_node_execpath env vars for node commands
+const NODES = ['node', 'node.exe', 'node.cmd'];
+
 export function parse(command: string, args?: string[] | ShimSpawnOptions | null, options?: ShimSpawnOptions): Parsed {
   // Normalize arguments
   let argsArray: string[];
@@ -93,6 +106,7 @@ export function parse(command: string, args?: string[] | ShimSpawnOptions | null
     opts = objectAssign({}, options || {});
   }
 
+  // Build parsed object with original command/args BEFORE any substitution
   const parsed: Parsed = {
     command: command,
     args: argsArray,
@@ -103,6 +117,12 @@ export function parse(command: string, args?: string[] | ShimSpawnOptions | null
       args: argsArray,
     },
   };
+
+  // Substitute node command with NODE env var if set
+  if (NODES.indexOf(path.basename(parsed.command).toLowerCase()) >= 0) {
+    const env = opts.env || process.env;
+    parsed.command = env.NODE || env.npm_node_execpath || parsed.command;
+  }
 
   return opts.shell ? parseShell(parsed) : parseNonShell(parsed);
 }
