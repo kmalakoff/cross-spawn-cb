@@ -7,7 +7,8 @@ import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from
 
 const major = +process.versions.node.split('.')[0];
 const _require = typeof require === 'undefined' ? Module.createRequire(import.meta.url) : require;
-const crossSpawn = _require(major <= 7 ? '../../assets/cross-spawn.cjs' : 'cross-spawn');
+// Use lightweight shim for legacy Node (<= 7), modern cross-spawn for Node >= 8
+const crossSpawn = _require(major <= 7 ? './shim/index.js' : 'cross-spawn');
 
 export default function spawn(command: string, args: string[], options?: SpawnOptions): ChildProcess {
   const parsed = spawn._parse(command, args, options);
