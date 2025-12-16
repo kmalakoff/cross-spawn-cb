@@ -1,8 +1,5 @@
 import type { ChildProcess } from 'child_process';
-import cp from 'child_process';
 import Module from 'module';
-import path from 'path';
-import spawnSyncPolyfill from './polyfills/spawnSync.ts';
 import type { Enoent, Parsed, SpawnOptions, SpawnResult, SpawnSyncOptions } from './types.ts';
 
 const major = +process.versions.node.split('.')[0];
@@ -10,29 +7,11 @@ const _require = typeof require === 'undefined' ? Module.createRequire(import.me
 // Use lightweight shim for legacy Node (<= 7), modern cross-spawn for Node >= 8
 const crossSpawn = _require(major <= 7 ? './shim/index.js' : 'cross-spawn');
 
+// Fully delegate to the loaded implementation (shim or cross-spawn)
 export default function spawn(command: string, args: string[], options?: SpawnOptions): ChildProcess {
-  const parsed = spawn._parse(command, args, options);
-  const spawned = cp.spawn(parsed.command, parsed.args, parsed.options);
-  spawn._enoent.hookChildProcess(spawned, parsed);
-  return spawned;
+  return crossSpawn(command, args, options);
 }
 
-const cpSpawnSync = cp.spawnSync || spawnSyncPolyfill;
-spawn.sync = function sync(command: string, args: string[], options?: SpawnSyncOptions): SpawnResult {
-  const parsed = spawn._parse(command, args, options) as Parsed;
-  const res = cpSpawnSync(parsed.command, parsed.args, parsed.options);
-  res.error = res.error || spawn._enoent.verifyENOENTSync(res.status, parsed);
-  return res;
-};
-
-// patch earlier versions of cross-spawn with inconsistent handling of node
-const NODES = ['node', 'node.exe', 'node.cmd'];
-function _parse(command: string, args: string[], options?: SpawnOptions | SpawnSyncOptions): Parsed {
-  if (NODES.indexOf(path.basename(command).toLowerCase()) >= 0) {
-    const env = options ? options.env || process.env : process.env;
-    command = env.NODE || env.npm_node_execpath || command;
-  }
-  return crossSpawn._parse(command, args, options);
-}
-spawn._parse = (major <= 7 ? _parse : crossSpawn._parse) as typeof _parse;
+spawn.sync = crossSpawn.sync as (command: string, args: string[], options?: SpawnSyncOptions) => SpawnResult;
+spawn._parse = crossSpawn._parse as (command: string, args: string[], options?: SpawnOptions | SpawnSyncOptions) => Parsed;
 spawn._enoent = crossSpawn._enoent as Enoent;
