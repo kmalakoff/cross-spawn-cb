@@ -3,10 +3,6 @@ import { spawnKeys } from '../constants.ts';
 
 import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types.ts';
 
-function isError(obj) {
-  return Object.prototype.toString.call(obj) === '[object Error]';
-}
-
 export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback) {
   if (typeof options === 'function') {
     callback = options;
@@ -22,11 +18,10 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
   if (options.encoding && cp.stderr) cp.stderr.on('data', stderr.push.bind(stderr));
 
   // some versions of node emit both an error and close
-  oo(cp, ['error', 'close'], (status: number | null, signal: NodeJS.Signals | null) => {
-    if (isError(status)) {
-      const err = status as unknown as SpawnError;
-      if (err.code === 'OK') return; // ignore
-      return callback(err);
+  oo(cp, ['error', 'close'], (err: Error | null, status: number | null, signal: NodeJS.Signals | null) => {
+    if (err) {
+      if ((err as SpawnError).code === 'OK') return; // ignore
+      return callback(err as SpawnError);
     }
 
     // prepare result
@@ -45,14 +40,14 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
     if (res.status === null) res.status = 0; // patch: early node on windows could return null
 
     // process errors
-    const err = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
-    if (err) {
+    const exitErr = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
+    if (exitErr) {
       for (const key in res) {
         if (spawnKeys.indexOf(key) < 0) continue;
-        err[key] = Buffer.isBuffer(res[key]) ? res[key].toString(options.encoding || 'utf8') : res[key];
+        exitErr[key] = Buffer.isBuffer(res[key]) ? res[key].toString(options.encoding || 'utf8') : res[key];
       }
     }
-    err ? callback(err as SpawnError) : callback(null, res);
+    exitErr ? callback(exitErr as SpawnError) : callback(null, res);
   });
 
   // pipe input
