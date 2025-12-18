@@ -3,7 +3,7 @@ import { spawnKeys } from '../constants.ts';
 
 import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types.ts';
 
-export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback) {
+export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback): void {
   if (typeof options === 'function') {
     callback = options;
     options = {};

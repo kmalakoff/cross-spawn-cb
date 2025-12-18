@@ -36,7 +36,7 @@ export interface SpawnError extends NotFoundError, SpawnResult {}
 export type SpawnCallback = (err?: SpawnError, res?: SpawnResult) => void;
 
 export interface Enoent {
-  hookChildProcess: (cp: ChildProcess, parsed: Parsed) => undefined;
+  hookChildProcess: (cp: ChildProcess, parsed: Parsed) => void;
   verifyENOENT: (status: number, parsed: Parsed) => NotFoundError | null;
   verifyENOENTSync: (status: number, parsed: Parsed) => NotFoundError | null;
   notFoundError: (cp: ChildProcess, parsed: Parsed) => NotFoundError;
