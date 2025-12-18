@@ -9,12 +9,10 @@
 
 import type { ChildProcess, SpawnSyncReturns } from 'child_process';
 import cp from 'child_process';
-import spawnSyncPolyfill from '../polyfills/spawnSync.ts';
 import { hookChildProcess, notFoundError, verifyENOENT, verifyENOENTSync } from './enoent.ts';
 import { parse } from './parse.ts';
+import spawnSyncCompat from './spawnSync.ts';
 import type { Parsed, ShimSpawnOptions } from './types.ts';
-
-const cpSpawnSync = cp.spawnSync || spawnSyncPolyfill;
 
 function spawn(command: string, args?: string[] | ShimSpawnOptions, options?: ShimSpawnOptions): ChildProcess {
   const parsed = parse(command, args, options);
@@ -25,7 +23,7 @@ function spawn(command: string, args?: string[] | ShimSpawnOptions, options?: Sh
 
 function spawnSync(command: string, args?: string[] | ShimSpawnOptions, options?: ShimSpawnOptions): SpawnSyncReturns<Buffer> {
   const parsed = parse(command, args, options);
-  const result = cpSpawnSync(parsed.command, parsed.args, parsed.options) as SpawnSyncReturns<Buffer> & { error?: Error };
+  const result = spawnSyncCompat(parsed.command, parsed.args, parsed.options) as SpawnSyncReturns<Buffer> & { error?: Error };
   result.error = result.error || verifyENOENTSync(result.status as number, parsed);
   return result;
 }
