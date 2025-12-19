@@ -1,5 +1,5 @@
 import cp from 'child_process';
-import { bind } from 'node-version-call-local';
+import { bindSync } from 'node-version-call-local';
 import path from 'path';
 import url from 'url';
 import type { SpawnResult } from '../types.ts';
@@ -11,7 +11,7 @@ function run(cmd: string, args: string[], options?: object): SpawnResult {
   return cp.spawnSync(cmd, args, options) as SpawnResult;
 }
 
-const worker = typeof cp.spawnSync === 'function' ? run : bind(process.version, workerPath, { callbacks: true });
+const worker = typeof cp.spawnSync === 'function' ? run : bindSync(process.version, workerPath, { callbacks: true });
 
 export default function spawnSync(cmd: string, args: string[], options?: object): SpawnResult {
   return worker(cmd, args, options || {}) as SpawnResult;
