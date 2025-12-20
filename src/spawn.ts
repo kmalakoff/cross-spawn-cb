@@ -7,15 +7,12 @@ function spawn(command: string, args: string[], callback: SpawnCallback): void;
 function spawn(command: string, args: string[], options: SpawnOptions, callback: SpawnCallback): void;
 function spawn(command: string, args: string[], options?: SpawnOptions): Promise<SpawnResult>;
 function spawn(command: string, args: string[], options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback): void | Promise<SpawnResult> {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  options = options || {};
+  callback = typeof options === 'function' ? options : callback;
+  options = typeof options === 'function' ? {} : ((options || {}) as SpawnOptions);
   const cp = crossSpawn(command, args, options);
 
   if (typeof callback === 'function') return worker(cp, options, callback);
-  return new Promise((resolve, reject) => worker(cp, options as SpawnOptions, (err, res) => (err ? reject(err) : resolve(res))));
+  return new Promise((resolve, reject) => worker(cp, options, (err, res) => (err ? reject(err) : resolve(res))));
 }
 spawn.worker = worker;
 spawn.sync = spawnSync;

@@ -4,11 +4,8 @@ import { spawnKeys } from '../constants.ts';
 import type { ChildProcess, SpawnCallback, SpawnError, SpawnOptions, SpawnResult } from '../types.ts';
 
 export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnCallback, callback?: SpawnCallback): void {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  options = options || {};
+  callback = typeof options === 'function' ? options : callback;
+  options = typeof options === 'function' ? {} : ((options || {}) as SpawnOptions);
 
   // collect output
   const res = { pid: 0, output: [], stdout: null, stderr: null, status: null, signal: null } as SpawnResult;
