@@ -4,7 +4,6 @@
  */
 
 import path from 'path';
-import { objectAssign } from '../compat.ts';
 import { isWindows } from '../constants.ts';
 import { escapeArgument, escapeCommand } from './escape.ts';
 import { resolveCommand } from './resolve.ts';
@@ -93,36 +92,26 @@ function parseShell(parsed: Parsed): Parsed {
 const NODES = ['node', 'node.exe', 'node.cmd'];
 
 export function parse(command: string, args?: string[] | ShimSpawnOptions | null, options?: ShimSpawnOptions): Parsed {
-  // Normalize arguments
-  let argsArray: string[];
-  let opts: ShimSpawnOptions;
-
-  if (args && !Array.isArray(args)) {
-    // args is actually options
-    argsArray = [];
-    opts = objectAssign({}, args);
-  } else {
-    argsArray = args ? (args as string[]).slice(0) : [];
-    opts = objectAssign({}, options || {});
-  }
+  options = typeof args && !Array.isArray(args) ? {} : ({ ...(options || {}) } as ShimSpawnOptions);
+  args = typeof args && !Array.isArray(args) ? [] : (((args as string[]).slice(0) || []) as string[]);
 
   // Build parsed object with original command/args BEFORE any substitution
   const parsed: Parsed = {
     command: command,
-    args: argsArray,
-    options: opts,
+    args,
+    options,
     file: undefined,
     original: {
       command: command,
-      args: argsArray,
+      args,
     },
   };
 
   // Substitute node command with NODE env var if set
   if (NODES.indexOf(path.basename(parsed.command).toLowerCase()) >= 0) {
-    const env = opts.env || process.env;
+    const env = options.env || process.env;
     parsed.command = env.NODE || env.npm_node_execpath || parsed.command;
   }
 
-  return opts.shell ? parseShell(parsed) : parseNonShell(parsed);
+  return options.shell ? parseShell(parsed) : parseNonShell(parsed);
 }

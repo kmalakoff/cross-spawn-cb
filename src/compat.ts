@@ -15,19 +15,3 @@ export function allocBuffer(size: number): Buffer {
   buffer.fill(0);
   return buffer;
 }
-
-// Object.assign (ES2015 / Node 4.0+)
-const hasObjectAssign = typeof Object.assign === 'function';
-const _hasOwnProperty = Object.prototype.hasOwnProperty;
-
-export function objectAssign<T, U>(target: T, source: U): T & U {
-  if (hasObjectAssign) {
-    return Object.assign(target, source);
-  }
-  for (const key in source) {
-    if (_hasOwnProperty.call(source, key)) {
-      (target as Record<string, unknown>)[key] = (source as Record<string, unknown>)[key];
-    }
-  }
-  return target as T & U;
-}
