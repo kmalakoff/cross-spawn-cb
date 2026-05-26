@@ -23,8 +23,8 @@ function spawn(command: string, args?: string[] | ShimSpawnOptions, options?: Sh
 
 function spawnSync(command: string, args?: string[] | ShimSpawnOptions, options?: ShimSpawnOptions): SpawnSyncReturns<Buffer> {
   const parsed = parse(command, args, options);
-  const result = spawnSyncCompat(parsed.command, parsed.args, parsed.options) as SpawnSyncReturns<Buffer> & { error?: Error };
-  result.error = (result.error || verifyENOENTSync(result.status as number, parsed)) as Error | undefined;
+  const result = spawnSyncCompat(parsed.command, parsed.args, parsed.options) as SpawnSyncReturns<Buffer>;
+  result.error = (result.error || verifyENOENTSync(result.status as number, parsed)) ?? undefined;
   return result;
 }
 

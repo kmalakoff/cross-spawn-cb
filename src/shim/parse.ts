@@ -19,16 +19,17 @@ const [major, minor] = process.versions.node.split('.').map(Number);
 const supportsShellOption = major >= 6 || (major === 5 && minor >= 7) || (major === 4 && minor >= 8);
 
 function detectShebang(parsed: Parsed): string | null {
-  parsed.file = resolveCommand(parsed);
+  const file = resolveCommand(parsed);
+  parsed.file = file;
 
-  const shebang = parsed.file && readShebang(parsed.file);
-  if (shebang) {
-    parsed.args.unshift(parsed.file!);
+  const shebang = file && readShebang(file);
+  if (file && shebang) {
+    parsed.args.unshift(file);
     parsed.command = shebang;
     return resolveCommand(parsed);
   }
 
-  return parsed.file;
+  return file;
 }
 
 function parseNonShell(parsed: Parsed): Parsed {
