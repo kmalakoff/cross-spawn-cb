@@ -10,7 +10,7 @@ import url from 'url';
 
 // import { safeRm, safeRmSync } from 'fs-remove-compat';
 
-const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE);
+const isWindows = process.platform === 'win32' || /^(msys|cygwin)$/.test(process.env.OSTYPE ?? '');
 const NODE = isWindows ? 'node.exe' : 'node';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
@@ -29,24 +29,21 @@ import spawn from 'cross-spawn-cb';
 // VERSIONS.splice(0, VERSIONS.length, 'v0.8.28')
 import { spawnOptions } from 'node-version-utils';
 
-function addTests(version) {
+function addTests(version: string) {
   describe(version, () => {
-    let installPath = null;
+    let installPath: string | null = null;
     it('install', (done) => {
       install(version, { name: version, ...OPTIONS }, (err, res) => {
-        if (res) installPath = res.installPath;
-        if (res) version = res.version;
+        if (res) installPath = res.installPath as string;
+        if (res) version = res.version as string;
         done(err);
       });
     });
 
     it('npm --version', (done) => {
-      spawn('npm', ['--version'], spawnOptions(installPath, { encoding: 'utf8' }), (err, res) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        const lines = cr(res.stdout).split('\n');
+      spawn('npm', ['--version'], spawnOptions(installPath ?? '', { encoding: 'utf8' }), (err, res) => {
+        if (err) return done(err);
+        const lines = cr(String(res?.stdout)).split('\n');
         const resultVersion = lines.slice(-2, -1)[0];
         assert.ok(isVersion(resultVersion));
         done();
@@ -54,27 +51,24 @@ function addTests(version) {
     });
 
     it('node --version', (done) => {
-      spawn(NODE, ['--version'], spawnOptions(installPath, { encoding: 'utf8' }), (err, res) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        const lines = cr(res.stdout).split('\n');
+      spawn(NODE, ['--version'], spawnOptions(installPath ?? '', { encoding: 'utf8' }), (err, res) => {
+        if (err) return done(err);
+        const lines = cr(String(res?.stdout)).split('\n');
         assert.equal(lines.slice(-2, -1)[0], version);
         done();
       });
     });
 
     it('npm --version sync', () => {
-      const res = spawn.sync('npm', ['--version'], spawnOptions(installPath, { encoding: 'utf8' }));
-      const lines = cr(res.stdout).split('\n');
+      const res = spawn.sync('npm', ['--version'], spawnOptions(installPath ?? '', { encoding: 'utf8' }));
+      const lines = cr(String(res.stdout)).split('\n');
       const resultVersion = lines.slice(-2, -1)[0];
       assert.ok(isVersion(resultVersion));
     });
 
     it('node --version sync', () => {
-      const res = spawn.sync(NODE, ['--version'], spawnOptions(installPath, { encoding: 'utf8' }));
-      const lines = cr(res.stdout).split('\n');
+      const res = spawn.sync(NODE, ['--version'], spawnOptions(installPath ?? '', { encoding: 'utf8' }));
+      const lines = cr(String(res.stdout)).split('\n');
       assert.equal(lines.slice(-2, -1)[0], version);
     });
   });
@@ -86,7 +80,7 @@ describe('node-version', () => {
 
   describe('happy path', () => {
     for (let i = 0; i < VERSIONS.length; i++) {
-      addTests(VERSIONS[i]);
+      addTests(VERSIONS[i] as unknown as string);
     }
   });
 });

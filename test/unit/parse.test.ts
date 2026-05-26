@@ -11,11 +11,8 @@ describe('_parse', () => {
       assert.equal(typeof parsed.options.env, 'object');
 
       spawn(parsed.command, parsed.args, parsed.options, (err, res) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        assert.equal(res.status, 0);
+        if (err) return done(err);
+        assert.equal(res?.status, 0);
         done();
       });
     });

@@ -12,7 +12,7 @@ function spawn(command: string, args: string[], options?: SpawnOptions | SpawnCa
   const cp = crossSpawn(command, args, options);
 
   if (typeof callback === 'function') return worker(cp, options, callback);
-  return new Promise((resolve, reject) => worker(cp, options, (err, res) => (err ? reject(err) : resolve(res))));
+  return new Promise((resolve, reject) => worker(cp, options, (err, res) => (err ? reject(err) : resolve(res as SpawnResult))));
 }
 spawn.worker = worker;
 spawn.sync = spawnSync;

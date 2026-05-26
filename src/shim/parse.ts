@@ -23,7 +23,7 @@ function detectShebang(parsed: Parsed): string | null {
 
   const shebang = parsed.file && readShebang(parsed.file);
   if (shebang) {
-    parsed.args.unshift(parsed.file);
+    parsed.args.unshift(parsed.file!);
     parsed.command = shebang;
     return resolveCommand(parsed);
   }

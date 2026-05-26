@@ -44,6 +44,7 @@
   "devDependencies": {
     "@types/mocha": "*",
     "@types/node": "*",
+    "@types/which": "^3.0.4",
     "cr": "^0.1.0",
     "is-version": "^1.0.9",
     "node-install-release": "^1.7.5",

@@ -24,9 +24,7 @@ export function hookChildProcess(cp: ChildProcess, parsed: Parsed): void {
   cp.emit = (name: string | symbol, ...args: unknown[]): boolean => {
     if (name === 'exit') {
       const err = verifyENOENT(args[0] as number, parsed);
-      if (err) {
-        return originalEmit('error', err);
-      }
+      if (err) return originalEmit('error', err);
     }
     return originalEmit(name, ...args);
   };
