@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { crossSpawn, sync } from 'cross-spawn-cb';
+import { crossSpawn, type SpawnError, sync } from 'cross-spawn-cb';
 
 describe('sync', () => {
   describe('happy path', () => {
@@ -32,8 +32,8 @@ describe('sync', () => {
         sync('ls', ['junk'], { stdio: 'inherit' });
         assert.ok(false);
       } catch (err) {
-        assert.ok(typeof err.status === 'number');
-        assert.ok(err.status !== 0);
+        assert.ok(typeof (err as SpawnError).status === 'number');
+        assert.ok((err as SpawnError).status !== 0);
       }
     });
 
@@ -42,8 +42,8 @@ describe('sync', () => {
         sync('ls', ['junk'], { encoding: 'utf8' });
         assert.ok(false);
       } catch (err) {
-        assert.ok(typeof err.status === 'number');
-        assert.ok(err.status !== 0);
+        assert.ok(typeof (err as SpawnError).status === 'number');
+        assert.ok((err as SpawnError).status !== 0);
       }
     });
   });
