@@ -1,1 +1,1 @@
-ignores: ["node-version-use", "ts-dev-stack", "cross-spawn-cb", "function-exec-sync", "cross-spawn"]
+ignores: ["cross-spawn-cb", "node-version-use", "ts-dev-stack", "function-exec-sync", "cross-spawn"]
