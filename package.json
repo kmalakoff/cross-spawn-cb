@@ -24,8 +24,7 @@
     "cross-spawn": "^5.1.0",
     "next-tick": "^1.1.0",
     "object-assign": "^4.1.1",
-    "once": "^1.4.0",
-    "spawn-sync": "^1.0.15"
+    "once": "^1.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
