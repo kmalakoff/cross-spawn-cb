@@ -1,6 +1,6 @@
 {
   "name": "cross-spawn-cb",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Cross spawn with a completion callback",
   "keywords": [
     "cross-spawn",
