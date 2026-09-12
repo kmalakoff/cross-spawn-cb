@@ -7,7 +7,6 @@ var nodeInstall = require('node-install-release');
 var match = require('match-semver');
 var find = require('lodash.find');
 var semver = require('semver');
-var crossSpawn = require('cross-spawn-cb');
 
 var versionUtils = require('node-version-utils');
 var npmVersions = require('../lib/npmVersions');
@@ -20,6 +19,8 @@ var OPTIONS = {
 };
 
 var VERSIONS = ['v14.1.0', 'v12.18.1', 'v0.8.25'];
+
+var crossSpawn = require('../..');
 
 function addTests(version) {
   var INSTALL_DIR = path.resolve(path.join(OPTIONS.installedDirectory, version));
