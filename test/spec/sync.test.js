@@ -9,6 +9,7 @@ describe('sync', function () {
         var res = spawnSync('ls', [], { stdio: 'inherit' });
         assert.equal(res.stdout, null);
       } catch (err) {
+        console.log(err);
         assert.ok(!err);
       }
     });
