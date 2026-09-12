@@ -5,7 +5,7 @@ var spawn = require('../..');
 describe('cli', function () {
   describe('happy path', function () {
     it('stdio inherit', function (done) {
-      spawn('node', ['--version'], { stdio: 'inherit' }, function (err, res) {
+      spawn('ls', [], { stdio: 'inherit' }, function (err, res) {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'undefined');
         done();
@@ -13,7 +13,7 @@ describe('cli', function () {
     });
 
     it('stdout string', function (done) {
-      spawn('node', ['--version'], { stdout: 'string' }, function (err, res) {
+      spawn('ls', [], { stdout: 'string' }, function (err, res) {
         assert.ok(!err);
         assert.equal(typeof res.stdout, 'string');
         done();
@@ -23,14 +23,14 @@ describe('cli', function () {
 
   describe('unhappy path', function () {
     it('stdio inherit', function (done) {
-      spawn('node', ['--versio'], { stdio: 'inherit' }, function (err) {
+      spawn('ls', ['junk'], { stdio: 'inherit' }, function (err) {
         assert.ok(err);
         done();
       });
     });
 
-    it('stdout string', function (done) {
-      spawn('node', ['--versio'], { stderr: 'string' }, function (err) {
+    it('stderr string', function (done) {
+      spawn('ls', ['junk'], { stderr: 'string' }, function (err) {
         assert.ok(err);
         assert.equal(typeof err.stderr, 'string');
         done();
