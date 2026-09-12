@@ -24,14 +24,14 @@ describe('cli', function () {
   describe('unhappy path', function () {
     it('stdio inherit', function (done) {
       spawn('ls', ['junk'], { stdio: 'inherit' }, function (err) {
-        assert.ok(err);
+        assert.ok(!!err);
         done();
       });
     });
 
     it('stderr string', function (done) {
       spawn('ls', ['junk'], { stderr: 'string' }, function (err) {
-        assert.ok(err);
+        assert.ok(!!err);
         assert.equal(typeof err.stderr, 'string');
         done();
       });
