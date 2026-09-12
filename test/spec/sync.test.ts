@@ -27,7 +27,6 @@ describe('sync', () => {
         const res = sync('ls', [], { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
-        console.log(err);
         assert.ok(!err, err ? err.message : '');
       }
     });
@@ -38,7 +37,6 @@ describe('sync', () => {
         res = sync.worker(res, { encoding: 'utf8' });
         assert.equal(typeof res.stdout, 'string');
       } catch (err) {
-        console.log(err);
         assert.ok(!err, err ? err.message : '');
       }
     });
