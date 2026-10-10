@@ -3,6 +3,8 @@ import { spawnKeys } from '../constants.ts';
 import type { SpawnOptions, SpawnResult } from '../types.ts';
 
 export default function worker(res: SpawnResult, options?: SpawnOptions): SpawnResult {
+  if (res.error) throw res.error;
+
   options = options || {};
 
   // pipe if inherited
@@ -14,10 +16,10 @@ export default function worker(res: SpawnResult, options?: SpawnOptions): SpawnR
     process.stderr.write(res.stderr);
     (res as unknown as Record<string, unknown>).stderr = null as unknown as string | Buffer;
   }
-  if (res.status === null) res.status = 0; // patch: early node on windows could return null
+  if (res.status === null && res.signal == null) res.status = 0; // early Node on Windows can return null without a signal
 
   // process errors
-  const err = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
+  const err = res.signal != null ? new Error(`Process terminated by signal: ${res.signal}`) : res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
   if (err) {
     for (const key in res) {
       if (spawnKeys.indexOf(key) < 0) continue;

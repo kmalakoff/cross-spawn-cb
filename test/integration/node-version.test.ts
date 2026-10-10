@@ -1,3 +1,4 @@
+// Downloads Node releases from the network into package-local scratch.
 // remove NODE_OPTIONS to not interfere with tests
 delete process.env.NODE_OPTIONS;
 

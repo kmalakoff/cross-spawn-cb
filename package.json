@@ -51,7 +51,6 @@
     "node-resolve-versions": "^1.0.0",
     "node-version-use": "*",
     "node-version-utils": "^1.0.2",
-    "pinkie-promise": "*",
     "ts-dev-stack": "*",
     "tsds-config": "^1.0.4"
   },

@@ -35,10 +35,10 @@ export default function worker(cp: ChildProcess, options?: SpawnOptions | SpawnC
       if (options.encoding !== 'binary') res.stderr = res.stderr.toString(options.encoding);
     }
     res.output = [null, res.stdout, res.stderr];
-    if (res.status === null) res.status = 0; // patch: early node on windows could return null
+    if (res.status === null && res.signal == null) res.status = 0; // early Node on Windows can return null without a signal
 
     // process errors
-    const exitErr = res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
+    const exitErr = res.signal != null ? new Error(`Process terminated by signal: ${res.signal}`) : res.status !== 0 ? new Error(`Non-zero exit code: ${res.status}`) : null;
     if (exitErr) {
       for (const key in res) {
         if (spawnKeys.indexOf(key) < 0) continue;
