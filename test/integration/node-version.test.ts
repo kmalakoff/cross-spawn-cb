@@ -16,8 +16,10 @@ const NODE = isWindows ? 'node.exe' : 'node';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
 const TMP_DIR = path.join(path.join(__dirname, '..', '..', '.tmp'));
+const CACHE_DIR = path.join(__dirname, '..', '..', '.cache', 'node-install-release');
 const OPTIONS = {
   storagePath: path.join(TMP_DIR),
+  cachePath: CACHE_DIR,
   platform: process.platform,
   arch: 'x64' as NodeJS.Architecture,
 };
